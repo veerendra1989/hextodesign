@@ -5410,27 +5410,28 @@ button { font: inherit; color: inherit; cursor: pointer; }
     bindInteractions();
   }
 
+  /* Close style dropdown on outside click (single listener, not inside bindInteractions) */
+  document.addEventListener("click", function() {
+    var el = document.getElementById("dsStyleSelect");
+    if (el) el.classList.remove("open");
+  });
+
   /* ═══ Bind interactive behaviors ═══ */
   function bindInteractions() {
-    /* DS Style selector (custom dropdown) */
+    /* DS Style selector (custom dropdown) — uses event delegation on #app */
     var dsStyleWrap = document.getElementById("dsStyleSelect");
     if (dsStyleWrap) {
-      var dsStyleTrigger = dsStyleWrap.querySelector(".hero__style-trigger");
-      dsStyleTrigger.addEventListener("click", function(e) {
+      dsStyleWrap.addEventListener("click", function(e) {
         e.stopPropagation();
-        dsStyleWrap.classList.toggle("open");
-      });
-      dsStyleWrap.querySelectorAll(".hero__style-option").forEach(function(opt) {
-        opt.addEventListener("click", function(e) {
-          e.stopPropagation();
-          var val = this.dataset.style;
+        var option = e.target.closest(".hero__style-option");
+        if (option) {
+          var val = option.dataset.style;
+          if (val === currentDSStyle) {
+            dsStyleWrap.classList.remove("open");
+            return;
+          }
           currentDSStyle = val;
           try { localStorage.setItem("pp-ds-style", currentDSStyle); } catch(ex) {}
-          dsStyleWrap.querySelectorAll(".hero__style-option").forEach(function(o) { o.classList.remove("active"); });
-          this.classList.add("active");
-          var icons = { soft: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="4"/></svg>', edge: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="1"/></svg>', pill: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="9"/></svg>' };
-          var labels = { soft: "Soft", edge: "Edge", pill: "Pill" };
-          dsStyleTrigger.innerHTML = icons[val] + ' ' + labels[val] + '<svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>';
           dsStyleWrap.classList.remove("open");
           /* Re-render immediately with new style — no API call needed */
           if (ds) {
@@ -5439,9 +5440,13 @@ button { font: inherit; color: inherit; cursor: pointer; }
             setTheme(currentTheme);
             mainContent.scrollTop = scrollTop;
           }
-        });
+          return;
+        }
+        var trigger = e.target.closest(".hero__style-trigger");
+        if (trigger) {
+          dsStyleWrap.classList.toggle("open");
+        }
       });
-      document.addEventListener("click", function() { dsStyleWrap.classList.remove("open"); });
     }
 
     document.querySelectorAll(".period-group").forEach(function(group) {
