@@ -5410,44 +5410,45 @@ button { font: inherit; color: inherit; cursor: pointer; }
     bindInteractions();
   }
 
-  /* Close style dropdown on outside click (single listener, not inside bindInteractions) */
-  document.addEventListener("click", function() {
-    var el = document.getElementById("dsStyleSelect");
-    if (el) el.classList.remove("open");
-  });
-
-  /* ═══ Bind interactive behaviors ═══ */
-  function bindInteractions() {
-    /* DS Style selector (custom dropdown) — uses event delegation on #app */
+  /* DS Style selector — single document-level delegation (survives re-renders) */
+  document.addEventListener("click", function(e) {
     var dsStyleWrap = document.getElementById("dsStyleSelect");
-    if (dsStyleWrap) {
-      dsStyleWrap.addEventListener("click", function(e) {
-        e.stopPropagation();
-        var option = e.target.closest(".hero__style-option");
-        if (option) {
-          var val = option.dataset.style;
-          if (val === currentDSStyle) {
-            dsStyleWrap.classList.remove("open");
-            return;
-          }
+    if (!dsStyleWrap) return;
+
+    /* Click inside the dropdown */
+    if (dsStyleWrap.contains(e.target)) {
+      e.stopPropagation();
+
+      var option = e.target.closest(".hero__style-option");
+      if (option) {
+        var val = option.dataset.style;
+        dsStyleWrap.classList.remove("open");
+        if (val !== currentDSStyle) {
           currentDSStyle = val;
           try { localStorage.setItem("pp-ds-style", currentDSStyle); } catch(ex) {}
-          dsStyleWrap.classList.remove("open");
-          /* Re-render immediately with new style — no API call needed */
           if (ds) {
             var scrollTop = mainContent.scrollTop;
             renderPreview(ds);
             setTheme(currentTheme);
             mainContent.scrollTop = scrollTop;
           }
-          return;
         }
-        var trigger = e.target.closest(".hero__style-trigger");
-        if (trigger) {
-          dsStyleWrap.classList.toggle("open");
-        }
-      });
+        return;
+      }
+
+      var trigger = e.target.closest(".hero__style-trigger");
+      if (trigger) {
+        dsStyleWrap.classList.toggle("open");
+        return;
+      }
     }
+
+    /* Click outside — close */
+    dsStyleWrap.classList.remove("open");
+  });
+
+  /* ═══ Bind interactive behaviors ═══ */
+  function bindInteractions() {
 
     document.querySelectorAll(".period-group").forEach(function(group) {
       group.querySelectorAll(".period-btn").forEach(function(btn) {
