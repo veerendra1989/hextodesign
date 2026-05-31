@@ -3034,6 +3034,320 @@ button { font: inherit; color: inherit; cursor: pointer; }
     return L.join("\n");
   }
 
+  /* ── AI Prompt File (Markdown) ── */
+  function buildPromptMD(d) {
+    var L = [];
+    L.push("# Design System Prompt — " + d.source);
+    L.push("");
+    L.push("> Use this file as context when prompting AI tools (Cursor, Copilot, Claude, v0, etc.) to generate UI that matches your design system. Paste it into your project root or attach it to conversations.");
+    L.push("");
+    L.push("---");
+    L.push("");
+    L.push("## Design Tokens");
+    L.push("");
+    L.push("### Colors");
+    L.push("");
+    L.push("**Brand palette** (OKLCH-derived from `" + d.source + "`):");
+    L.push("");
+    Object.keys(d.brand).forEach(function(k) {
+      L.push("- `--brand-" + k + "`: " + d.brand[k].hex);
+    });
+    L.push("- `--brand-ink`: #fff (text on brand)");
+    L.push("");
+    L.push("**Semantic colors:**");
+    L.push("");
+    Object.keys(d.semantic).forEach(function(k) {
+      var s = d.semantic[k];
+      L.push("- `--" + k + "`: " + s.base + " (light: " + s.light + ", dark: " + s.dark + ")");
+    });
+    L.push("");
+    L.push("**Surfaces (dark theme):**");
+    L.push("");
+    Object.keys(d.surfaces.dark).forEach(function(k) {
+      L.push("- `--" + k + "`: " + d.surfaces.dark[k]);
+    });
+    L.push("");
+    L.push("### Typography");
+    L.push("");
+    L.push("- **Font sans:** " + d.typo.families.sans);
+    L.push("- **Font mono:** " + d.typo.families.mono);
+    L.push("");
+    L.push("**Type scale:**");
+    L.push("");
+    L.push("| Token | Size | Weight | Line Height | Letter Spacing |");
+    L.push("|-------|------|--------|-------------|----------------|");
+    Object.keys(d.typo.scale).forEach(function(k) {
+      var s = d.typo.scale[k];
+      L.push("| `" + k + "` | " + s.size + "px | " + s.weight + " | " + s.lineHeight + " | " + s.letterSpacing + " |");
+    });
+    L.push("");
+    L.push("### Spacing");
+    L.push("");
+    L.push("Base unit: " + d.spacing.base + "px. Tokens:");
+    L.push("");
+    Object.keys(d.spacing.tokens).forEach(function(k) {
+      L.push("- `--space-" + k + "`: " + d.spacing.tokens[k]);
+    });
+    L.push("");
+    L.push("### Border Radius");
+    L.push("");
+    Object.keys(d.radius).forEach(function(k) {
+      L.push("- `--radius-" + k + "`: " + d.radius[k]);
+    });
+    L.push("");
+    L.push("### Shadows");
+    L.push("");
+    Object.keys(d.shadows).forEach(function(k) {
+      L.push("- `--shadow-" + k + "`: `" + d.shadows[k] + "`");
+    });
+    L.push("");
+    L.push("---");
+    L.push("");
+    L.push("## Component Specifications");
+    L.push("");
+    L.push("When generating UI components, follow these specifications exactly.");
+    L.push("");
+    L.push("### Buttons");
+    L.push("");
+    L.push("```");
+    L.push("Primary:   bg brand-500, text brand-ink, font-weight 600, 14px, padding 10px 20px, radius 6px");
+    L.push("Secondary: bg transparent, border 1px line-2, text ink, same sizing as primary");
+    L.push("Ghost:     bg transparent, text ink-2, no border, same sizing");
+    L.push("Danger:    bg neg, text white, same sizing");
+    L.push("```");
+    L.push("");
+    L.push("**Sizes:**");
+    L.push("- Small: height 28px, padding 0 12px, font-size 12px, radius 6px");
+    L.push("- Default: height 36px, padding 0 16px, font-size 13px, radius 6px");
+    L.push("- Large: height 44px, padding 0 20px, font-size 14px, radius 6px");
+    L.push("");
+    L.push("**States:**");
+    L.push("- Hover: `filter: brightness(1.1)`");
+    L.push("- Disabled: `opacity: 0.5; cursor: not-allowed`");
+    L.push("- Focus: `outline: 2px solid brand-500; outline-offset: 2px`");
+    L.push("- Loading: show spinner, disable interaction");
+    L.push("");
+    L.push("### Form Inputs");
+    L.push("");
+    L.push("```");
+    L.push("All inputs: width 100%, padding 10px 14px, font-size 14px, radius 6px");
+    L.push("Border:     1px solid var(--line-2)");
+    L.push("Background: var(--bg-1)");
+    L.push("Focus:      border-color brand-500, box-shadow 0 0 0 3px brand-soft");
+    L.push("Placeholder: color ink-4");
+    L.push("```");
+    L.push("");
+    L.push("**Variants:**");
+    L.push("- Text input: single line, height 44px");
+    L.push("- Textarea: min-height 100px, resize vertical");
+    L.push("- Select: appearance none, custom chevron SVG right 12px, padding-right 36px");
+    L.push("- Checkbox/Radio: width auto, accent-color brand-500");
+    L.push("");
+    L.push("**Label:** block, font-size 13px, font-weight 600, color ink-2, margin-bottom 6px");
+    L.push("");
+    L.push("**Validation:**");
+    L.push("- Error: border-color neg, helper text in neg below input");
+    L.push("- Success: border-color pos");
+    L.push("- Helper text: font-size 12px, margin-top 4px");
+    L.push("");
+    L.push("### Cards");
+    L.push("");
+    L.push("```");
+    L.push("Background: var(--bg-2)");
+    L.push("Border:     1px solid var(--line)");
+    L.push("Radius:     10px (container-level)");
+    L.push("Padding:    24px");
+    L.push("Shadow:     none by default, shadow-md on hover if interactive");
+    L.push("```");
+    L.push("");
+    L.push("### Badges / Tags");
+    L.push("");
+    L.push("```");
+    L.push("Padding:     2px 10px");
+    L.push("Radius:      99px (pill)");
+    L.push("Font-size:   11px");
+    L.push("Font-weight: 600");
+    L.push("```");
+    L.push("");
+    L.push("**Variants:**");
+    L.push("- Brand: bg brand-soft, color brand");
+    L.push("- Success: bg pos-soft, color pos");
+    L.push("- Warning: bg warn-soft, color warn");
+    L.push("- Danger: bg neg-soft, color neg");
+    L.push("- Neutral: bg bg-3, color ink-3");
+    L.push("");
+    L.push("### Tooltips");
+    L.push("");
+    L.push("```");
+    L.push("Background:  var(--ink)");
+    L.push("Color:       var(--bg)");
+    L.push("Padding:     6px 10px");
+    L.push("Radius:      6px");
+    L.push("Font-size:   12px");
+    L.push("Position:    absolute, centered above trigger, 8px gap");
+    L.push("Arrow:       6px CSS triangle pointing down");
+    L.push("```");
+    L.push("");
+    L.push("### Dropdowns / Menus");
+    L.push("");
+    L.push("```");
+    L.push("Container:  bg bg-1, border 1px line, radius 10px, shadow-lg, padding 6px");
+    L.push("Item:       padding 8px 12px, radius 6px, font-size 14px, color ink-2");
+    L.push("Item hover: bg bg-2");
+    L.push("Separator:  1px solid line, margin 4px 0");
+    L.push("```");
+    L.push("");
+    L.push("### Modals / Dialogs");
+    L.push("");
+    L.push("```");
+    L.push("Backdrop:   rgba(0,0,0,0.6)");
+    L.push("Container:  bg bg-1, border 1px line, radius 14px, padding 32px, shadow-2xl");
+    L.push("Max-width:  480px, centered vertically and horizontally");
+    L.push("Close btn:  top-right, 32x32, icon only, ghost style");
+    L.push("```");
+    L.push("");
+    L.push("### Alerts / Toasts");
+    L.push("");
+    L.push("```");
+    L.push("Padding:    14px 18px");
+    L.push("Radius:     6px");
+    L.push("Font-size:  14px");
+    L.push("Layout:     flex, icon + text, gap 12px");
+    L.push("```");
+    L.push("");
+    L.push("**Variants:**");
+    L.push("- Success: bg pos-soft, border-left 3px pos, icon checkmark");
+    L.push("- Error: bg neg-soft, border-left 3px neg, icon x-circle");
+    L.push("- Warning: bg warn-soft, border-left 3px warn, icon alert-triangle");
+    L.push("- Info: bg info-soft, border-left 3px info, icon info");
+    L.push("");
+    L.push("### Tables");
+    L.push("");
+    L.push("```");
+    L.push("Width:       100%, border-collapse collapse");
+    L.push("Header:      font-size 12px, uppercase, letter-spacing 0.04em, weight 600");
+    L.push("Header pad:  10px 16px, border-bottom 2px line-2");
+    L.push("Cell pad:    12px 16px, border-bottom 1px line");
+    L.push("Row hover:   bg bg-2");
+    L.push("```");
+    L.push("");
+    L.push("### Toggle / Switch");
+    L.push("");
+    L.push("```");
+    L.push("Track:  width 40px, height 22px, radius 11px, bg bg-4");
+    L.push("Thumb:  width 16px, height 16px, radius 50%, bg white, shadow-sm");
+    L.push("Active: track bg brand-500, thumb translates right");
+    L.push("```");
+    L.push("");
+    L.push("### Progress Bar");
+    L.push("");
+    L.push("```");
+    L.push("Track:  width 100%, height 6px, bg bg-3, radius 3px");
+    L.push("Fill:   bg brand-500, radius 3px, transition width 0.5s ease");
+    L.push("```");
+    L.push("");
+    L.push("### Tabs");
+    L.push("");
+    L.push("```");
+    L.push("Container:  border-bottom 1px line");
+    L.push("Tab:        padding 8px 16px, font-size 14px, weight 500, color ink-3");
+    L.push("Active tab: color ink, border-bottom 2px brand-500");
+    L.push("Hover:      color ink-2");
+    L.push("```");
+    L.push("");
+    L.push("### Avatars");
+    L.push("");
+    L.push("```");
+    L.push("Shape:  circle (border-radius 50%)");
+    L.push("Sizes:  24px (xs), 32px (sm), 40px (md), 56px (lg)");
+    L.push("Fallback: bg brand-soft, color brand, initials centered, weight 600");
+    L.push("```");
+    L.push("");
+    L.push("### Navigation / Sidebar");
+    L.push("");
+    L.push("```");
+    L.push("Item:        padding 8px 12px, radius 6px, font-size 13px, color ink-3");
+    L.push("Item hover:  bg bg-2, color ink");
+    L.push("Item active: bg brand-soft, color brand, font-weight 600");
+    L.push("Icon:        16px, margin-right 10px");
+    L.push("```");
+    L.push("");
+    L.push("### Date/Time Picker");
+    L.push("");
+    L.push("```");
+    L.push("Input:       same as form input (height 44px, radius 6px)");
+    L.push("Calendar:    bg bg-1, border 1px line, radius 10px, shadow-lg, padding 16px");
+    L.push("Day cell:    32x32, radius 6px, font-size 13px");
+    L.push("Selected:    bg brand-500, color brand-ink");
+    L.push("Today:       border 1px brand-500");
+    L.push("Hover:       bg bg-2");
+    L.push("```");
+    L.push("");
+    L.push("### Pagination");
+    L.push("");
+    L.push("```");
+    L.push("Button:  32x32, radius 6px, border 1px line, bg bg-1, font-size 12px");
+    L.push("Active:  bg brand-500, color brand-ink, border-color brand-500");
+    L.push("Hover:   bg bg-2");
+    L.push("Gap:     4px between buttons");
+    L.push("```");
+    L.push("");
+    L.push("### Skeleton / Loading");
+    L.push("");
+    L.push("```");
+    L.push("Background: linear-gradient(90deg, bg-3 25%, bg-2 50%, bg-3 75%)");
+    L.push("Animation:  shimmer 1.5s infinite, background-size 200%");
+    L.push("Radius:     match the element it replaces");
+    L.push("```");
+    L.push("");
+    L.push("### Accordion / Expansion Panel");
+    L.push("");
+    L.push("```");
+    L.push("Container:  border 1px line, radius 6px, overflow hidden");
+    L.push("Header:     padding 14px 16px, font-weight 600, cursor pointer");
+    L.push("Content:    padding 0 16px 16px, hidden by default, animate height");
+    L.push("Icon:       chevron right, rotate 90deg when open");
+    L.push("```");
+    L.push("");
+    L.push("### Chip / Tag (removable)");
+    L.push("");
+    L.push("```");
+    L.push("Padding:    5px 12px");
+    L.push("Radius:     99px (pill)");
+    L.push("Font-size:  12px");
+    L.push("Border:     1px solid line-2");
+    L.push("Close icon: 14px, right side, hover color neg");
+    L.push("```");
+    L.push("");
+    L.push("---");
+    L.push("");
+    L.push("## Layout Rules");
+    L.push("");
+    L.push("- Max content width: 1280px, centered");
+    L.push("- Grid: 12 columns, 24px gutter");
+    L.push("- Section spacing: 64px vertical");
+    L.push("- Card grid gap: 24px");
+    L.push("- Component internal spacing: use spacing tokens (multiples of " + d.spacing.base + "px)");
+    L.push("");
+    L.push("## Global Behavior");
+    L.push("");
+    L.push("- All interactive elements: `transition: all 0.15s ease`");
+    L.push("- Focus ring: `outline: 2px solid brand-500; outline-offset: 2px`");
+    L.push("- Selection: `background: brand-soft`");
+    L.push("- Disabled state: `opacity: 0.5; cursor: not-allowed; pointer-events: none`");
+    L.push("- Border color default: `var(--line)` or `var(--line-2)` for inputs");
+    L.push("- Text colors: `--ink` (primary), `--ink-2` (secondary), `--ink-3` (tertiary), `--ink-4` (placeholder)");
+    L.push("");
+    L.push("## Dark/Light Theme");
+    L.push("");
+    L.push("The design system supports both themes via CSS custom properties. All surface/ink variables switch automatically. Never hardcode colors — always use `var(--token-name)`.");
+    L.push("");
+    L.push("---");
+    L.push("");
+    L.push("*Generated by [hextodesign](https://hextodesign.com) on " + new Date().toISOString().split("T")[0] + "*");
+    return L.join("\n");
+  }
+
   /* Download a single format file */
   function triggerExportDownload(format, ext, btnEl) {
     if (!_exportData) { alert("Generate a design system first"); return; }
@@ -3045,6 +3359,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
     else if (format === "figma") { content = buildFigmaTokens(_exportData); ext = "json"; }
     else if (format === "figma-variables") { content = buildFigmaVariables(_exportData); ext = "json"; }
     else if (format === "docs") { content = buildDocMarkdown(_exportData); ext = "md"; }
+    else if (format === "prompt") { content = buildPromptMD(_exportData); ext = "md"; }
     else { content = buildFullCSS(_exportData); ext = "css"; }
 
     var origHTML = btnEl.innerHTML;
@@ -3088,7 +3403,8 @@ button { font: inherit; color: inherit; cursor: pointer; }
       "design-tokens.json": buildFullJSON(_exportData),
       "figma-tokens.json": buildFigmaTokens(_exportData),
       "figma-variables.json": buildFigmaVariables(_exportData),
-      "documentation.md": buildDocMarkdown(_exportData)
+      "documentation.md": buildDocMarkdown(_exportData),
+      "prompt.md": buildPromptMD(_exportData)
     };
 
     /* Build README */
@@ -3103,7 +3419,8 @@ button { font: inherit; color: inherit; cursor: pointer; }
     readme += "| `design-tokens.json` | Structured JSON tokens with full component specs |\n";
     readme += "| `figma-tokens.json` | Tokens Studio plugin compatible token file |\n";
     readme += "| `figma-variables.json` | Native Figma Variables import (Colors with Dark/Light modes, Spacing, Radius, Typography) |\n";
-    readme += "| `documentation.md` | Full design system documentation with all token values |\n\n";
+    readme += "| `documentation.md` | Full design system documentation with all token values |\n";
+    readme += "| `prompt.md` | AI prompt file — paste into Cursor/Copilot/Claude for consistent UI generation |\n\n";
     readme += "## Quick start\n\n";
     readme += "### CSS (no build tools)\n";
     readme += "```html\n<link rel=\"stylesheet\" href=\"design-system.css\">\n```\n\n";
@@ -3119,6 +3436,8 @@ button { font: inherit; color: inherit; cursor: pointer; }
     readme += "3. Your variables are ready — Colors collection has Dark & Light modes\n\n";
     readme += "### Figma / Tokens Studio\n";
     readme += "Import `figma-tokens.json` into the Tokens Studio plugin (formerly Figma Tokens).\n\n";
+    readme += "### AI Tools (Cursor, Copilot, Claude, v0)\n";
+    readme += "Place `prompt.md` in your project root or paste it as context when prompting AI to generate UI.\n\n";
     readme += "## Theme switching\n\n";
     readme += "The CSS file includes both dark (default) and light themes.\n";
     readme += "Add `data-theme=\"light\"` or class `theme-light` to your root element:\n\n";
@@ -4513,7 +4832,20 @@ button { font: inherit; color: inherit; cursor: pointer; }
     scssT += '\n<span class="ec">// Radius</span>\n';
     Object.keys(radius).forEach(function(k) { scssT += '<span class="ek">$radius-' + k + ':</span> <span class="ev">' + radius[k] + '</span>;\n'; });
 
-    h += '<div class="export-tabs" id="exportTabs"><button class="export-tab export-tab--active" data-tab="css">CSS</button><button class="export-tab" data-tab="tw">Tailwind</button><button class="export-tab" data-tab="scss">SCSS</button><button class="export-tab" data-tab="json">JSON</button></div>';
+    var promptT = '<span class="ec"># Design System Prompt — ' + esc(ds.source) + '</span>\n\n';
+    promptT += '<span class="ec">&gt; Paste into Cursor / Copilot / Claude / v0 for consistent UI generation.</span>\n\n';
+    promptT += '<span class="ek">## Tokens</span>\n';
+    Object.keys(brand).forEach(function(s) { promptT += '- <span class="ek">--brand-' + s + '</span>: <span class="ev">' + brand[s].hex.toLowerCase() + '</span>\n'; });
+    promptT += '\n<span class="ek">## Components</span>\n';
+    promptT += '- Buttons: radius 6px, padding 10px 20px, weight 600\n';
+    promptT += '- Inputs: radius 6px, padding 10px 14px, focus ring brand\n';
+    promptT += '- Cards: radius 10px, padding 24px, border 1px line\n';
+    promptT += '- Badges: pill shape, 11px, weight 600\n';
+    promptT += '- Tooltips: dark bg, radius 6px, 12px text\n';
+    promptT += '- Modals: radius 14px, shadow-2xl, backdrop blur\n';
+    promptT += '...<span class="ec"> (full spec in downloaded file)</span>\n';
+
+    h += '<div class="export-tabs" id="exportTabs"><button class="export-tab export-tab--active" data-tab="css">CSS</button><button class="export-tab" data-tab="tw">Tailwind</button><button class="export-tab" data-tab="scss">SCSS</button><button class="export-tab" data-tab="json">JSON</button><button class="export-tab" data-tab="prompt">Prompt</button></div>';
     h += '<div class="export-actions" id="exportActions">';
     h += '<button class="c-btn c-btn--secondary c-btn--sm" id="copyExportBtn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg> Copy</button>';
     h += '<button class="c-btn c-btn--primary c-btn--sm" id="downloadExportBtn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Download</button>';
@@ -4522,6 +4854,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
     h += '<div class="export-code custom-scroll" id="exportCode-tw" style="display:none">' + twT + '</div>';
     h += '<div class="export-code custom-scroll" id="exportCode-scss" style="display:none">' + scssT + '</div>';
     h += '<div class="export-code custom-scroll" id="exportCode-json" style="display:none">' + jsT + '</div>';
+    h += '<div class="export-code custom-scroll" id="exportCode-prompt" style="display:none">' + promptT + '</div>';
     h += '</div></div></section>';
 
     h += '</main>';
@@ -4574,7 +4907,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
           exportTabs.querySelectorAll(".export-tab").forEach(function(t) { t.classList.remove("export-tab--active"); });
           this.classList.add("export-tab--active");
           var target = this.dataset.tab;
-          ["css","tw","scss","json"].forEach(function(id) {
+          ["css","tw","scss","json","prompt"].forEach(function(id) {
             var el = document.getElementById("exportCode-" + id);
             if (el) el.style.display = id === target ? "" : "none";
           });
@@ -4606,8 +4939,8 @@ button { font: inherit; color: inherit; cursor: pointer; }
       downloadExportBtn.addEventListener("click", function() {
         var activeTab = document.querySelector(".export-tab--active");
         var format = activeTab ? activeTab.dataset.tab : "css";
-        var formatMap = { css: "css", tw: "tailwind", scss: "scss", json: "json" };
-        var extMap = { css: "css", tw: "js", scss: "scss", json: "json" };
+        var formatMap = { css: "css", tw: "tailwind", scss: "scss", json: "json", prompt: "prompt" };
+        var extMap = { css: "css", tw: "js", scss: "scss", json: "json", prompt: "md" };
         var apiFormat = formatMap[format] || "css";
         var ext = extMap[format] || "css";
         triggerExportDownload(apiFormat, ext, downloadExportBtn);
