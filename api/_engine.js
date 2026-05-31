@@ -262,7 +262,7 @@ function generateSpacing() {
 
 function generateRadius() {
   return {
-    none: "0px", sm: "4px", md: "6px", DEFAULT: "8px",
+    none: "0px", sm: "2px", md: "6px", DEFAULT: "6px",
     lg: "10px", xl: "14px", "2xl": "20px", "3xl": "28px", full: "9999px"
   };
 }

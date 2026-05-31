@@ -3,9 +3,16 @@
   "configurations": [
     {
       "name": "dev",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev"],
-      "port": 3000
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["vercel", "dev"],
+      "port": 3000,
+      "autoPort": true
+    },
+    {
+      "name": "promo",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "/tmp", "-l", "3099", "--no-clipboard"],
+      "port": 3099
     }
   ]
 }
