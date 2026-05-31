@@ -3049,7 +3049,7 @@ var {
               commit(raw);
               try { localStorage.setItem("pp-brand", "#" + raw); } catch(_) {}
               if (window.htd) htd.track("cta_click", { location: "hero" });
-              window.location.href = "preview.html?brand=" + raw;
+              window.location.href = "preview?brand=" + raw;
             }
           }
         }, "Generate →")),
@@ -3078,7 +3078,7 @@ var {
                 e.preventDefault();
                 try { var h = document.documentElement.style.getPropertyValue("--brand-h") || "286"; localStorage.setItem("pp-brand-hue", h); } catch(_) {}
                 var b = localStorage.getItem("pp-brand") || "7B5BFF";
-                window.location.href = "preview.html?brand=" + b.replace("#","");
+                window.location.href = "preview?brand=" + b.replace("#","");
               }
             }
           },
@@ -3644,7 +3644,7 @@ var {
   /*#__PURE__*/React.createElement("a", {
     className: "btn btn--primary pg-generate__btn",
     href: "#",
-    onClick: function(e) { e.preventDefault(); try { var h = document.documentElement.style.getPropertyValue("--brand-h") || "286"; localStorage.setItem("pp-brand-hue", h); } catch(_) {} if (window.htd) htd.track("cta_click", { location: "playground" }); var b = localStorage.getItem("pp-brand") || "7B5BFF"; window.location.href = "preview.html?brand=" + b.replace("#",""); }
+    onClick: function(e) { e.preventDefault(); try { var h = document.documentElement.style.getPropertyValue("--brand-h") || "286"; localStorage.setItem("pp-brand-hue", h); } catch(_) {} if (window.htd) htd.track("cta_click", { location: "playground" }); var b = localStorage.getItem("pp-brand") || "7B5BFF"; window.location.href = "preview?brand=" + b.replace("#",""); }
   }, "Generate my design system →")
 )));
   }

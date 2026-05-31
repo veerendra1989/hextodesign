@@ -4,7 +4,7 @@
     {
       "name": "dev",
       "runtimeExecutable": "npx",
-      "runtimeArgs": ["vercel", "dev"],
+      "runtimeArgs": ["serve", ".", "-l", "3000", "--no-clipboard"],
       "port": 3000,
       "autoPort": true
     },

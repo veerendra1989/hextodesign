@@ -25,7 +25,7 @@
   <script>
     (function() {
       var b = (localStorage.getItem("pp-brand") || "7B5BFF").replace("#","");
-      window.location.replace("preview.html?brand=" + b);
+      window.location.replace("preview?brand=" + b);
     })();
   </script>
   <script>
@@ -775,7 +775,8 @@ button { font: inherit; color: inherit; cursor: pointer; }
     if (font) payload.font = { sans: font.sans, mono: font.mono, cssVar: font.cssVar, monoVar: font.monoVar };
 
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", "/api/generate", true);
+    var apiUrl = window.location.hostname === "localhost" ? "http://localhost:3001/api/generate" : "/api/generate";
+    xhr.open("POST", apiUrl, true);
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.onreadystatechange = function() {
       if (xhr.readyState !== 4) return;
@@ -783,7 +784,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
         try {
           var ds = JSON.parse(xhr.responseText);
           localStorage.setItem("pp-ds", JSON.stringify(ds));
-          window.location.href = "preview.html";
+          window.location.href = "preview";
         } catch(e) {
           alert("Failed to parse response");
           btn.innerHTML = "Generate"; btn.disabled = false;
