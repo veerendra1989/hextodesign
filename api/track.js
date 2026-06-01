@@ -78,6 +78,10 @@ module.exports = async function handler(req, res) {
 
   try {
     var body = req.body;
+    // Handle text/plain from sendBeacon (parse string body)
+    if (typeof body === "string") {
+      try { body = JSON.parse(body); } catch(pe) { return res.status(400).json({ error: "Invalid JSON" }); }
+    }
     if (!body || !body.event) {
       return res.status(400).json({ error: "Missing event field" });
     }
