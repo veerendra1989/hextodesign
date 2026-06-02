@@ -322,27 +322,39 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .hero__style-option.active { background: var(--brand-faint); color: var(--brand); }
 .hero__style-option svg { width: 20px; height: 20px; flex-shrink: 0; }
 
-/* ═══ Pill style overrides ═══ */
+/* ═══ Pill style overrides ═══
+   Rule: only true interactive leaf elements get 9999px.
+   Containers, cards, panels, lists, charts stay at --r-2 (14px) or --r-3 (16px).
+   ═════════════════════════════════════════════════════ */
+
+/* Interactive elements → full pill */
 :root[data-ds-style="pill"] .c-btn { border-radius: 9999px; padding: 0 22px; }
 :root[data-ds-style="pill"] .c-btn--sm { padding: 0 16px; }
 :root[data-ds-style="pill"] .c-btn--lg { padding: 0 28px; }
 :root[data-ds-style="pill"] .c-input { border-radius: 9999px; padding: 0 20px; }
 :root[data-ds-style="pill"] .c-select { border-radius: 9999px; padding: 0 40px 0 20px; }
-:root[data-ds-style="pill"] .c-textarea { border-radius: 20px; }
-:root[data-ds-style="pill"] .c-alert { border-radius: 9999px; }
-:root[data-ds-style="pill"] .ds-section-num { border-radius: 9999px; }
-:root[data-ds-style="pill"] .dropdown-menu { border-radius: 20px; }
 :root[data-ds-style="pill"] .c-tooltip { border-radius: 9999px; padding: 6px 14px; }
-:root[data-ds-style="pill"] .focus-demo { border-radius: 9999px; }
-:root[data-ds-style="pill"] .theme-card { border-radius: 16px; }
+:root[data-ds-style="pill"] .hero__style-trigger { border-radius: 9999px; }
+:root[data-ds-style="pill"] .hero__style-option { border-radius: 9999px; }
 :root[data-ds-style="pill"] .theme-card__btn { border-radius: 9999px; }
 :root[data-ds-style="pill"] .theme-card__input { border-radius: 9999px; padding: 0 16px; }
-:root[data-ds-style="pill"] .hero__style-trigger { border-radius: 9999px; }
-:root[data-ds-style="pill"] .hero__style-panel { border-radius: 20px; }
-:root[data-ds-style="pill"] .hero__style-option { border-radius: 9999px; }
-:root[data-ds-style="pill"] .c-dropzone { border-radius: 20px; }
-:root[data-ds-style="pill"] .skeleton { border-radius: 9999px; }
-:root[data-ds-style="pill"] .motion-card { border-radius: 20px; }
+:root[data-ds-style="pill"] .focus-demo { border-radius: 9999px; }
+:root[data-ds-style="pill"] .ds-section-num { border-radius: 9999px; }
+:root[data-ds-style="pill"] .range-input[type="range"] { border-radius: 9999px; }
+
+/* Containers/panels → stay moderate */
+:root[data-ds-style="pill"] .c-textarea { border-radius: 16px; }
+:root[data-ds-style="pill"] .c-alert { border-radius: 14px; }
+:root[data-ds-style="pill"] .dropdown-menu { border-radius: 16px; }
+:root[data-ds-style="pill"] .hero__style-panel { border-radius: 16px; }
+:root[data-ds-style="pill"] .c-dropzone { border-radius: 16px; }
+:root[data-ds-style="pill"] .theme-card { border-radius: 16px; }
+:root[data-ds-style="pill"] .motion-card { border-radius: 14px; }
+/* Skeleton, metric cards, menu, sidenav, list, grid, expansion,
+   autocomplete, aspect-ratio, bar-chart, export-preview → inherit --r-2 (14px) */
+:root[data-ds-style="pill"] .skeleton { border-radius: 8px; }
+:root[data-ds-style="pill"] .chart-bar { border-radius: 4px 4px 0 0; }
+:root[data-ds-style="pill"] .chart-palette { border-radius: 8px; }
 
 /* ═══ Edge style overrides ═══ */
 :root[data-ds-style="edge"] .c-bottom-sheet { border-radius: 0; }
@@ -1607,7 +1619,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
       L.push("  --radius-" + rk + ": " + d.radius[k] + ";");
     });
     /* Shorthand scale used by component classes */
-    var _rStyleMap = { soft: ["4px","6px","10px","14px"], edge: ["0px","2px","2px","4px"], pill: ["9999px","9999px","16px","20px"] };
+    var _rStyleMap = { soft: ["4px","6px","10px","14px"], edge: ["0px","2px","2px","4px"], pill: ["8px","14px","16px","20px"] };
     var _rv = _rStyleMap[d.dsStyle || "soft"] || _rStyleMap.soft;
     L.push("  --r-1: " + _rv[0] + ";");
     L.push("  --r-2: " + _rv[1] + ";");
@@ -4659,7 +4671,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
     var contrast = ds.contrast;
 
     /* Update CSS custom properties for the style */
-    var rMap = { soft: ["4px","6px","10px","14px"], edge: ["0px","2px","2px","4px"], pill: ["9999px","9999px","16px","20px"] };
+    var rMap = { soft: ["4px","6px","10px","14px"], edge: ["0px","2px","2px","4px"], pill: ["8px","14px","16px","20px"] };
     var rv = rMap[currentDSStyle] || rMap.soft;
     root.style.setProperty("--r-1", rv[0]);
     root.style.setProperty("--r-2", rv[1]);
