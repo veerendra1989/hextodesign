@@ -307,7 +307,8 @@ button { font: inherit; color: inherit; cursor: pointer; }
    HERO
    ═══════════════════════════════════════════ */
 .ds-hero { background: var(--bg-2); border: 1px solid var(--line); border-radius: var(--r-3); padding: 40px 36px; margin-bottom: 40px; position: relative; overflow: visible; }
-.hero__top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; position: relative; z-index: 10; }
+.hero__top-bar { display: flex; justify-content: flex-end; align-items: center; margin-bottom: 20px; position: relative; z-index: 10; }
+.hero__style-select { display: none; } /* Moved to floating bottom bar */
 .hero__theme-toggle { display: flex; gap: 4px; background: var(--bg-3); border-radius: 6px; padding: 3px; }
 .hero__style-select { position: relative; }
 .hero__style-trigger { display: flex; align-items: center; gap: 8px; background: var(--bg-3); border: 1px solid var(--line-2); border-radius: 6px; padding: 6px 12px; font-size: 13px; font-weight: 500; color: var(--ink); cursor: pointer; transition: border-color 0.15s ease; }
@@ -366,8 +367,12 @@ button { font: inherit; color: inherit; cursor: pointer; }
 :root[data-ds-style="edge"] .hero__style-option { border-radius: 2px; }
 
 /* ═══ Floating theme toggle ═══ */
-.theme-toggle-float {
+/* Floating bottom bar */
+#theme-toggle-portal {
   position: fixed; bottom: 24px; right: 24px; z-index: 999;
+  display: flex; align-items: center; gap: 6px;
+}
+.theme-toggle-float {
   display: flex; align-items: center; gap: 8px;
   padding: 10px 16px; border-radius: 999px;
   border: 1px solid var(--line-2); background: var(--bg-1);
@@ -389,6 +394,45 @@ button { font: inherit; color: inherit; cursor: pointer; }
   color: var(--ink-2); text-transform: uppercase;
   font-family: var(--f-mono); user-select: none;
 }
+/* Style selector floater */
+.style-toggle-float {
+  position: relative;
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 16px; border-radius: 999px;
+  border: 1px solid var(--line-2); background: var(--bg-1);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.18), 0 0 0 1px var(--line);
+  cursor: pointer; transition: box-shadow 0.2s, transform 0.15s, border-color 0.2s;
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  font-family: inherit; font-size: 12px; font-weight: 600;
+  color: var(--ink-2); text-transform: uppercase; letter-spacing: 0.04em;
+  font-family: var(--f-mono); user-select: none;
+}
+.style-toggle-float:hover {
+  box-shadow: 0 6px 32px rgba(0,0,0,0.24), 0 0 0 1px var(--brand);
+  border-color: var(--brand); transform: translateY(-2px);
+}
+.style-toggle-float svg { width: 16px; height: 16px; flex-shrink: 0; color: var(--ink); }
+.style-toggle-float .arrow { width: 12px; height: 12px; color: var(--ink-4); margin-left: 2px; transition: transform 0.15s; }
+.style-toggle-float.open .arrow { transform: rotate(180deg); }
+.style-float-panel {
+  position: absolute; bottom: calc(100% + 8px); right: 0;
+  background: var(--bg-1); border: 1px solid var(--line-2); border-radius: 16px;
+  padding: 6px; min-width: 160px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.22), 0 0 0 1px var(--line);
+  opacity: 0; visibility: hidden; transform: translateY(4px);
+  transition: opacity 0.15s ease, transform 0.15s ease, visibility 0.15s ease;
+  z-index: 1000;
+}
+.style-toggle-float.open .style-float-panel { opacity: 1; visibility: visible; transform: translateY(0); }
+.style-float-option {
+  display: flex; align-items: center; gap: 10px; padding: 9px 14px;
+  border-radius: 999px; cursor: pointer; font-size: 13px; font-weight: 500;
+  color: var(--ink-2); transition: background 0.12s; text-transform: none; letter-spacing: 0;
+  font-family: var(--font, inherit);
+}
+.style-float-option:hover { background: var(--bg-2); color: var(--ink); }
+.style-float-option.active { background: var(--brand-faint); color: var(--brand); }
+.style-float-option svg { width: 18px; height: 18px; flex-shrink: 0; }
 .ds-hero::before { display: none; }
 .ds-hero h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 8px; position: relative; z-index: 1; }
 .ds-hero p { font-size: 14px; color: var(--ink-3); max-width: 560px; line-height: 1.7; position: relative; z-index: 1; }
@@ -4183,9 +4227,34 @@ button { font: inherit; color: inherit; cursor: pointer; }
   _floatEl.id = "theme-toggle-portal";
   document.body.appendChild(_floatEl);
 
+  var _styleIcons = {
+    soft: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="4"/></svg>',
+    edge: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="1"/></svg>',
+    pill: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="9"/></svg>'
+  };
+  var _styleLabels = { soft: "Soft", edge: "Edge", pill: "Pill" };
+
   function renderFloatingToggle() {
     var isDark = currentTheme === "dark";
     _floatEl.innerHTML = "";
+
+    /* Style selector */
+    var styleWrap = document.createElement("div");
+    styleWrap.className = "style-toggle-float";
+    styleWrap.id = "floatStyleSelect";
+    styleWrap.innerHTML =
+      _styleIcons[currentDSStyle] +
+      '<span>' + _styleLabels[currentDSStyle] + '</span>' +
+      '<svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>' +
+      '<div class="style-float-panel">' +
+        ["soft","edge","pill"].map(function(s) {
+          return '<div class="style-float-option' + (currentDSStyle === s ? ' active' : '') + '" data-style="' + s + '">' +
+            _styleIcons[s] + ' ' + _styleLabels[s] + '</div>';
+        }).join('') +
+      '</div>';
+    _floatEl.appendChild(styleWrap);
+
+    /* Theme toggle */
     var btn = document.createElement("button");
     btn.className = "theme-toggle-float";
     btn.title = isDark ? "Switch to light mode" : "Switch to dark mode";
@@ -4199,8 +4268,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
       '</span>' +
       '<span class="theme-toggle-float__label">' + (isDark ? "Light" : "Dark") + '</span>';
     btn.addEventListener("click", function() {
-      var next = isDark ? "light" : "dark";
-      setTheme(next);
+      setTheme(isDark ? "light" : "dark");
       renderFloatingToggle();
     });
     _floatEl.appendChild(btn);
@@ -5466,48 +5534,51 @@ button { font: inherit; color: inherit; cursor: pointer; }
 
   /* DS Style selector — single document-level delegation (survives re-renders) */
   /* DS Style selector — document-level delegation */
+  /* Shared style-change logic */
+  function applyStyleChange(val) {
+    if (!val || val === currentDSStyle) return;
+    currentDSStyle = val;
+    try { localStorage.setItem("pp-ds-style", currentDSStyle); } catch(ex) {}
+    if (ds) {
+      var scrollTop = mainContent.scrollTop;
+      renderPreview(ds);
+      setTheme(currentTheme);
+      mainContent.scrollTop = scrollTop;
+    }
+    renderFloatingToggle();
+  }
+
   document.addEventListener("click", function(e) {
-    var dsStyleWrap = document.getElementById("dsStyleSelect");
-    if (!dsStyleWrap) return;
-
-    /* Walk up from e.target manually (SVG elements may lack closest) */
-    var node = e.target;
-    var hitOption = null;
-    var hitTrigger = false;
-    var hitWrap = false;
-    while (node && node !== document) {
-      if (node.classList) {
-        if (node.classList.contains("hero__style-option")) hitOption = node;
-        if (node.classList.contains("hero__style-trigger")) hitTrigger = true;
-      }
-      if (node === dsStyleWrap) { hitWrap = true; break; }
-      node = node.parentNode;
-    }
-
-    if (!hitWrap) {
-      /* Click outside — close */
-      dsStyleWrap.classList.remove("open");
-      return;
-    }
-
-    if (hitOption) {
-      var val = hitOption.getAttribute("data-style");
-      dsStyleWrap.classList.remove("open");
-      if (val && val !== currentDSStyle) {
-        currentDSStyle = val;
-        try { localStorage.setItem("pp-ds-style", currentDSStyle); } catch(ex) {}
-        if (ds) {
-          var scrollTop = mainContent.scrollTop;
-          renderPreview(ds);
-          setTheme(currentTheme);
-          mainContent.scrollTop = scrollTop;
+    /* Walk up tree manually (SVG-safe) */
+    function walk(target, stopEl, optionClass, triggerClass) {
+      var node = target, hitOption = null, hitTrigger = false, hitWrap = false;
+      while (node && node !== document) {
+        if (node.classList) {
+          if (node.classList.contains(optionClass)) hitOption = node;
+          if (node.classList.contains(triggerClass)) hitTrigger = true;
         }
+        if (node === stopEl) { hitWrap = true; break; }
+        node = node.parentNode;
       }
-      return;
+      return { hitOption: hitOption, hitTrigger: hitTrigger, hitWrap: hitWrap };
     }
 
-    if (hitTrigger) {
-      dsStyleWrap.classList.toggle("open");
+    /* ── Hero dropdown ── */
+    var heroWrap = document.getElementById("dsStyleSelect");
+    if (heroWrap) {
+      var h = walk(e.target, heroWrap, "hero__style-option", "hero__style-trigger");
+      if (!h.hitWrap) { heroWrap.classList.remove("open"); }
+      else if (h.hitOption) { heroWrap.classList.remove("open"); applyStyleChange(h.hitOption.getAttribute("data-style")); return; }
+      else if (h.hitTrigger) { heroWrap.classList.toggle("open"); return; }
+    }
+
+    /* ── Float dropdown ── */
+    var floatWrap = document.getElementById("floatStyleSelect");
+    if (floatWrap) {
+      var f = walk(e.target, floatWrap, "style-float-option", "style-toggle-float");
+      if (!f.hitWrap) { floatWrap.classList.remove("open"); }
+      else if (f.hitOption) { floatWrap.classList.remove("open"); applyStyleChange(f.hitOption.getAttribute("data-style")); return; }
+      else if (f.hitTrigger) { floatWrap.classList.toggle("open"); return; }
     }
   });
 
