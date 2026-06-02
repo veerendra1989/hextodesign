@@ -322,6 +322,35 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .hero__style-option.active { background: var(--brand-faint); color: var(--brand); }
 .hero__style-option svg { width: 20px; height: 20px; flex-shrink: 0; }
 
+/* ═══ Pill style overrides ═══ */
+:root[data-ds-style="pill"] .c-btn { border-radius: 9999px; padding: 0 22px; }
+:root[data-ds-style="pill"] .c-btn--sm { padding: 0 16px; }
+:root[data-ds-style="pill"] .c-btn--lg { padding: 0 28px; }
+:root[data-ds-style="pill"] .c-input { border-radius: 9999px; padding: 0 20px; }
+:root[data-ds-style="pill"] .c-select { border-radius: 9999px; padding: 0 40px 0 20px; }
+:root[data-ds-style="pill"] .c-textarea { border-radius: 20px; }
+:root[data-ds-style="pill"] .c-alert { border-radius: 9999px; }
+:root[data-ds-style="pill"] .ds-section-num { border-radius: 9999px; }
+:root[data-ds-style="pill"] .dropdown-menu { border-radius: 20px; }
+:root[data-ds-style="pill"] .c-tooltip { border-radius: 9999px; padding: 6px 14px; }
+:root[data-ds-style="pill"] .focus-demo { border-radius: 9999px; }
+:root[data-ds-style="pill"] .theme-card { border-radius: 16px; }
+:root[data-ds-style="pill"] .theme-card__btn { border-radius: 9999px; }
+:root[data-ds-style="pill"] .theme-card__input { border-radius: 9999px; padding: 0 16px; }
+:root[data-ds-style="pill"] .hero__style-trigger { border-radius: 9999px; }
+:root[data-ds-style="pill"] .hero__style-panel { border-radius: 20px; }
+:root[data-ds-style="pill"] .hero__style-option { border-radius: 9999px; }
+:root[data-ds-style="pill"] .c-dropzone { border-radius: 20px; }
+:root[data-ds-style="pill"] .skeleton { border-radius: 9999px; }
+:root[data-ds-style="pill"] .motion-card { border-radius: 20px; }
+
+/* ═══ Edge style overrides ═══ */
+:root[data-ds-style="edge"] .c-bottom-sheet { border-radius: 0; }
+:root[data-ds-style="edge"] .dropdown-menu { border-radius: 2px; }
+:root[data-ds-style="edge"] .hero__style-trigger { border-radius: 2px; }
+:root[data-ds-style="edge"] .hero__style-panel { border-radius: 4px; }
+:root[data-ds-style="edge"] .hero__style-option { border-radius: 2px; }
+
 /* ═══ Floating theme toggle ═══ */
 .theme-toggle-float {
   position: fixed; bottom: 24px; right: 24px; z-index: 999;
@@ -1572,11 +1601,18 @@ button { font: inherit; color: inherit; cursor: pointer; }
       L.push("  --space-" + String(k).replace(".", "_") + ": " + d.spacing.tokens[k] + ";");
     });
     L.push("");
-    L.push("  /* Radius */");
+    L.push("  /* Radius — style: " + (d.dsStyle || "soft") + " */");
     Object.keys(d.radius).forEach(function(k) {
       var rk = k === "DEFAULT" ? "default" : k;
       L.push("  --radius-" + rk + ": " + d.radius[k] + ";");
     });
+    /* Shorthand scale used by component classes */
+    var _rStyleMap = { soft: ["4px","6px","10px","14px"], edge: ["0px","2px","2px","4px"], pill: ["9999px","9999px","16px","20px"] };
+    var _rv = _rStyleMap[d.dsStyle || "soft"] || _rStyleMap.soft;
+    L.push("  --r-1: " + _rv[0] + ";");
+    L.push("  --r-2: " + _rv[1] + ";");
+    L.push("  --r-3: " + _rv[2] + ";");
+    L.push("  --r-4: " + _rv[3] + ";");
     L.push("");
     L.push("  /* Shadows */");
     Object.keys(d.shadows).forEach(function(k) {
@@ -4597,9 +4633,9 @@ button { font: inherit; color: inherit; cursor: pointer; }
     if (style === "pill") {
       return {
         none: "0px",
-        sm: "8px",
-        md: "12px",
-        DEFAULT: "12px",
+        sm: "9999px",
+        md: "9999px",
+        DEFAULT: "9999px",
         lg: "16px",
         xl: "20px",
         "2xl": "24px",
@@ -4623,12 +4659,13 @@ button { font: inherit; color: inherit; cursor: pointer; }
     var contrast = ds.contrast;
 
     /* Update CSS custom properties for the style */
-    var rMap = { soft: ["4px","6px","10px","14px"], edge: ["0px","2px","2px","4px"], pill: ["8px","12px","16px","20px"] };
+    var rMap = { soft: ["4px","6px","10px","14px"], edge: ["0px","2px","2px","4px"], pill: ["9999px","9999px","16px","20px"] };
     var rv = rMap[currentDSStyle] || rMap.soft;
     root.style.setProperty("--r-1", rv[0]);
     root.style.setProperty("--r-2", rv[1]);
     root.style.setProperty("--r-3", rv[2]);
     root.style.setProperty("--r-4", rv[3]);
+    root.setAttribute("data-ds-style", currentDSStyle);
 
     /* Store data for export builders */
     _exportData = {
