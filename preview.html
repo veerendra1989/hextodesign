@@ -262,6 +262,24 @@ button { font: inherit; color: inherit; cursor: pointer; }
   min-height: 44px; display: flex; align-items: center;
 }
 .font-picker__preview-label { font-size: 10px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-4); margin-top: 8px; margin-bottom: 2px; }
+
+/* Font pairing cards */
+.font-pairings { display: flex; flex-direction: column; gap: 6px; }
+.font-pairing-card {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 12px; border-radius: var(--r-2);
+  border: 1px solid var(--line); background: var(--bg-2);
+  cursor: pointer; transition: all 0.15s ease;
+}
+.font-pairing-card:hover { border-color: var(--brand); background: var(--brand-faint); }
+.font-pairing-card.active { border-color: var(--brand); background: var(--brand-faint); }
+.font-pairing-card__names { display: flex; flex-direction: column; gap: 1px; }
+.font-pairing-card__sans { font-size: 13px; font-weight: 600; color: var(--ink); line-height: 1.3; }
+.font-pairing-card__mono { font-size: 10px; color: var(--ink-4); font-family: var(--f-mono); letter-spacing: 0.02em; }
+.font-pairing-card__tag { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 99px; background: var(--bg-3); color: var(--ink-4); letter-spacing: 0.04em; text-transform: uppercase; }
+.font-pairing-card.active .font-pairing-card__tag { background: var(--brand-soft); color: var(--brand); }
+.font-pairing-card.active .font-pairing-card__sans { color: var(--brand); }
+.font-pairing-card.active .font-pairing-card__mono { color: var(--brand); opacity: 0.7; }
 :root[data-theme="dark"] .c-select {
   background-image: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23c8c5bd' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
 }
@@ -457,7 +475,11 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .ds-hero-stats { display: flex; gap: 32px; margin-top: 24px; position: relative; z-index: 1; }
 .ds-hero-stat-val { font-size: 20px; font-weight: 700; }
 .ds-hero-stat-label { font-size: 11px; color: var(--ink-4); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
-.hero__chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; position: relative; z-index: 1; }
+.hero__bottom { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 20px; position: relative; z-index: 1; flex-wrap: wrap; }
+.hero__chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.hero__share-btn { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 99px; border: 1px solid var(--line-2); background: var(--bg-3); color: var(--ink-3); font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.15s; white-space: nowrap; font-family: inherit; flex-shrink: 0; }
+.hero__share-btn:hover { border-color: var(--brand); color: var(--brand); background: var(--brand-faint); }
+.hero__share-btn.copied { border-color: var(--pos); color: var(--pos); background: var(--pos-soft); }
 .hero__chip { display: inline-flex; align-items: center; gap: 4px; padding: 4px 12px; border-radius: 99px; font-size: 11px; font-weight: 600; font-family: var(--f-mono); background: var(--bg-3); border: 1px solid var(--line); color: var(--ink-3); }
 .hero__chip--ok { border-color: oklch(0.78 0.14 155 / 0.3); color: oklch(0.55 0.14 155); }
 .hero__chip--warn { border-color: oklch(0.75 0.16 75 / 0.3); color: oklch(0.55 0.14 75); }
@@ -1365,17 +1387,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 
   <div class="sidebar__section">
     <div class="sidebar__label">Font pairing</div>
-    <div class="font-picker" id="fontPicker">
-      <input class="font-picker__input" id="fontSearch" type="text" placeholder="Search Google Fonts..." autocomplete="off" />
-      <div class="font-picker__dropdown" id="fontDropdown"></div>
-    </div>
-    <div style="margin-top:8px;font-size:11px;color:var(--ink-4);font-weight:500;letter-spacing:0.02em;display:flex;align-items:center;gap:4px;">
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-      Google Font Integrated
-    </div>
-    <div style="height:24px;"></div>
-    <div class="font-picker__preview-label">Preview</div>
-    <div class="font-picker__preview" id="fontPreview">The quick brown fox jumps over the lazy dog</div>
+    <div class="font-pairings" id="fontPairingCards"></div>
   </div>
 
   <button class="sidebar__generate-btn" id="regenBtn">
@@ -1544,9 +1556,35 @@ button { font: inherit; color: inherit; cursor: pointer; }
   var hex = brandParam ? ("#" + brandParam.replace("#","")) : (localStorage.getItem("pp-brand") || "#7B5BFF");
   if (!/^#[0-9a-fA-F]{6}$/.test(hex)) hex = "#7B5BFF";
 
+  /* Read style from URL param */
+  var styleParam = params.get("style");
+  if (styleParam && ["soft","edge","pill"].indexOf(styleParam) !== -1) {
+    currentDSStyle = styleParam;
+    try { localStorage.setItem("pp-ds-style", currentDSStyle); } catch(e) {}
+  }
+
+  /* Read font from URL param */
+  var fontParam = params.get("font");
+
   var fontConf;
-  try { fontConf = JSON.parse(localStorage.getItem("pp-font")); } catch(e) {}
+  if (fontParam) {
+    fontConf = FONT_PAIRINGS.find(function(f) { return f.id === fontParam; }) || null;
+  }
+  if (!fontConf) {
+    try { fontConf = JSON.parse(localStorage.getItem("pp-font")); } catch(e) {}
+  }
   if (!fontConf) fontConf = FONTS[0];
+
+  /* ═══ Shareable URL sync ═══ */
+  function syncURL() {
+    var h = hex.replace("#","");
+    var p = new URLSearchParams();
+    p.set("brand", h);
+    if (currentDSStyle && currentDSStyle !== "soft") p.set("style", currentDSStyle);
+    if (fontConf && fontConf.id !== "geist") p.set("font", fontConf.id);
+    var newUrl = location.pathname + "?" + p.toString();
+    history.replaceState(null, "", newUrl);
+  }
 
   /* ═══ Loading animation ═══ */
   function runLoadingAnimation(brandHex, callback) {
@@ -4134,6 +4172,8 @@ button { font: inherit; color: inherit; cursor: pointer; }
     fetchExtraPalettes(function(extras) {
       _extraPalettes = extras;
       renderPreview(ds);
+      syncURL();
+      renderFontPairingCards();
       if (showOverlay) {
         revealPage();
       } else {
@@ -4291,6 +4331,41 @@ button { font: inherit; color: inherit; cursor: pointer; }
     _floatEl.appendChild(btn);
   }
   renderFloatingToggle();
+
+  /* ═══ Font pairing cards ═══ */
+  function renderFontPairingCards() {
+    var container = document.getElementById("fontPairingCards");
+    if (!container) return;
+    container.innerHTML = FONT_PAIRINGS.map(function(f) {
+      var isActive = fontConf && fontConf.id === f.id;
+      return '<div class="font-pairing-card' + (isActive ? ' active' : '') + '" data-font-id="' + f.id + '">' +
+        '<div class="font-pairing-card__names">' +
+          '<div class="font-pairing-card__sans" style="font-family:' + f.cssVar + '">' + f.sans + '</div>' +
+          '<div class="font-pairing-card__mono">' + f.mono + '</div>' +
+        '</div>' +
+        '<span class="font-pairing-card__tag">' + f.tag + '</span>' +
+      '</div>';
+    }).join('');
+    /* Load preview fonts */
+    FONT_PAIRINGS.forEach(function(f) {
+      if (f.googleUrl) {
+        var id = 'gf-' + f.id;
+        if (!document.getElementById(id)) {
+          var link = document.createElement('link');
+          link.id = id; link.rel = 'stylesheet'; link.href = f.googleUrl;
+          document.head.appendChild(link);
+        }
+      }
+    });
+    container.querySelectorAll('.font-pairing-card').forEach(function(card) {
+      card.addEventListener('click', function() {
+        var id = this.getAttribute('data-font-id');
+        var f = FONT_PAIRINGS.find(function(x) { return x.id === id; });
+        if (f) applyFont(f);
+      });
+    });
+  }
+  renderFontPairingCards();
 
   /* ═══ Color name suggestion ═══ */
   function suggestColorName(hexVal) {
@@ -4692,9 +4767,8 @@ button { font: inherit; color: inherit; cursor: pointer; }
     loadFont(f);
     try { localStorage.setItem("pp-font", JSON.stringify(f)); } catch(_) {}
     markDirty();
-    /* Update preview element */
-    var prev = document.getElementById("fontPreview");
-    if (prev) prev.style.fontFamily = f.cssVar;
+    syncURL();
+    renderFontPairingCards();
   }
 
   /* ═══ Init desktop font picker ═══ */
@@ -4810,12 +4884,15 @@ button { font: inherit; color: inherit; cursor: pointer; }
     h += '<div><div class="ds-hero-stat-val">' + spacing.base + 'px</div><div class="ds-hero-stat-label">Base grid</div></div>';
     h += '<div><div class="ds-hero-stat-val">' + Object.keys(shadows).length + '</div><div class="ds-hero-stat-label">Elevations</div></div>';
     h += '</div>';
+    h += '<div class="hero__bottom">';
     h += '<div class="hero__chips">';
     Object.keys(contrast).forEach(function(k) {
       var c = contrast[k];
       var cls = c.grade === "AAA" || c.grade === "AA" ? "hero__chip--ok" : "hero__chip--warn";
       h += '<div class="hero__chip ' + cls + '">' + esc(k.replace(/-/g," ")) + ' · ' + c.ratio.toFixed(1) + ':1 ' + c.grade + '</div>';
     });
+    h += '</div>';
+    h += '<button class="hero__share-btn" id="shareBtn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg> Copy link</button>';
     h += '</div></div>';
 
     /* ═══ 01 COLORS ═══ */
@@ -5544,6 +5621,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
       mainContent.scrollTop = scrollTop;
     }
     renderFloatingToggle();
+    syncURL();
   }
 
   document.addEventListener("click", function(e) {
@@ -5625,6 +5703,23 @@ button { font: inherit; color: inherit; cursor: pointer; }
     }
 
     /* Copy & Download for export section */
+    /* Share button */
+    var shareBtn = document.getElementById("shareBtn");
+    if (shareBtn) {
+      shareBtn.addEventListener("click", function() {
+        syncURL();
+        var url = location.href;
+        navigator.clipboard.writeText(url).then(function() {
+          shareBtn.classList.add("copied");
+          shareBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Copied!';
+          setTimeout(function() {
+            shareBtn.classList.remove("copied");
+            shareBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg> Copy link';
+          }, 2500);
+        });
+      });
+    }
+
     var copyExportBtn = document.getElementById("copyExportBtn");
     var downloadExportBtn = document.getElementById("downloadExportBtn");
     if (copyExportBtn) {
