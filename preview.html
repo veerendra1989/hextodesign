@@ -357,6 +357,16 @@ button { font: inherit; color: inherit; cursor: pointer; }
    Based on: translucent surfaces + specular rim + refraction
    ══════════════════════════════════════════════════════════ */
 
+/* ── Boost muted text in dark glass — ink-3/ink-4 are too dim on frosted surfaces ── */
+:root[data-ui-style="glass"][data-theme="dark"] {
+  --ink:   #ffffff;
+  --ink-2: rgba(255,255,255,0.90);
+  --ink-3: rgba(255,255,255,0.70);
+  --ink-4: rgba(255,255,255,0.50);
+  --line:  rgba(255,255,255,0.10);
+  --line-2: rgba(255,255,255,0.14);
+}
+
 /* ── Remove all borders — glass needs no stroke ── */
 :root[data-ui-style="glass"] .ds-preview,
 :root[data-ui-style="glass"] .ds-hero,
@@ -665,12 +675,59 @@ button { font: inherit; color: inherit; cursor: pointer; }
 }
 
 /* ── Sub-section containers ── */
-:root[data-ui-style="glass"] .ds-subsection-title {
-  color: rgba(255,255,255,0.5);
-}
-:root[data-ui-style="glass"][data-theme="light"] .ds-subsection-title {
-  color: rgba(0,0,0,0.4);
-}
+:root[data-ui-style="glass"][data-theme="dark"] .ds-subsection-title { color: rgba(255,255,255,0.70); }
+:root[data-ui-style="glass"][data-theme="light"] .ds-subsection-title { color: rgba(0,0,0,0.5); }
+
+/* ── Preview area — keep component text readable in dark glass ── */
+:root[data-ui-style="glass"][data-theme="dark"] .ds-preview { color: #fff; }
+:root[data-ui-style="glass"][data-theme="dark"] .ds-hero p { color: rgba(255,255,255,0.75); }
+:root[data-ui-style="glass"][data-theme="dark"] .ds-section-desc { color: rgba(255,255,255,0.68); }
+
+/* ── Code blocks — ensure mono text is readable ── */
+:root[data-ui-style="glass"][data-theme="dark"] .ds-spec { color: rgba(255,255,255,0.85); }
+:root[data-ui-style="glass"][data-theme="dark"] .export-code { color: rgba(255,255,255,0.80); }
+
+/* ── Form labels and hints ── */
+:root[data-ui-style="glass"][data-theme="dark"] .c-field__label { color: rgba(255,255,255,0.85) !important; }
+:root[data-ui-style="glass"][data-theme="dark"] .c-field__hint { color: rgba(255,255,255,0.60) !important; }
+:root[data-ui-style="glass"][data-theme="dark"] .c-input::placeholder,
+:root[data-ui-style="glass"][data-theme="dark"] .c-field__input::placeholder { color: rgba(255,255,255,0.35) !important; }
+
+/* ── Stat values in hero ── */
+:root[data-ui-style="glass"][data-theme="dark"] .ds-hero-stat-label { color: rgba(255,255,255,0.55); }
+:root[data-ui-style="glass"][data-theme="dark"] .ds-hero-stat-val { color: #fff; }
+
+/* ── Section numbers ── */
+:root[data-ui-style="glass"][data-theme="dark"] .ds-section-num { color: rgba(255,255,255,0.65); }
+:root[data-ui-style="glass"][data-theme="dark"] .ds-section-title { color: #fff; }
+
+/* ── Table / data text ── */
+:root[data-ui-style="glass"][data-theme="dark"] .color-label,
+:root[data-ui-style="glass"][data-theme="dark"] .color-hex { color: rgba(255,255,255,0.75); }
+
+/* ── Badge text — already colored, ensure minimum brightness ── */
+:root[data-ui-style="glass"][data-theme="dark"] .c-badge { filter: brightness(1.3); }
+
+/* ── Alert text ── */
+:root[data-ui-style="glass"][data-theme="dark"] .c-alert { filter: brightness(1.25); }
+
+/* ── Navigation ── */
+:root[data-ui-style="glass"][data-theme="dark"] .sidebar__nav a { color: rgba(255,255,255,0.65); }
+:root[data-ui-style="glass"][data-theme="dark"] .sidebar__nav a:hover,
+:root[data-ui-style="glass"][data-theme="dark"] .sidebar__nav a.active { color: #fff; }
+:root[data-ui-style="glass"][data-theme="dark"] .sidebar__label { color: rgba(255,255,255,0.45); }
+
+/* ── Tab items ── */
+:root[data-ui-style="glass"][data-theme="dark"] .tab-item { color: rgba(255,255,255,0.55); }
+:root[data-ui-style="glass"][data-theme="dark"] .tab-item.active { color: #fff; }
+:root[data-ui-style="glass"][data-theme="dark"] .tab-item:hover { color: rgba(255,255,255,0.85); }
+
+/* ── Dropdown / menu items ── */
+:root[data-ui-style="glass"][data-theme="dark"] .dropdown-item,
+:root[data-ui-style="glass"][data-theme="dark"] .c-menu-item { color: rgba(255,255,255,0.75); }
+
+/* ── Chart labels and axis text ── */
+:root[data-ui-style="glass"][data-theme="dark"] .chart-label { color: rgba(255,255,255,0.65); }
 
 /* ═══ Floating theme toggle ═══ */
 /* Floating bottom bar */
