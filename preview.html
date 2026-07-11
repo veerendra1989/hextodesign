@@ -1388,31 +1388,21 @@ button { font: inherit; color: inherit; cursor: pointer; }
   <nav class="sidebar__nav" id="dsNav">
     <a href="#colors" class="active"><span class="sidebar__nav-num">01</span> Colors</a>
     <a href="#typography"><span class="sidebar__nav-num">02</span> Type</a>
-    <a href="#spacing"><span class="sidebar__nav-num">03</span> Spacing</a>
-    <a href="#elevation"><span class="sidebar__nav-num">04</span> Elevation</a>
-    <a href="#buttons"><span class="sidebar__nav-num">05</span> Buttons</a>
-    <a href="#forms"><span class="sidebar__nav-num">06</span> Forms</a>
-    <a href="#data"><span class="sidebar__nav-num">07</span> Data</a>
-    <a href="#navigation"><span class="sidebar__nav-num">08</span> Nav</a>
-    <a href="#feedback"><span class="sidebar__nav-num">09</span> Feedback</a>
-    <a href="#patterns"><span class="sidebar__nav-num">10</span> Patterns</a>
-    <a href="#cards"><span class="sidebar__nav-num">11</span> Cards</a>
-    <a href="#selection"><span class="sidebar__nav-num">12</span> Selection</a>
-    <a href="#lists"><span class="sidebar__nav-num">13</span> Lists</a>
-    <a href="#indicators"><span class="sidebar__nav-num">14</span> Indicators</a>
-    <a href="#overlays"><span class="sidebar__nav-num">15</span> Overlays</a>
-    <a href="#navext"><span class="sidebar__nav-num">16</span> Nav Ext</a>
-    <a href="#grid"><span class="sidebar__nav-num">17</span> Grid</a>
-    <a href="#motion"><span class="sidebar__nav-num">18</span> Motion</a>
-    <a href="#icons"><span class="sidebar__nav-num">19</span> Icons</a>
-    <a href="#dataviz"><span class="sidebar__nav-num">20</span> Data Viz</a>
-    <a href="#validation"><span class="sidebar__nav-num">21</span> Validation</a>
-    <a href="#upload"><span class="sidebar__nav-num">22</span> Upload</a>
-    <a href="#cmdk"><span class="sidebar__nav-num">23</span> Cmd Palette</a>
-    <a href="#a11y"><span class="sidebar__nav-num">24</span> A11y</a>
-    <a href="#themecompare"><span class="sidebar__nav-num">25</span> Themes</a>
-    <a href="#responsive"><span class="sidebar__nav-num">26</span> Responsive</a>
-    <a href="#tokens"><span class="sidebar__nav-num">27</span> Export</a>
+    <a href="#elevation"><span class="sidebar__nav-num">03</span> Elevation</a>
+    <a href="#buttons"><span class="sidebar__nav-num">04</span> Buttons</a>
+    <a href="#forms"><span class="sidebar__nav-num">05</span> Forms</a>
+    <a href="#data"><span class="sidebar__nav-num">06</span> Data</a>
+    <a href="#navigation"><span class="sidebar__nav-num">07</span> Nav</a>
+    <a href="#feedback"><span class="sidebar__nav-num">08</span> Feedback</a>
+    <a href="#patterns"><span class="sidebar__nav-num">09</span> Patterns</a>
+    <a href="#cards"><span class="sidebar__nav-num">10</span> Cards</a>
+    <a href="#selection"><span class="sidebar__nav-num">11</span> Selection</a>
+    <a href="#indicators"><span class="sidebar__nav-num">12</span> Indicators</a>
+    <a href="#dataviz"><span class="sidebar__nav-num">13</span> Data Viz</a>
+    <a href="#validation"><span class="sidebar__nav-num">14</span> Validation</a>
+    <a href="#upload"><span class="sidebar__nav-num">15</span> Upload</a>
+    <a href="#themecompare"><span class="sidebar__nav-num">16</span> Themes</a>
+    <a href="#tokens"><span class="sidebar__nav-num">17</span> Export</a>
   </nav>
 
   <div class="sidebar__bottom">
@@ -1470,7 +1460,6 @@ button { font: inherit; color: inherit; cursor: pointer; }
 <nav class="mobile-tabs" id="mobileTabs">
   <a href="#colors" class="mobile-tab active">Colors</a>
   <a href="#typography" class="mobile-tab">Type</a>
-  <a href="#spacing" class="mobile-tab">Spacing</a>
   <a href="#elevation" class="mobile-tab">Elevation</a>
   <a href="#buttons" class="mobile-tab">Buttons</a>
   <a href="#forms" class="mobile-tab">Forms</a>
@@ -1480,10 +1469,10 @@ button { font: inherit; color: inherit; cursor: pointer; }
   <a href="#patterns" class="mobile-tab">Patterns</a>
   <a href="#cards" class="mobile-tab">Cards</a>
   <a href="#selection" class="mobile-tab">Selection</a>
-  <a href="#overlays" class="mobile-tab">Overlays</a>
+  <a href="#indicators" class="mobile-tab">Indicators</a>
   <a href="#dataviz" class="mobile-tab">Data Viz</a>
   <a href="#validation" class="mobile-tab">Validation</a>
-  <a href="#a11y" class="mobile-tab">A11y</a>
+  <a href="#upload" class="mobile-tab">Upload</a>
   <a href="#themecompare" class="mobile-tab">Themes</a>
   <a href="#tokens" class="mobile-tab">Export</a>
 </nav>
@@ -4633,19 +4622,8 @@ button { font: inherit; color: inherit; cursor: pointer; }
     h += '</div></section>';
 
     /* ═══ 03 SPACING ═══ */
-    h += '<section class="ds-section" id="spacing">';
-    h += '<div class="ds-section-header"><span class="ds-section-num">03</span><h2 class="ds-section-title">Spacing</h2></div>';
-    h += '<p class="ds-section-desc">All spacing derived from a ' + spacing.base + 'px base grid. ' + spacingCount + ' tokens from 0 to 256px.</p>';
-    h += '<div class="ds-preview">';
-    Object.keys(spacing.tokens).filter(function(k){ return parseFloat(k) >= 1; }).sort(function(a,b){ return parseFloat(a)-parseFloat(b); }).forEach(function(key) {
-      var px = parseInt(spacing.tokens[key]);
-      h += '<div class="space-demo"><span class="space-label">' + key + '</span><div class="space-bar" style="width:' + Math.min(px,320) + 'px"></div><span class="space-value">' + spacing.tokens[key] + '</span></div>';
-    });
-    h += '</div></section>';
-
-    /* ═══ 04 ELEVATION ═══ */
     h += '<section class="ds-section" id="elevation">';
-    h += '<div class="ds-section-header"><span class="ds-section-num">04</span><h2 class="ds-section-title">Elevation &amp; radius</h2></div>';
+    h += '<div class="ds-section-header"><span class="ds-section-num">03</span><h2 class="ds-section-title">Elevation &amp; radius</h2></div>';
     h += '<div class="ds-subsection"><div class="ds-subsection-title">Border radius</div><div class="ds-preview"><div class="radius-grid">';
     Object.keys(radius).forEach(function(key) {
       h += '<div class="radius-cell"><div class="radius-box" style="border-radius:' + radius[key] + '"></div><div class="radius-name">' + esc(key) + '</div><div class="radius-val">' + radius[key] + '</div></div>';
@@ -4661,7 +4639,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 
     /* ═══ 05 BUTTONS ═══ */
     h += '<section class="ds-section" id="buttons">';
-    h += '<div class="ds-section-header"><span class="ds-section-num">05</span><h2 class="ds-section-title">Buttons</h2></div>';
+    h += '<div class="ds-section-header"><span class="ds-section-num">04</span><h2 class="ds-section-title">Buttons</h2></div>';
     h += '<p class="ds-section-desc">Four variants with clear hierarchy. Height: 36px default. Maximum one Primary button per view.</p>';
     h += '<div class="ds-subsection"><div class="ds-subsection-title">Variants</div><div class="ds-preview"><div class="ds-preview-label">DEFAULT SIZE (36px)</div><div class="ds-preview-row">';
     h += '<button class="c-btn c-btn--primary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Create new</button>';
@@ -4678,7 +4656,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 
     /* ═══ 06 FORMS ═══ */
     h += '<section class="ds-section" id="forms">';
-    h += '<div class="ds-section-header"><span class="ds-section-num">06</span><h2 class="ds-section-title">Form elements</h2></div>';
+    h += '<div class="ds-section-header"><span class="ds-section-num">05</span><h2 class="ds-section-title">Form elements</h2></div>';
     h += '<p class="ds-section-desc">All inputs share: 44px height, 1px border, ' + radius.sm + ' radius. Focus state uses brand border + brand-faint ring.</p>';
     h += '<div class="ds-subsection"><div class="ds-subsection-title">Text inputs</div><div class="ds-preview"><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;max-width:720px">';
     h += '<div class="input-group"><label class="input-label">Full name</label><input class="c-input" value="Alex Morgan"/></div>';
@@ -4705,7 +4683,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 
     /* ═══ 07 DATA DISPLAY ═══ */
     h += '<section class="ds-section" id="data">';
-    h += '<div class="ds-section-header"><span class="ds-section-num">07</span><h2 class="ds-section-title">Data display</h2></div>';
+    h += '<div class="ds-section-header"><span class="ds-section-num">06</span><h2 class="ds-section-title">Data display</h2></div>';
     h += '<div class="ds-subsection"><div class="ds-subsection-title">Metric cards</div><div class="ds-preview"><div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">';
     h += '<div class="metric-card"><div class="metric-label">Tokens</div><div class="metric-value">' + (shadeCount+typeCount+spacingCount) + '</div><div class="metric-delta metric-up"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg> Complete set</div></div>';
     h += '<div class="metric-card"><div class="metric-label">Contrast</div><div class="metric-value">' + contrast["brand-on-dark"].ratio.toFixed(1) + ':1</div><div class="metric-delta metric-up"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg> ' + contrast["brand-on-dark"].grade + '</div></div>';
@@ -4751,7 +4729,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 
     /* ═══ 08 NAVIGATION ═══ */
     h += '<section class="ds-section" id="navigation">';
-    h += '<div class="ds-section-header"><span class="ds-section-num">08</span><h2 class="ds-section-title">Navigation</h2></div>';
+    h += '<div class="ds-section-header"><span class="ds-section-num">07</span><h2 class="ds-section-title">Navigation</h2></div>';
     h += '<div class="ds-subsection"><div class="ds-subsection-title">Tabs</div><div class="ds-preview"><div class="tabs-bar"><button class="tab-item active">Overview</button><button class="tab-item">Tokens</button><button class="tab-item">Components</button><button class="tab-item">Patterns</button></div></div></div>';
     h += '<div class="ds-subsection"><div class="ds-subsection-title">Sidebar</div><div class="ds-preview"><div class="sidebar-demo">';
     var sidebarItems = [
@@ -4773,7 +4751,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 
     /* ═══ 09 FEEDBACK ═══ */
     h += '<section class="ds-section" id="feedback">';
-    h += '<div class="ds-section-header"><span class="ds-section-num">09</span><h2 class="ds-section-title">Feedback &amp; overlays</h2></div>';
+    h += '<div class="ds-section-header"><span class="ds-section-num">08</span><h2 class="ds-section-title">Feedback &amp; overlays</h2></div>';
     h += '<div class="ds-subsection"><div class="ds-subsection-title">Alerts</div><div class="ds-preview"><div class="ds-preview-col" style="max-width:560px">';
     h += '<div class="c-alert c-alert--pos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> Design system generated successfully.</div>';
     h += '<div class="c-alert c-alert--warn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Some contrast ratios below AA. Review recommended.</div>';
@@ -4793,7 +4771,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 
     /* ═══ 10 PATTERNS ═══ */
     h += '<section class="ds-section" id="patterns">';
-    h += '<div class="ds-section-header"><span class="ds-section-num">10</span><h2 class="ds-section-title">Composed patterns</h2></div>';
+    h += '<div class="ds-section-header"><span class="ds-section-num">09</span><h2 class="ds-section-title">Composed patterns</h2></div>';
     h += '<p class="ds-section-desc">Common page-level compositions that combine multiple components.</p>';
     h += '<div class="ds-subsection"><div class="ds-subsection-title">Dashboard header + metrics + content card</div><div class="ds-preview" style="background:var(--preview-bg)">';
     h += '<div style="margin-bottom:24px"><div class="breadcrumbs" style="margin-bottom:8px"><a href="#">App</a><span class="sep"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></span><span class="current">Dashboard</span></div>';
@@ -4824,7 +4802,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 
     /* ═══ 11 CARDS & CONTAINERS ═══ */
     h += '<section class="ds-section" id="cards">';
-    h += '<div class="ds-section-header"><span class="ds-section-num">11</span><h2 class="ds-section-title">Cards &amp; containers</h2></div>';
+    h += '<div class="ds-section-header"><span class="ds-section-num">10</span><h2 class="ds-section-title">Cards &amp; containers</h2></div>';
     h += '<p class="ds-section-desc">Elevated surface patterns for grouping content — cards, expansion panels, bottom sheets, and dividers.</p>';
 
     h += '<div class="ds-subsection"><div class="ds-subsection-title">Cards</div><div class="ds-preview"><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:720px">';
@@ -4854,7 +4832,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 
     /* ═══ 12 SELECTION & INPUT ═══ */
     h += '<section class="ds-section" id="selection">';
-    h += '<div class="ds-section-header"><span class="ds-section-num">12</span><h2 class="ds-section-title">Selection &amp; input</h2></div>';
+    h += '<div class="ds-section-header"><span class="ds-section-num">11</span><h2 class="ds-section-title">Selection &amp; input</h2></div>';
     h += '<p class="ds-section-desc">Toggle, slider, autocomplete, datepicker, and button toggle group components.</p>';
 
     h += '<div class="ds-subsection"><div class="ds-subsection-title">Slide toggle</div><div class="ds-preview"><div style="display:flex;gap:40px;flex-wrap:wrap">';
@@ -4884,54 +4862,8 @@ button { font: inherit; color: inherit; cursor: pointer; }
     h += '</div></div></div></section>';
 
     /* ═══ 13 LISTS & DATA ═══ */
-    h += '<section class="ds-section" id="lists">';
-    h += '<div class="ds-section-header"><span class="ds-section-num">13</span><h2 class="ds-section-title">Lists &amp; data</h2></div>';
-    h += '<p class="ds-section-desc">List, grid list, sortable table, and tree view patterns.</p>';
-
-    h += '<div class="ds-subsection"><div class="ds-subsection-title">List</div><div class="ds-preview"><div style="max-width:400px;border:1px solid var(--line);border-radius:var(--r-2);overflow:hidden">';
-    h += '<div class="c-list">';
-    var listItems = [
-      {avatar: brand[500].hex, initials: "DS", primary: "Design System", secondary: "11 brand shades generated"},
-      {avatar: brand[400].hex, initials: "TS", primary: "Type Scale", secondary: typeCount + " tokens · Major Third"},
-      {avatar: brand[600].hex, initials: "SP", primary: "Spacing", secondary: spacingCount + " steps · base-4 grid"},
-      {avatar: brand[300].hex, initials: "SH", primary: "Shadows", secondary: "7 elevation levels"}
-    ];
-    listItems.forEach(function(item) {
-      h += '<div class="c-list-item"><div class="c-list-item-avatar" style="background:' + item.avatar + '">' + item.initials + '</div><div class="c-list-item-text"><div class="c-list-item-primary">' + item.primary + '</div><div class="c-list-item-secondary">' + item.secondary + '</div></div></div>';
-    });
-    h += '</div></div></div></div>';
-
-    h += '<div class="ds-subsection"><div class="ds-subsection-title">Grid list</div><div class="ds-preview"><div style="max-width:320px"><div class="c-grid-list">';
-    [50,100,200,300,400,500,600,700,800,900,950].forEach(function(stop) {
-      if (brand[stop]) h += '<div class="c-grid-tile" style="background:' + brand[stop].hex + ';color:' + (stop < 400 ? "#111" : "#fff") + '">' + stop + '</div>';
-    });
-    h += '</div></div></div></div>';
-
-    h += '<div class="ds-subsection"><div class="ds-subsection-title">Sortable table</div><div class="ds-preview" style="padding:0;overflow:hidden"><div style="overflow-x:auto"><table class="ds-table"><thead><tr>';
-    h += '<th><span class="c-sort-header active">Token <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></span></th>';
-    h += '<th><span class="c-sort-header">Value <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg></span></th>';
-    h += '<th><span class="c-sort-header">Type <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg></span></th>';
-    h += '</tr></thead><tbody>';
-    h += '<tr><td style="font-weight:500">--brand-500</td><td style="font-family:var(--f-mono);font-size:12px">' + brand[500].hex + '</td><td>Primary</td></tr>';
-    h += '<tr><td style="font-weight:500">--pos</td><td style="font-family:var(--f-mono);font-size:12px">' + semantic.success.base + '</td><td>Semantic</td></tr>';
-    h += '<tr><td style="font-weight:500">--neg</td><td style="font-family:var(--f-mono);font-size:12px">' + semantic.error.base + '</td><td>Semantic</td></tr>';
-    h += '<tr><td style="font-weight:500">--warn</td><td style="font-family:var(--f-mono);font-size:12px">' + semantic.warning.base + '</td><td>Semantic</td></tr>';
-    h += '</tbody></table></div></div></div>';
-
-    h += '<div class="ds-subsection"><div class="ds-subsection-title">Tree view</div><div class="ds-preview"><div style="max-width:300px">';
-    h += '<ul class="c-tree">';
-    h += '<li class="c-tree-item" onclick="var ch=this.nextElementSibling;if(ch)ch.style.display=ch.style.display===\'none\'?\'block\':\'none\'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg> tokens/</li>';
-    h += '<ul class="c-tree-children">';
-    h += '<li class="c-tree-item" onclick="var ch=this.nextElementSibling;if(ch)ch.style.display=ch.style.display===\'none\'?\'block\':\'none\'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg> color/</li>';
-    h += '<ul class="c-tree-children"><li class="c-tree-item leaf"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> brand.json</li><li class="c-tree-item leaf"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> semantic.json</li></ul>';
-    h += '<li class="c-tree-item leaf"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> typography.json</li>';
-    h += '<li class="c-tree-item leaf"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> spacing.json</li>';
-    h += '</ul></ul>';
-    h += '</div></div></div></section>';
-
-    /* ═══ 14 INDICATORS ═══ */
     h += '<section class="ds-section" id="indicators">';
-    h += '<div class="ds-section-header"><span class="ds-section-num">14</span><h2 class="ds-section-title">Indicators</h2></div>';
+    h += '<div class="ds-section-header"><span class="ds-section-num">12</span><h2 class="ds-section-title">Indicators</h2></div>';
     h += '<p class="ds-section-desc">Badges, chips, progress bars, spinners, and steppers.</p>';
 
     h += '<div class="ds-subsection"><div class="ds-subsection-title">Badge</div><div class="ds-preview"><div class="ds-preview-row" style="gap:32px">';
@@ -4966,147 +4898,8 @@ button { font: inherit; color: inherit; cursor: pointer; }
     h += '</div></div></div></div></section>';
 
     /* ═══ 15 OVERLAYS ═══ */
-    h += '<section class="ds-section" id="overlays">';
-    h += '<div class="ds-section-header"><span class="ds-section-num">15</span><h2 class="ds-section-title">Overlays</h2></div>';
-    h += '<p class="ds-section-desc">Dialog, snackbar, tooltip, and menu overlay patterns.</p>';
-
-    h += '<div class="ds-subsection"><div class="ds-subsection-title">Dialog</div><div class="ds-preview" style="padding:32px;background:var(--bg-3)"><div style="display:flex;justify-content:center">';
-    h += '<div class="c-dialog"><div class="c-dialog-title">Delete design system?</div><div class="c-dialog-body">This action cannot be undone. All generated tokens and exports will be permanently removed.</div><div class="c-dialog-actions"><button class="c-btn c-btn--secondary c-btn--sm">Cancel</button><button class="c-btn c-btn--sm" style="background:var(--neg);color:#fff;border-color:var(--neg)">Delete</button></div></div>';
-    h += '</div></div></div>';
-
-    h += '<div class="ds-subsection"><div class="ds-subsection-title">Snackbar / Toast</div><div class="ds-preview"><div style="display:flex;flex-direction:column;gap:12px;align-items:flex-start">';
-    h += '<div class="c-snackbar">Design system exported successfully <button class="c-snackbar-action">Undo</button></div>';
-    h += '<div class="c-snackbar" style="background:var(--neg)">Export failed — check your connection <button class="c-snackbar-action" style="color:#fff;opacity:0.9">Retry</button></div>';
-    h += '</div></div></div>';
-
-    h += '<div class="ds-subsection"><div class="ds-subsection-title">Tooltip</div><div class="ds-preview ds-preview--visible"><div style="display:grid;grid-template-columns:1fr 1fr;gap:40px 80px;max-width:400px;padding:40px 60px">';
-    h += '<div style="display:flex;justify-content:center"><div class="c-tooltip-wrap"><button class="c-btn c-btn--secondary c-btn--sm">Top</button><div class="c-tooltip c-tooltip--top">Top tooltip</div></div></div>';
-    h += '<div style="display:flex;justify-content:center"><div class="c-tooltip-wrap"><button class="c-btn c-btn--secondary c-btn--sm">Right</button><div class="c-tooltip c-tooltip--right">Right</div></div></div>';
-    h += '<div style="display:flex;justify-content:center"><div class="c-tooltip-wrap"><button class="c-btn c-btn--secondary c-btn--sm">Bottom</button><div class="c-tooltip c-tooltip--bottom">Bottom</div></div></div>';
-    h += '<div style="display:flex;justify-content:center"><div class="c-tooltip-wrap"><button class="c-btn c-btn--secondary c-btn--sm">Left</button><div class="c-tooltip c-tooltip--left">Left</div></div></div>';
-    h += '</div></div></div>';
-
-    h += '<div class="ds-subsection"><div class="ds-subsection-title">Menu</div><div class="ds-preview"><div style="display:flex;gap:24px">';
-    h += '<div class="c-menu"><div class="c-menu-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Edit</div>';
-    h += '<div class="c-menu-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg> Duplicate</div>';
-    h += '<div class="c-menu-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Download</div>';
-    h += '<div class="c-menu-divider"></div>';
-    h += '<div class="c-menu-item" style="color:var(--neg)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg> Delete</div>';
-    h += '</div></div></div></div></section>';
-
-    /* ═══ 16 NAVIGATION EXTENDED ═══ */
-    h += '<section class="ds-section" id="navext">';
-    h += '<div class="ds-section-header"><span class="ds-section-num">16</span><h2 class="ds-section-title">Navigation extended</h2></div>';
-    h += '<p class="ds-section-desc">Toolbar, sidenav, tabs with icons, and paginator components.</p>';
-
-    h += '<div class="ds-subsection"><div class="ds-subsection-title">Toolbar</div><div class="ds-preview"><div class="c-toolbar" style="max-width:600px">';
-    h += '<div class="c-toolbar-title">Design System</div>';
-    h += '<div class="c-toolbar-actions"><button class="c-toolbar-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></button>';
-    h += '<button class="c-toolbar-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg></button>';
-    h += '<div class="c-avatar c-avatar--sm" style="background:' + brand[500].hex + ';color:' + (isLight(brand[500].hex)?"#111":"#fff") + ';font-size:11px;width:30px;height:30px">VP</div></div></div></div></div>';
-
-    h += '<div class="ds-subsection"><div class="ds-subsection-title">Sidenav</div><div class="ds-preview">';
-    h += '<div class="c-sidenav" style="max-width:560px">';
-    h += '<div class="c-sidenav-drawer">';
-    var sidenavItems = [
-      {icon:'<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>',label:'Dashboard',active:true},
-      {icon:'<circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/>',label:'Tokens',active:false},
-      {icon:'<path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/>',label:'Components',active:false},
-      {icon:'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/>',label:'Settings',active:false}
-    ];
-    sidenavItems.forEach(function(item) {
-      h += '<button class="c-sidenav-item' + (item.active?' active':'') + '" onclick="this.parentElement.querySelectorAll(\'.c-sidenav-item\').forEach(function(b){b.classList.remove(\'active\')});this.classList.add(\'active\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">' + item.icon + '</svg>' + item.label + '</button>';
-    });
-    h += '</div><div class="c-sidenav-body">Select a section from the sidebar to view content.</div></div>';
-    h += '</div></div>';
-
-    h += '<div class="ds-subsection"><div class="ds-subsection-title">Tabs with icons</div><div class="ds-preview"><div style="max-width:520px">';
-    h += '<div class="c-tabs">';
-    h += '<button class="c-tab active" onclick="this.parentElement.querySelectorAll(\'.c-tab\').forEach(function(t){t.classList.remove(\'active\')});this.classList.add(\'active\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg> Gallery</button>';
-    h += '<button class="c-tab" onclick="this.parentElement.querySelectorAll(\'.c-tab\').forEach(function(t){t.classList.remove(\'active\')});this.classList.add(\'active\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> Tokens</button>';
-    h += '<button class="c-tab" onclick="this.parentElement.querySelectorAll(\'.c-tab\').forEach(function(t){t.classList.remove(\'active\')});this.classList.add(\'active\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg> Code</button>';
-    h += '<button class="c-tab" onclick="this.parentElement.querySelectorAll(\'.c-tab\').forEach(function(t){t.classList.remove(\'active\')});this.classList.add(\'active\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg> Settings</button>';
-    h += '</div></div></div></div>';
-
-    h += '<div class="ds-subsection"><div class="ds-subsection-title">Paginator</div><div class="ds-preview"><div class="c-paginator">';
-    h += '<span>Items per page:</span><select class="c-paginator-select"><option>10</option><option>25</option><option>50</option></select>';
-    h += '<span>1 – 10 of 48</span>';
-    h += '<div class="c-paginator-actions"><button class="c-paginator-btn" disabled><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="11 17 6 12 11 7"/><polyline points="18 17 13 12 18 7"/></svg></button><button class="c-paginator-btn" disabled><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg></button><button class="c-paginator-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button><button class="c-paginator-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="13 17 18 12 13 7"/><polyline points="6 17 11 12 6 7"/></svg></button></div>';
-    h += '</div></div></div></section>';
-
-    /* ═══ 17 GRID & LAYOUT ═══ */
-    h += '<section class="ds-section" id="grid">';
-    h += '<div class="ds-section-header"><span class="ds-section-num">17</span><h2 class="ds-section-title">Grid &amp; Layout</h2></div>';
-    h += '<p class="ds-section-desc">12-column grid system, container widths, breakpoints, and aspect ratio utilities.</p>';
-    h += '<div class="ds-subsection"><div class="ds-subsection-title">12-column grid</div><div class="ds-preview">';
-    h += '<div class="grid-demo" style="margin-bottom:12px">';
-    for (var gi = 1; gi <= 12; gi++) h += '<div class="grid-col">' + gi + '</div>';
-    h += '</div><div class="grid-demo" style="margin-bottom:12px">';
-    [6,6].forEach(function(s) { h += '<div class="grid-col grid-col--span" style="--span:' + s + '">span ' + s + '</div>'; });
-    h += '</div><div class="grid-demo" style="margin-bottom:12px">';
-    [4,4,4].forEach(function(s) { h += '<div class="grid-col grid-col--span" style="--span:' + s + '">span ' + s + '</div>'; });
-    h += '</div><div class="grid-demo">';
-    [3,6,3].forEach(function(s) { h += '<div class="grid-col grid-col--span" style="--span:' + s + '">span ' + s + '</div>'; });
-    h += '</div></div></div>';
-    h += '<div class="ds-subsection"><div class="ds-subsection-title">Breakpoints</div><div class="ds-preview">';
-    h += '<table class="breakpoint-table"><thead><tr><th>Token</th><th>Width</th><th>Cols</th><th>Gutter</th><th>Use</th></tr></thead><tbody>';
-    [["xs","0–479px",4,"16px","Phone portrait"],["sm","480–639px",4,"16px","Phone landscape"],["md","640–767px",8,"20px","Small tablet"],["lg","768–1023px",12,"24px","Tablet"],["xl","1024–1279px",12,"24px","Laptop"],["2xl","1280px+",12,"32px","Desktop"]].forEach(function(b){
-      h += '<tr><td>' + b[0] + '</td><td>' + b[1] + '</td><td>' + b[2] + '</td><td>' + b[3] + '</td><td>' + b[4] + '</td></tr>';
-    });
-    h += '</tbody></table></div></div>';
-    h += '<div class="ds-subsection"><div class="ds-subsection-title">Container widths</div><div class="ds-preview">';
-    [["sm","640px"],["md","768px"],["lg","1024px"],["xl","1280px"],["2xl","1536px"]].forEach(function(c) {
-      h += '<div class="container-demo" style="max-width:' + c[1] + '">container-' + c[0] + ' · ' + c[1] + '</div>';
-    });
-    h += '</div></div>';
-    h += '<div class="ds-subsection"><div class="ds-subsection-title">Aspect ratios</div><div class="ds-preview"><div class="aspect-grid">';
-    h += '<div class="aspect-box aspect-box--1-1">1 : 1</div><div class="aspect-box aspect-box--4-3">4 : 3</div><div class="aspect-box aspect-box--16-9">16 : 9</div><div class="aspect-box aspect-box--21-9">21 : 9</div>';
-    h += '</div></div></div></section>';
-
-    /* ═══ 18 MOTION ═══ */
-    h += '<section class="ds-section" id="motion">';
-    h += '<div class="ds-section-header"><span class="ds-section-num">18</span><h2 class="ds-section-title">Motion</h2></div>';
-    h += '<p class="ds-section-desc">Animation timing and easing tokens. Hover each card to preview the curve.</p>';
-    h += '<div class="ds-subsection"><div class="ds-subsection-title">Easing curves</div><div class="ds-preview"><div class="motion-grid">';
-    [["Ease Out","cubic-bezier(0.16,1,0.3,1)","Enter / appear"],["Ease In","cubic-bezier(0.55,0.06,0.68,0.19)","Exit / disappear"],["Ease In-Out","cubic-bezier(0.45,0,0.55,1)","Move / resize"],["Spring","cubic-bezier(0.34,1.56,0.64,1)","Bounce / pop-in"],["Linear","linear","Progress / loading"],["Snappy","cubic-bezier(0.2,0,0,1)","Quick interactions"]].forEach(function(e) {
-      h += '<div class="motion-card"><div class="motion-card__label">' + e[0] + '</div><div class="motion-card__meta">' + e[2] + '</div>';
-      h += '<div class="motion-track"><div class="motion-dot" style="transition:left 0.6s ' + e[1] + '"></div></div>';
-      h += '<div style="margin-top:8px;font-size:10px;font-family:var(--f-mono);color:var(--ink-4)">' + e[1] + '</div></div>';
-    });
-    h += '</div></div></div>';
-    h += '<div class="ds-subsection"><div class="ds-subsection-title">Duration tokens</div><div class="ds-preview">';
-    [["Instant",100,"Hover, focus"],["Fast",150,"Toggles, buttons"],["Normal",200,"Tooltips, menus"],["Moderate",300,"Modals, panels"],["Slow",500,"Page transitions"],["Slower",800,"Complex animations"]].forEach(function(d) {
-      h += '<div class="duration-row"><span class="duration-label">' + d[0] + '</span><span class="duration-value">' + d[1] + 'ms</span>';
-      h += '<div class="duration-bar"><div class="duration-fill" style="width:' + Math.min(d[1]/8, 100) + '%"></div></div>';
-      h += '<span style="font-size:11px;color:var(--ink-4);width:120px;text-align:right">' + d[2] + '</span></div>';
-    });
-    h += '</div></div></section>';
-
-    /* ═══ 19 ICONS ═══ */
-    h += '<section class="ds-section" id="icons">';
-    h += '<div class="ds-section-header"><span class="ds-section-num">19</span><h2 class="ds-section-title">Icon system</h2></div>';
-    h += '<p class="ds-section-desc">Icon sizing tokens, stroke-weight guidelines, and text-icon alignment.</p>';
-    var iSvg = function(w) { return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="' + w + '" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>'; };
-    h += '<div class="ds-subsection"><div class="ds-subsection-title">Size tokens</div><div class="ds-preview"><div class="icon-size-grid">';
-    [12,16,20,24,32,40].forEach(function(s) {
-      h += '<div class="icon-size-cell"><div class="icon-size-box" style="width:' + (s+16) + 'px;height:' + (s+16) + 'px"><span style="width:' + s + 'px;height:' + s + 'px">' + iSvg(2) + '</span></div><div class="icon-size-label">' + s + 'px</div></div>';
-    });
-    h += '</div></div></div>';
-    h += '<div class="ds-subsection"><div class="ds-subsection-title">Stroke weights</div><div class="ds-preview"><div class="icon-stroke-grid">';
-    [1,1.5,2,2.5,3].forEach(function(w) {
-      h += '<div class="icon-stroke-cell"><span style="width:32px;height:32px;display:grid;place-items:center">' + iSvg(w) + '</span><div class="icon-stroke-label">' + w + 'px</div></div>';
-    });
-    h += '</div></div></div>';
-    h += '<div class="ds-subsection"><div class="ds-subsection-title">Icon + text alignment</div><div class="ds-preview">';
-    [[14,16,"Caption with icon"],[16,20,"Body text with icon"],[20,24,"Heading with icon"],[28,32,"Title with icon"]].forEach(function(t) {
-      h += '<div class="icon-text-row"><svg width="' + t[1] + '" height="' + t[1] + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>';
-      h += '<span style="font-size:' + t[0] + 'px">' + t[2] + '</span><span style="margin-left:auto;font-size:10px;font-family:var(--f-mono);color:var(--ink-4)">' + t[0] + 'px / ' + t[1] + 'px</span></div>';
-    });
-    h += '</div></div></section>';
-
-    /* ═══ 20 DATA VIZ ═══ */
     h += '<section class="ds-section" id="dataviz">';
-    h += '<div class="ds-section-header"><span class="ds-section-num">20</span><h2 class="ds-section-title">Data visualization</h2></div>';
+    h += '<div class="ds-section-header"><span class="ds-section-num">13</span><h2 class="ds-section-title">Data visualization</h2></div>';
     h += '<p class="ds-section-desc">Chart color palette derived from brand hue. Categorical and sequential sequences.</p>';
     var cHue = ds.color.hue;
     var cColors = [];
@@ -5126,7 +4919,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 
     /* ═══ 21 FORM VALIDATION ═══ */
     h += '<section class="ds-section" id="validation">';
-    h += '<div class="ds-section-header"><span class="ds-section-num">21</span><h2 class="ds-section-title">Form validation</h2></div>';
+    h += '<div class="ds-section-header"><span class="ds-section-num">14</span><h2 class="ds-section-title">Form validation</h2></div>';
     h += '<p class="ds-section-desc">Complete form with inline validation states — error, success, and warning.</p>';
     h += '<div class="ds-subsection"><div class="ds-subsection-title">Registration form</div><div class="ds-preview"><div class="form-demo">';
     h += '<div class="c-field c-field--success"><label class="c-field__label">First name</label><input class="c-field__input" value="Veerendra" readonly/><span class="c-field__hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="vertical-align:-2px"><polyline points="20 6 9 17 4 12"/></svg> Looks good</span></div>';
@@ -5139,7 +4932,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 
     /* ═══ 22 FILE UPLOAD ═══ */
     h += '<section class="ds-section" id="upload">';
-    h += '<div class="ds-section-header"><span class="ds-section-num">22</span><h2 class="ds-section-title">File upload</h2></div>';
+    h += '<div class="ds-section-header"><span class="ds-section-num">15</span><h2 class="ds-section-title">File upload</h2></div>';
     h += '<p class="ds-section-desc">Drag-and-drop dropzone with idle, hover, uploading, success, and error states.</p>';
     h += '<div class="ds-subsection"><div class="ds-subsection-title">Dropzone states</div><div class="ds-preview"><div class="dropzone-grid">';
     h += '<div class="c-dropzone"><div class="c-dropzone__icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div><div class="c-dropzone__text">Drag files here or click to browse</div><div class="c-dropzone__hint">PNG, JPG, SVG up to 10MB</div></div>';
@@ -5149,39 +4942,8 @@ button { font: inherit; color: inherit; cursor: pointer; }
     h += '</div></div></div></section>';
 
     /* ═══ 23 COMMAND PALETTE ═══ */
-    h += '<section class="ds-section" id="cmdk">';
-    h += '<div class="ds-section-header"><span class="ds-section-num">23</span><h2 class="ds-section-title">Command palette</h2></div>';
-    h += '<p class="ds-section-desc">⌘K-style search overlay for quick navigation and actions.</p>';
-    h += '<div class="ds-subsection"><div class="ds-subsection-title">Command menu</div><div class="ds-preview" style="display:flex;justify-content:center;padding:32px">';
-    h += '<div class="c-cmdk"><div class="c-cmdk__input-wrap"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input class="c-cmdk__input" placeholder="Type a command or search..." readonly/><span class="c-cmdk__kbd">ESC</span></div>';
-    h += '<div class="c-cmdk__group"><div class="c-cmdk__group-label">Actions</div>';
-    h += '<div class="c-cmdk__item c-cmdk__item--active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/></svg> New project<span class="c-cmdk__item-shortcut">⌘ N</span></div>';
-    h += '<div class="c-cmdk__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg> Import tokens<span class="c-cmdk__item-shortcut">⌘ I</span></div>';
-    h += '<div class="c-cmdk__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Export design system<span class="c-cmdk__item-shortcut">⌘ E</span></div></div>';
-    h += '<div class="c-cmdk__group"><div class="c-cmdk__group-label">Navigation</div>';
-    h += '<div class="c-cmdk__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="13.5" cy="6.5" r="0.5"/><circle cx="17.5" cy="10.5" r="0.5"/><circle cx="8.5" cy="7.5" r="0.5"/><circle cx="6.5" cy="12.5" r="0.5"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.93 0 1.5-.67 1.5-1.5 0-.39-.15-.74-.39-1.04-.23-.29-.37-.65-.37-1.06 0-.83.67-1.5 1.5-1.5H16c3.31 0 6-2.69 6-6 0-4.97-4.03-9-10-9z"/></svg> Color system<span class="c-cmdk__item-shortcut">G C</span></div>';
-    h += '<div class="c-cmdk__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg> Typography<span class="c-cmdk__item-shortcut">G T</span></div>';
-    h += '<div class="c-cmdk__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg> Components<span class="c-cmdk__item-shortcut">G K</span></div></div></div></div></div></section>';
-
-    /* ═══ 24 ACCESSIBILITY ═══ */
-    h += '<section class="ds-section" id="a11y">';
-    h += '<div class="ds-section-header"><span class="ds-section-num">24</span><h2 class="ds-section-title">Accessibility</h2></div>';
-    h += '<p class="ds-section-desc">Focus ring tokens, keyboard indicators, and z-index stacking scale.</p>';
-    h += '<div class="ds-subsection"><div class="ds-subsection-title">Focus indicators</div><div class="ds-preview"><div class="focus-grid">';
-    h += '<button class="focus-demo" tabindex="0">Default ring</button><button class="focus-demo focus-demo--offset" tabindex="0">Offset ring</button><button class="focus-demo focus-demo--thick" tabindex="0">Thick ring</button><button class="focus-demo" tabindex="0" style="border-radius:99px">Pill shape</button>';
-    h += '</div><div class="ds-spec" style="margin-top:16px"><span class="k">--focus-ring:</span>      <span class="v">2px solid var(--brand)</span>;\n<span class="k">--focus-offset:</span>    <span class="v">2px</span>;\n<span class="k">--focus-ring-lg:</span>   <span class="v">3px solid var(--brand)</span>;\n<span class="k">--focus-offset-lg:</span> <span class="v">4px</span>;</div></div></div>';
-    h += '<div class="ds-subsection"><div class="ds-subsection-title">Z-index scale</div><div class="ds-preview"><div class="zindex-stack">';
-    h += '<div class="zindex-layer" style="z-index:1;background:var(--bg-2);inset:auto auto 0 0;width:70%"><span class="zindex-layer__badge">z-1</span> Page content</div>';
-    h += '<div class="zindex-layer" style="z-index:10;background:var(--bg-3);top:60px;left:30px;width:65%"><span class="zindex-layer__badge">z-10</span> Sticky header</div>';
-    h += '<div class="zindex-layer" style="z-index:20;background:var(--bg-4);top:35px;left:60px;width:55%"><span class="zindex-layer__badge">z-20</span> Dropdown</div>';
-    h += '<div class="zindex-layer" style="z-index:30;background:var(--brand-faint);top:10px;left:90px;width:50%;border-color:var(--brand)"><span class="zindex-layer__badge">z-30</span> Modal overlay</div>';
-    h += '<div class="zindex-layer" style="z-index:40;background:var(--bg-2);top:0;right:0;width:35%"><span class="zindex-layer__badge">z-40</span> Toast</div>';
-    h += '</div><div class="ds-spec" style="margin-top:16px"><span class="k">--z-base:</span>     <span class="v">1</span>;     <span class="c">/* page content */</span>\n<span class="k">--z-sticky:</span>   <span class="v">10</span>;    <span class="c">/* sticky header */</span>\n<span class="k">--z-dropdown:</span> <span class="v">20</span>;    <span class="c">/* dropdown, popover */</span>\n<span class="k">--z-modal:</span>    <span class="v">30</span>;    <span class="c">/* modal, dialog */</span>\n<span class="k">--z-toast:</span>    <span class="v">40</span>;    <span class="c">/* toast, snackbar */</span>\n<span class="k">--z-tooltip:</span>  <span class="v">50</span>;    <span class="c">/* tooltip (top) */</span></div></div></div></section>';
-
-    /* ═══ 25 THEME COMPARE ═══ */
-    var b500 = brand[500].hex;
     h += '<section class="ds-section" id="themecompare">';
-    h += '<div class="ds-section-header"><span class="ds-section-num">25</span><h2 class="ds-section-title">Theme comparison</h2></div>';
+    h += '<div class="ds-section-header"><span class="ds-section-num">16</span><h2 class="ds-section-title">Theme comparison</h2></div>';
     h += '<p class="ds-section-desc">Side-by-side dark &amp; light preview — proves your system works on any background.</p>';
     h += '<div class="ds-subsection"><div class="ds-subsection-title">Card component</div><div class="ds-preview" style="padding:0"><div class="theme-split">';
     h += '<div class="theme-split__pane theme-split__pane--dark"><div class="theme-split__label">Dark theme</div><div class="theme-card"><div class="theme-card__title">Project overview</div><div class="theme-card__desc">Track your design tokens across 3 platforms.</div><input class="theme-card__input" value="My design system" readonly/><div style="display:flex;gap:8px;justify-content:flex-end"><button class="theme-card__btn" style="background:' + b500 + ';color:' + (isLight(b500) ? "#111" : "#fff") + '">Save changes</button><button class="theme-card__btn" style="background:#2a2d36;color:#f3f1ec">Cancel</button></div></div></div>';
@@ -5193,22 +4955,8 @@ button { font: inherit; color: inherit; cursor: pointer; }
     h += '</div></div></div></section>';
 
     /* ═══ 26 RESPONSIVE ═══ */
-    h += '<section class="ds-section" id="responsive">';
-    h += '<div class="ds-section-header"><span class="ds-section-num">26</span><h2 class="ds-section-title">Responsive</h2></div>';
-    h += '<p class="ds-section-desc">Same card component at mobile, tablet, and desktop breakpoints.</p>';
-    h += '<div class="ds-subsection"><div class="ds-subsection-title">Breakpoint preview</div><div class="ds-preview"><div class="responsive-frames">';
-    [["Mobile · 375px","375px",true],["Tablet · 768px","768px",false],["Desktop · 1280px","100%",false]].forEach(function(rs) {
-      h += '<div class="responsive-frame" style="max-width:' + rs[1] + '"><div class="responsive-frame__bar"><div class="responsive-frame__dot" style="background:#ff5f57"></div><div class="responsive-frame__dot" style="background:#ffbd2e"></div><div class="responsive-frame__dot" style="background:#28c840"></div><span class="responsive-frame__label">' + rs[0] + '</span></div>';
-      h += '<div class="responsive-frame__body"><div class="responsive-card-demo' + (rs[2] ? " responsive-card-demo--stack" : "") + '">';
-      h += '<div style="' + (rs[2] ? "width:100%" : "width:80px;flex-shrink:0") + ';height:' + (rs[2] ? "120px" : "80px") + ';background:var(--brand-faint);border:1px solid var(--brand);border-radius:' + radius.lg + ';display:grid;place-items:center;color:var(--brand);font-size:10px">Image</div>';
-      h += '<div style="flex:1"><div style="font-size:14px;font-weight:600;color:var(--ink);margin-bottom:4px">Card title</div><div style="font-size:12px;color:var(--ink-3);margin-bottom:10px">Description text that adapts to available width at each breakpoint.</div>';
-      h += '<div style="display:flex;gap:8px;' + (rs[2] ? "flex-direction:column" : "") + '"><button style="height:32px;padding:0 14px;border:none;border-radius:' + radius.md + ';background:var(--brand);color:var(--brand-ink);font-size:12px;font-weight:600;cursor:pointer">Action</button><button style="height:32px;padding:0 14px;border:1px solid var(--line-2);border-radius:' + radius.md + ';background:none;color:var(--ink-2);font-size:12px;cursor:pointer">Secondary</button></div></div></div></div></div>';
-    });
-    h += '</div></div></div></section>';
-
-    /* ═══ 27 TOKEN EXPORT ═══ */
     h += '<section class="ds-section" id="tokens">';
-    h += '<div class="ds-section-header"><span class="ds-section-num">27</span><h2 class="ds-section-title">Export</h2></div>';
+    h += '<div class="ds-section-header"><span class="ds-section-num">17</span><h2 class="ds-section-title">Export</h2></div>';
     h += '<p class="ds-section-desc">Complete design system export — tokens, component classes, dark/light themes, utilities, and more. Download includes everything on this page.</p>';
     h += '<div class="ds-subsection"><div class="ds-subsection-title">Export preview</div><div class="ds-preview" style="padding:0">';
     var cssT = '<span class="ec">/* Brand colors */</span>\n';
