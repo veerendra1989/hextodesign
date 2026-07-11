@@ -2780,237 +2780,6 @@ button { font: inherit; color: inherit; cursor: pointer; }
     return JSON.stringify(obj, null, 2);
   }
 
-  /* ── Figma Tokens (Style Dictionary / Tokens Studio format) ── */
-  function buildFigmaTokens(d) {
-    var figma = {};
-
-    /* ── Helper: parse CSS shadow string into Tokens Studio object ── */
-    function parseShadow(css) {
-      /* Split on commas NOT inside parentheses */
-      var parts = [];
-      var depth = 0, cur = "";
-      for (var i = 0; i < css.length; i++) {
-        var ch = css[i];
-        if (ch === "(") depth++;
-        else if (ch === ")") depth--;
-        else if (ch === "," && depth === 0) { parts.push(cur.trim()); cur = ""; continue; }
-        cur += ch;
-      }
-      if (cur.trim()) parts.push(cur.trim());
-
-      var shadows = parts.map(function(part) {
-        var isInset = /^inset\b/.test(part);
-        if (isInset) part = part.replace(/^inset\s*/, "");
-        /* Extract color (rgba(...) or hex or named) */
-        var colorMatch = part.match(/(rgba?\([^)]+\)|hsla?\([^)]+\)|#[0-9a-fA-F]{3,8})\s*$/);
-        var color = colorMatch ? colorMatch[1] : "rgba(0,0,0,0.1)";
-        var numStr = part.replace(color, "").trim();
-        var nums = numStr.split(/\s+/);
-        return {
-          x: nums[0] || "0",
-          y: nums[1] || "0",
-          blur: nums[2] || "0",
-          spread: nums[3] || "0",
-          color: color,
-          type: isInset ? "innerShadow" : "dropShadow"
-        };
-      });
-      return shadows.length === 1 ? shadows[0] : shadows;
-    }
-
-    // Brand colors
-    figma.brand = {};
-    Object.keys(d.brand).forEach(function(k) {
-      figma.brand[k] = { value: d.brand[k].hex, type: "color" };
-    });
-
-    // Semantic colors
-    figma.semantic = {};
-    Object.keys(d.semantic).forEach(function(k) {
-      var s = d.semantic[k];
-      figma.semantic[k] = {
-        base:  { value: s.base,  type: "color" },
-        light: { value: s.light, type: "color" },
-        dark:  { value: s.dark,  type: "color" }
-      };
-    });
-
-    // Surfaces
-    figma.surface = { light: {}, dark: {} };
-    Object.keys(d.surfaces.light).forEach(function(k) {
-      figma.surface.light[k] = { value: d.surfaces.light[k], type: "color" };
-    });
-    Object.keys(d.surfaces.dark).forEach(function(k) {
-      figma.surface.dark[k] = { value: d.surfaces.dark[k], type: "color" };
-    });
-
-    // Typography — Tokens Studio expects string values
-    figma.typography = {};
-    Object.keys(d.typo.scale).forEach(function(k) {
-      var s = d.typo.scale[k];
-      // lineHeight: convert ratio to percentage for Tokens Studio
-      var lh = s.lineHeight;
-      if (typeof lh === "number" && lh < 10) lh = (lh * 100) + "%";
-      // letterSpacing: keep as-is if it has units, otherwise add em
-      var ls = String(s.letterSpacing);
-      if (ls === "0" || ls === "normal") ls = "0%";
-      figma.typography[k] = {
-        value: {
-          fontFamily: d.typo.families.sans,
-          fontSize: String(s.size),
-          fontWeight: String(s.weight),
-          lineHeight: String(lh),
-          letterSpacing: ls
-        },
-        type: "typography"
-      };
-    });
-
-    // Spacing — Tokens Studio needs "sizing" type for the Sizing section
-    figma.spacing = {};
-    Object.keys(d.spacing.tokens).forEach(function(k) {
-      figma.spacing["space-" + String(k).replace(".", "_")] = {
-        value: d.spacing.tokens[k], type: "spacing"
-      };
-    });
-
-    // Sizing — duplicate key spacing values as sizing type
-    figma.sizing = {};
-    Object.keys(d.spacing.tokens).forEach(function(k) {
-      figma.sizing["size-" + String(k).replace(".", "_")] = {
-        value: d.spacing.tokens[k], type: "sizing"
-      };
-    });
-
-    // Border Radius
-    figma.borderRadius = {};
-    Object.keys(d.radius).forEach(function(k) {
-      figma.borderRadius[k] = { value: d.radius[k], type: "borderRadius" };
-    });
-
-    // Box Shadow — parsed into structured Tokens Studio format
-    figma.boxShadow = {};
-    Object.keys(d.shadows).forEach(function(k) {
-      figma.boxShadow[k] = { value: parseShadow(d.shadows[k]), type: "boxShadow" };
-    });
-
-    // Opacity
-    figma.opacity = {
-      "disabled": { value: "0.5", type: "opacity" },
-      "hover": { value: "0.8", type: "opacity" },
-      "overlay": { value: "0.6", type: "opacity" }
-    };
-
-    // Border Width
-    figma.borderWidth = {
-      "none": { value: "0", type: "borderWidth" },
-      "thin": { value: "1px", type: "borderWidth" },
-      "medium": { value: "2px", type: "borderWidth" },
-      "thick": { value: "3px", type: "borderWidth" }
-    };
-
-    return JSON.stringify(figma, null, 2);
-  }
-
-  /* ── Figma Variables (native Figma import format) ── */
-  function buildFigmaVariables(d) {
-    /*
-      Format: "Export/Import Variables" plugin for Figma
-      Structure: array of collections, each with modes → array of {name, type, value}
-    */
-
-    /* Helper: parse px string to number */
-    function pxToNum(v) {
-      if (typeof v === "number") return v;
-      return parseFloat(String(v).replace("px", "")) || 0;
-    }
-
-    var collections = [];
-
-    /* ═══ 1. Colors — with Dark & Light modes ═══ */
-    var darkColors = [];
-    var lightColors = [];
-
-    // Brand palette (same in both modes)
-    Object.keys(d.brand).forEach(function(k) {
-      darkColors.push({ name: "brand/" + k, type: "COLOR", value: d.brand[k].hex });
-      lightColors.push({ name: "brand/" + k, type: "COLOR", value: d.brand[k].hex });
-    });
-
-    // Semantic colors
-    Object.keys(d.semantic).forEach(function(k) {
-      var s = d.semantic[k];
-      if (s.base) {
-        darkColors.push({ name: "semantic/" + k, type: "COLOR", value: s.base });
-        lightColors.push({ name: "semantic/" + k, type: "COLOR", value: s.base });
-      }
-      if (s.light) {
-        darkColors.push({ name: "semantic/" + k + "-light", type: "COLOR", value: s.light });
-        lightColors.push({ name: "semantic/" + k + "-light", type: "COLOR", value: s.light });
-      }
-      if (s.dark) {
-        darkColors.push({ name: "semantic/" + k + "-dark", type: "COLOR", value: s.dark });
-        lightColors.push({ name: "semantic/" + k + "-dark", type: "COLOR", value: s.dark });
-      }
-    });
-
-    // Surface colors — switch between dark and light
-    var darkSurfaces = d.surfaces.dark;
-    var lightSurfaces = d.surfaces.light;
-    Object.keys(darkSurfaces).forEach(function(k) {
-      var darkVal = darkSurfaces[k];
-      var lightVal = lightSurfaces[k] || darkVal;
-      if (/^#[0-9a-fA-F]{3,8}$/.test(darkVal) && /^#[0-9a-fA-F]{3,8}$/.test(lightVal)) {
-        darkColors.push({ name: "surface/" + k, type: "COLOR", value: darkVal });
-        lightColors.push({ name: "surface/" + k, type: "COLOR", value: lightVal });
-      }
-    });
-
-    // Feedback
-    [
-      { n: "feedback/positive", d: "#04ab62", l: "#048a50" },
-      { n: "feedback/negative", d: "#e54545", l: "#c93c3c" },
-      { n: "feedback/warning",  d: "#e5a84b", l: "#c48d3a" },
-      { n: "feedback/info",     d: "#4b8be5", l: "#3a73c4" }
-    ].forEach(function(f) {
-      darkColors.push({ name: f.n, type: "COLOR", value: f.d });
-      lightColors.push({ name: f.n, type: "COLOR", value: f.l });
-    });
-
-    collections.push({ name: "Colors", modes: { "Dark": darkColors, "Light": lightColors } });
-
-    /* ═══ 2. Spacing ═══ */
-    var spacingVars = [];
-    Object.keys(d.spacing.tokens).forEach(function(k) {
-      spacingVars.push({ name: "space/" + String(k).replace(".", "_"), type: "FLOAT", value: pxToNum(d.spacing.tokens[k]) });
-    });
-    collections.push({ name: "Spacing", modes: { "Default": spacingVars } });
-
-    /* ═══ 3. Border Radius ═══ */
-    var radiusVars = [];
-    Object.keys(d.radius).forEach(function(k) {
-      var val = pxToNum(d.radius[k]);
-      if (k === "full") val = 9999;
-      radiusVars.push({ name: "radius/" + k, type: "FLOAT", value: val });
-    });
-    collections.push({ name: "Border Radius", modes: { "Default": radiusVars } });
-
-    /* ═══ 4. Typography ═══ */
-    var typoVars = [];
-    Object.keys(d.typo.scale).forEach(function(k) {
-      var s = d.typo.scale[k];
-      typoVars.push({ name: "fontSize/" + k, type: "FLOAT", value: s.size });
-      typoVars.push({ name: "fontWeight/" + k, type: "FLOAT", value: s.weight });
-      if (typeof s.lineHeight === "number") {
-        typoVars.push({ name: "lineHeight/" + k, type: "FLOAT", value: Math.round(s.lineHeight * s.size * 100) / 100 });
-      }
-    });
-    typoVars.push({ name: "fontFamily/sans", type: "STRING", value: d.typo.families.sans });
-    typoVars.push({ name: "fontFamily/mono", type: "STRING", value: d.typo.families.mono });
-    collections.push({ name: "Typography", modes: { "Default": typoVars } });
-
-    return JSON.stringify(collections, null, 2);
-  }
 
   /* ── Documentation (Markdown) ── */
   function buildDocMarkdown(d) {
@@ -3944,8 +3713,6 @@ button { font: inherit; color: inherit; cursor: pointer; }
     else if (format === "tailwind") content = buildFullTailwind(_exportData);
     else if (format === "scss") content = buildFullSCSS(_exportData);
     else if (format === "json") content = buildFullJSON(_exportData);
-    else if (format === "figma") { content = buildFigmaTokens(_exportData); ext = "json"; }
-    else if (format === "figma-variables") { content = buildFigmaVariables(_exportData); ext = "json"; }
     else if (format === "docs") { content = buildDocMarkdown(_exportData); ext = "md"; }
     else if (format === "prompt") { content = buildPromptMD(_exportData); ext = "md"; }
     else { content = buildFullCSS(_exportData); ext = "css"; }
@@ -3990,8 +3757,6 @@ button { font: inherit; color: inherit; cursor: pointer; }
       "tailwind.config.js": buildFullTailwind(_exportData),
       "design-system.scss": buildFullSCSS(_exportData),
       "design-tokens.json": buildFullJSON(_exportData),
-      "figma-tokens.json": buildFigmaTokens(_exportData),
-      "figma-variables.json": buildFigmaVariables(_exportData),
       "documentation.md": buildDocMarkdown(_exportData),
       "prompt.md": buildPromptMD(_exportData)
     };
@@ -4006,8 +3771,6 @@ button { font: inherit; color: inherit; cursor: pointer; }
     readme += "| `tailwind.config.js` | Tailwind CSS theme extension with all design tokens |\n";
     readme += "| `design-system.scss` | SCSS variables, maps, and mixins |\n";
     readme += "| `design-tokens.json` | Structured JSON tokens with full component specs |\n";
-    readme += "| `figma-tokens.json` | Tokens Studio plugin compatible token file |\n";
-    readme += "| `figma-variables.json` | Native Figma Variables import (Colors with Dark/Light modes, Spacing, Radius, Typography) |\n";
     readme += "| `documentation.md` | Full design system documentation with all token values |\n";
     readme += "| `prompt.md` | AI prompt file — paste into Cursor/Copilot/Claude for consistent UI generation |\n\n";
     readme += "## Quick start\n\n";
@@ -4019,12 +3782,6 @@ button { font: inherit; color: inherit; cursor: pointer; }
     readme += "```scss\n@import 'design-system';\n```\n\n";
     readme += "### JSON / Style Dictionary\n";
     readme += "Import `design-tokens.json` into Style Dictionary or your custom tooling.\n\n";
-    readme += "### Figma Variables (native)\n";
-    readme += "1. Install the **\"Import Variables\"** plugin from Figma Community\n";
-    readme += "2. Run the plugin and select `figma-variables.json`\n";
-    readme += "3. Your variables are ready — Colors collection has Dark & Light modes\n\n";
-    readme += "### Figma / Tokens Studio\n";
-    readme += "Import `figma-tokens.json` into the Tokens Studio plugin (formerly Figma Tokens).\n\n";
     readme += "### AI Tools (Cursor, Copilot, Claude, v0)\n";
     readme += "Place `prompt.md` in your project root or paste it as context when prompting AI to generate UI.\n\n";
     readme += "## Theme switching\n\n";
