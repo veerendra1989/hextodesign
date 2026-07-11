@@ -182,27 +182,30 @@ function generateSemantics(brandHue) {
 /* ── Surface colors (dark + light themes) ── */
 
 function generateSurfaces(brandHue) {
-  var warm = (brandHue > 20 && brandHue < 80) || brandHue > 340;
-  var tint = warm ? 0.005 : 0.003;
+  /* Dark surfaces: rich hue-tinted near-black — not pure black.
+     Chroma tapers as lightness rises so highlights don't oversaturate.
+     Light surfaces: very subtle tint only. */
+  var darkC  = 0.035; /* base chroma for dark bg  */
+  var lightC = 0.006; /* subtle tint for light bg */
 
   return {
     dark: {
-      bg:    oklchToHex(0.07, tint, brandHue).toUpperCase(),
-      bg1:   oklchToHex(0.10, tint, brandHue).toUpperCase(),
-      bg2:   oklchToHex(0.13, tint, brandHue).toUpperCase(),
-      bg3:   oklchToHex(0.16, tint, brandHue).toUpperCase(),
-      bg4:   oklchToHex(0.20, tint, brandHue).toUpperCase(),
+      bg:    oklchToHex(0.13, darkC,        brandHue).toUpperCase(),
+      bg1:   oklchToHex(0.16, darkC * 0.80, brandHue).toUpperCase(),
+      bg2:   oklchToHex(0.19, darkC * 0.63, brandHue).toUpperCase(),
+      bg3:   oklchToHex(0.22, darkC * 0.46, brandHue).toUpperCase(),
+      bg4:   oklchToHex(0.26, darkC * 0.29, brandHue).toUpperCase(),
       ink:   "#F3F1EC",
       ink2:  "#C8C5BD",
       ink3:  "#8B877E",
       ink4:  "#5A574F"
     },
     light: {
-      bg:    oklchToHex(0.97, tint * 0.8, brandHue).toUpperCase(),
-      bg1:   oklchToHex(0.95, tint * 0.8, brandHue).toUpperCase(),
-      bg2:   oklchToHex(0.92, tint * 0.8, brandHue).toUpperCase(),
-      bg3:   oklchToHex(0.88, tint * 0.8, brandHue).toUpperCase(),
-      bg4:   oklchToHex(0.83, tint * 0.8, brandHue).toUpperCase(),
+      bg:    oklchToHex(0.97, lightC,        brandHue).toUpperCase(),
+      bg1:   oklchToHex(0.95, lightC * 0.90, brandHue).toUpperCase(),
+      bg2:   oklchToHex(0.92, lightC * 0.80, brandHue).toUpperCase(),
+      bg3:   oklchToHex(0.88, lightC * 0.67, brandHue).toUpperCase(),
+      bg4:   oklchToHex(0.83, lightC * 0.50, brandHue).toUpperCase(),
       ink:   "#14120E",
       ink2:  "#44403A",
       ink3:  "#78736A",
