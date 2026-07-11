@@ -352,60 +352,309 @@ button { font: inherit; color: inherit; cursor: pointer; }
 :root[data-ds-style="edge"] .hero__style-panel { border-radius: 4px; }
 :root[data-ds-style="edge"] .hero__style-option { border-radius: 2px; }
 
-/* ═══ Glass UI overrides ═══ */
+/* ══════════════════════════════════════════════════════════
+   LIQUID GLASS UI  —  Apple-inspired material system
+   Based on: translucent surfaces + specular rim + refraction
+   ══════════════════════════════════════════════════════════ */
+
+/* ── Page background ── */
+:root[data-ui-style="glass"] .main-content {
+  background:
+    radial-gradient(ellipse at 15% 15%, color-mix(in oklch, var(--brand) 22%, transparent) 0%, transparent 55%),
+    radial-gradient(ellipse at 85% 85%, color-mix(in oklch, var(--brand) 12%, transparent) 0%, transparent 55%),
+    radial-gradient(ellipse at 50% 0%, color-mix(in oklch, var(--brand) 8%, transparent) 0%, transparent 45%);
+}
+:root[data-ui-style="glass"][data-theme="light"] .main-content {
+  background:
+    radial-gradient(ellipse at 15% 15%, color-mix(in oklch, var(--brand) 18%, transparent) 0%, transparent 55%),
+    radial-gradient(ellipse at 85% 85%, color-mix(in oklch, var(--brand) 10%, transparent) 0%, transparent 55%),
+    #f0eeea;
+}
+
+/* ── Glass mixin (dark) — applied to all containers ── */
 :root[data-ui-style="glass"] .ds-preview,
-:root[data-ui-style="glass"] .c-card,
 :root[data-ui-style="glass"] .ds-hero,
-:root[data-ui-style="glass"] .c-alert,
+:root[data-ui-style="glass"] .c-card,
+:root[data-ui-style="glass"] .ds-spec,
 :root[data-ui-style="glass"] .dropdown-menu,
 :root[data-ui-style="glass"] .c-menu,
-:root[data-ui-style="glass"] .ds-spec,
+:root[data-ui-style="glass"] .theme-split,
 :root[data-ui-style="glass"] .theme-card,
-:root[data-ui-style="glass"] .panel {
-  background: rgba(255,255,255,0.05);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-color: rgba(255,255,255,0.1);
+:root[data-ui-style="glass"] .c-bottom-sheet,
+:root[data-ui-style="glass"] .c-dropzone,
+:root[data-ui-style="glass"] .c-expansion,
+:root[data-ui-style="glass"] .panel,
+:root[data-ui-style="glass"] .metric-card,
+:root[data-ui-style="glass"] .content-card {
+  background: rgba(255,255,255,0.06) !important;
+  backdrop-filter: blur(24px) saturate(1.8) brightness(1.04);
+  -webkit-backdrop-filter: blur(24px) saturate(1.8) brightness(1.04);
+  border: 1px solid rgba(255,255,255,0.14) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.28),
+    inset 0 -1px 0 rgba(255,255,255,0.06),
+    0 8px 40px rgba(0,0,0,0.24),
+    0 1px 0 rgba(255,255,255,0.06);
 }
+
+/* ── Glass mixin (light) ── */
 :root[data-ui-style="glass"][data-theme="light"] .ds-preview,
-:root[data-ui-style="glass"][data-theme="light"] .c-card,
 :root[data-ui-style="glass"][data-theme="light"] .ds-hero,
-:root[data-ui-style="glass"][data-theme="light"] .c-alert,
+:root[data-ui-style="glass"][data-theme="light"] .c-card,
+:root[data-ui-style="glass"][data-theme="light"] .ds-spec,
 :root[data-ui-style="glass"][data-theme="light"] .dropdown-menu,
 :root[data-ui-style="glass"][data-theme="light"] .c-menu,
-:root[data-ui-style="glass"][data-theme="light"] .ds-spec,
+:root[data-ui-style="glass"][data-theme="light"] .theme-split,
 :root[data-ui-style="glass"][data-theme="light"] .theme-card,
-:root[data-ui-style="glass"][data-theme="light"] .panel {
-  background: rgba(255,255,255,0.55);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-color: rgba(255,255,255,0.7);
-  box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+:root[data-ui-style="glass"][data-theme="light"] .c-bottom-sheet,
+:root[data-ui-style="glass"][data-theme="light"] .c-dropzone,
+:root[data-ui-style="glass"][data-theme="light"] .c-expansion,
+:root[data-ui-style="glass"][data-theme="light"] .panel,
+:root[data-ui-style="glass"][data-theme="light"] .metric-card,
+:root[data-ui-style="glass"][data-theme="light"] .content-card {
+  background: rgba(255,255,255,0.52) !important;
+  backdrop-filter: blur(24px) saturate(1.6);
+  -webkit-backdrop-filter: blur(24px) saturate(1.6);
+  border: 1px solid rgba(255,255,255,0.75) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.95),
+    inset 0 -1px 0 rgba(255,255,255,0.4),
+    0 8px 32px rgba(0,0,0,0.08),
+    0 1px 0 rgba(255,255,255,0.8);
 }
+
+/* ── Primary button — brand glass ── */
+:root[data-ui-style="glass"] .c-btn--primary {
+  background: color-mix(in oklch, var(--brand) 70%, transparent) !important;
+  backdrop-filter: blur(20px) saturate(2);
+  -webkit-backdrop-filter: blur(20px) saturate(2);
+  border: 1px solid rgba(255,255,255,0.35) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.45),
+    inset 0 -1px 0 rgba(0,0,0,0.15),
+    0 4px 20px color-mix(in oklch, var(--brand) 45%, transparent),
+    0 1px 0 rgba(255,255,255,0.2);
+  color: #fff !important;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+:root[data-ui-style="glass"] .c-btn--primary:hover {
+  background: color-mix(in oklch, var(--brand) 80%, transparent) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.5),
+    0 6px 28px color-mix(in oklch, var(--brand) 55%, transparent);
+}
+
+/* ── Secondary & ghost buttons — clear glass ── */
+:root[data-ui-style="glass"] .c-btn--secondary,
+:root[data-ui-style="glass"] .c-btn--ghost,
+:root[data-ui-style="glass"] .c-btn:not(.c-btn--primary):not(.c-btn--danger) {
+  background: rgba(255,255,255,0.09) !important;
+  backdrop-filter: blur(12px) saturate(1.5);
+  -webkit-backdrop-filter: blur(12px) saturate(1.5);
+  border: 1px solid rgba(255,255,255,0.2) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.3),
+    inset 0 -1px 0 rgba(255,255,255,0.06),
+    0 2px 12px rgba(0,0,0,0.15);
+  color: var(--ink) !important;
+}
+:root[data-ui-style="glass"][data-theme="light"] .c-btn--secondary,
+:root[data-ui-style="glass"][data-theme="light"] .c-btn--ghost,
+:root[data-ui-style="glass"][data-theme="light"] .c-btn:not(.c-btn--primary):not(.c-btn--danger) {
+  background: rgba(255,255,255,0.6) !important;
+  border: 1px solid rgba(255,255,255,0.8) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.95), 0 2px 8px rgba(0,0,0,0.06);
+}
+
+/* ── Danger button ── */
+:root[data-ui-style="glass"] .c-btn--danger {
+  background: rgba(222,59,61,0.35) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,120,120,0.3) !important;
+  box-shadow: inset 0 1px 0 rgba(255,180,180,0.3), 0 4px 16px rgba(222,59,61,0.25);
+}
+
+/* ── Inputs, selects, textareas ── */
 :root[data-ui-style="glass"] .c-input,
 :root[data-ui-style="glass"] .c-select,
 :root[data-ui-style="glass"] .c-textarea,
 :root[data-ui-style="glass"] .c-field__input,
 :root[data-ui-style="glass"] .c-field__textarea {
-  background: rgba(255,255,255,0.06);
-  border-color: rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.07) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.14) !important;
+  box-shadow:
+    inset 0 1px 3px rgba(0,0,0,0.12),
+    inset 0 1px 0 rgba(255,255,255,0.05);
+  color: var(--ink) !important;
+}
+:root[data-ui-style="glass"] .c-input:focus,
+:root[data-ui-style="glass"] .c-field__input:focus {
+  border-color: color-mix(in oklch, var(--brand) 70%, rgba(255,255,255,0.4)) !important;
+  box-shadow:
+    inset 0 1px 3px rgba(0,0,0,0.1),
+    0 0 0 3px color-mix(in oklch, var(--brand) 20%, transparent) !important;
+  background: rgba(255,255,255,0.10) !important;
 }
 :root[data-ui-style="glass"][data-theme="light"] .c-input,
 :root[data-ui-style="glass"][data-theme="light"] .c-select,
-:root[data-ui-style="glass"][data-theme="light"] .c-textarea {
-  background: rgba(255,255,255,0.7);
-  border-color: rgba(0,0,0,0.1);
+:root[data-ui-style="glass"][data-theme="light"] .c-textarea,
+:root[data-ui-style="glass"][data-theme="light"] .c-field__input {
+  background: rgba(255,255,255,0.65) !important;
+  border: 1px solid rgba(255,255,255,0.85) !important;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.9);
 }
-:root[data-ui-style="glass"] .c-btn--secondary,
-:root[data-ui-style="glass"] .c-btn--ghost {
+
+/* ── Badges ── */
+:root[data-ui-style="glass"] .c-badge {
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.3);
+}
+:root[data-ui-style="glass"] .c-badge--brand {
+  background: color-mix(in oklch, var(--brand) 22%, transparent) !important;
+  border: 1px solid color-mix(in oklch, var(--brand) 40%, rgba(255,255,255,0.2));
+}
+:root[data-ui-style="glass"] .c-badge--pos  { background: rgba(4,171,98,0.18) !important; border: 1px solid rgba(4,171,98,0.3); }
+:root[data-ui-style="glass"] .c-badge--neg  { background: rgba(222,59,61,0.18) !important; border: 1px solid rgba(222,59,61,0.3); }
+:root[data-ui-style="glass"] .c-badge--warn { background: rgba(232,157,0,0.18) !important; border: 1px solid rgba(232,157,0,0.3); }
+:root[data-ui-style="glass"] .c-badge--neutral { background: rgba(255,255,255,0.08) !important; border: 1px solid rgba(255,255,255,0.15); }
+
+/* ── Alerts ── */
+:root[data-ui-style="glass"] .c-alert {
+  backdrop-filter: blur(16px) saturate(1.6);
+  -webkit-backdrop-filter: blur(16px) saturate(1.6);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.25), 0 4px 16px rgba(0,0,0,0.12);
+}
+:root[data-ui-style="glass"] .c-alert--pos  { background: rgba(4,171,98,0.12) !important; border: 1px solid rgba(4,171,98,0.25) !important; }
+:root[data-ui-style="glass"] .c-alert--neg  { background: rgba(222,59,61,0.12) !important; border: 1px solid rgba(222,59,61,0.25) !important; }
+:root[data-ui-style="glass"] .c-alert--warn { background: rgba(232,157,0,0.12) !important; border: 1px solid rgba(232,157,0,0.25) !important; }
+:root[data-ui-style="glass"] .c-alert--info { background: rgba(0,157,211,0.12) !important; border: 1px solid rgba(0,157,211,0.25) !important; }
+
+/* ── Tooltip ── */
+:root[data-ui-style="glass"] .c-tooltip {
+  background: rgba(15,15,20,0.65) !important;
+  backdrop-filter: blur(20px) saturate(1.8);
+  -webkit-backdrop-filter: blur(20px) saturate(1.8);
+  border: 1px solid rgba(255,255,255,0.15);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 8px 24px rgba(0,0,0,0.3);
+}
+:root[data-ui-style="glass"][data-theme="light"] .c-tooltip {
+  background: rgba(255,255,255,0.75) !important;
+  border: 1px solid rgba(255,255,255,0.9);
+  color: var(--ink);
+}
+
+/* ── Tabs ── */
+:root[data-ui-style="glass"] .tabs-bar {
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(12px);
+  border-radius: var(--r-2);
+  border: 1px solid rgba(255,255,255,0.1);
+  padding: 3px;
+}
+:root[data-ui-style="glass"] .tab-item.active {
+  background: rgba(255,255,255,0.14);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.3), 0 2px 8px rgba(0,0,0,0.15);
+  border-radius: var(--r-1);
+}
+
+/* ── Navigation (sidebar items) ── */
+:root[data-ui-style="glass"] .c-tree-item:hover,
+:root[data-ui-style="glass"] .c-menu-item:hover,
+:root[data-ui-style="glass"] .dropdown-item:hover {
+  background: rgba(255,255,255,0.1) !important;
   backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  background: rgba(255,255,255,0.08);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.2);
 }
-:root[data-ui-style="glass"] #app {
-  background: radial-gradient(ellipse at 20% 20%, var(--brand-soft) 0%, transparent 50%),
-              radial-gradient(ellipse at 80% 80%, var(--brand-faint) 0%, transparent 50%);
-  min-height: 100%;
+
+/* ── Progress bars ── */
+:root[data-ui-style="glass"] .c-progress-track,
+:root[data-ui-style="glass"] .progress-track {
+  background: rgba(255,255,255,0.08) !important;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.15);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+:root[data-ui-style="glass"] .c-progress-fill,
+:root[data-ui-style="glass"] .progress-fill {
+  box-shadow: 0 1px 0 rgba(255,255,255,0.4) inset;
+}
+
+/* ── Toggle switch ── */
+:root[data-ui-style="glass"] .c-slide-toggle-track {
+  background: rgba(255,255,255,0.12) !important;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.15);
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.15);
+}
+:root[data-ui-style="glass"] .c-slide-toggle-track.checked {
+  background: color-mix(in oklch, var(--brand) 55%, transparent) !important;
+}
+:root[data-ui-style="glass"] .c-slide-toggle-thumb {
+  background: rgba(255,255,255,0.92) !important;
+  box-shadow: 0 1px 0 rgba(255,255,255,0.9) inset, 0 2px 8px rgba(0,0,0,0.25);
+}
+
+/* ── Skeleton loader ── */
+:root[data-ui-style="glass"] .skeleton {
+  background: linear-gradient(90deg,
+    rgba(255,255,255,0.06) 25%,
+    rgba(255,255,255,0.12) 50%,
+    rgba(255,255,255,0.06) 75%) !important;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+/* ── Section numbers ── */
+:root[data-ui-style="glass"] .ds-section-num {
+  background: rgba(255,255,255,0.08) !important;
+  border: 1px solid rgba(255,255,255,0.14);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.2);
+  backdrop-filter: blur(8px);
+}
+
+/* ── Hero card specifics ── */
+:root[data-ui-style="glass"] .hero__chip {
+  background: rgba(255,255,255,0.08) !important;
+  border: 1px solid rgba(255,255,255,0.15) !important;
+  backdrop-filter: blur(10px);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.2);
+}
+:root[data-ui-style="glass"] .ds-hero-stat-val { text-shadow: 0 0 20px color-mix(in oklch, var(--brand) 50%, transparent); }
+
+/* ── Color swatches ── */
+:root[data-ui-style="glass"] .color-cell {
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.3), 0 2px 8px rgba(0,0,0,0.2);
+}
+
+/* ── Export code panel ── */
+:root[data-ui-style="glass"] .export-code {
+  background: rgba(0,0,0,0.25) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.1) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+}
+
+/* ── Sidebar glass ── */
+:root[data-ui-style="glass"] .sidebar {
+  background: rgba(10,10,12,0.55) !important;
+  backdrop-filter: blur(32px) saturate(1.6);
+  -webkit-backdrop-filter: blur(32px) saturate(1.6);
+  border-right: 1px solid rgba(255,255,255,0.08) !important;
+}
+:root[data-ui-style="glass"][data-theme="light"] .sidebar {
+  background: rgba(255,255,255,0.6) !important;
+  border-right: 1px solid rgba(255,255,255,0.8) !important;
+}
+
+/* ── Sub-section containers ── */
+:root[data-ui-style="glass"] .ds-subsection-title {
+  color: rgba(255,255,255,0.5);
+}
+:root[data-ui-style="glass"][data-theme="light"] .ds-subsection-title {
+  color: rgba(0,0,0,0.4);
 }
 
 /* ═══ Floating theme toggle ═══ */
