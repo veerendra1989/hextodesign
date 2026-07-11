@@ -894,7 +894,20 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .ds-hero-stats { display: flex; gap: 32px; margin-top: 24px; position: relative; z-index: 1; }
 .ds-hero-stat-val { font-size: 20px; font-weight: 700; }
 .ds-hero-stat-label { font-size: 11px; color: var(--ink-4); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
-.hero__chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; position: relative; z-index: 1; }
+.hero__chips { display: flex; flex-wrap: wrap; gap: 8px; flex: 1; }
+.hero__actions { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 20px; position: relative; z-index: 1; flex-wrap: wrap; }
+.hero__claude-btn {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 9px 18px; border-radius: 99px; border: none; cursor: pointer;
+  font-size: 13px; font-weight: 600; font-family: inherit;
+  background: linear-gradient(135deg, #CC785C, #D4A574);
+  color: #fff; transition: all 0.2s ease;
+  box-shadow: 0 2px 12px rgba(204,120,92,0.35);
+}
+.hero__claude-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 20px rgba(204,120,92,0.5); filter: brightness(1.08); }
+.hero__claude-btn:active { transform: translateY(0); }
+.hero__claude-btn.success { background: linear-gradient(135deg, var(--pos), oklch(0.55 0.16 155)); box-shadow: 0 2px 12px rgba(4,171,98,0.35); }
+.hero__claude-btn svg { width: 15px; height: 15px; flex-shrink: 0; }
 .hero__chip { display: inline-flex; align-items: center; gap: 4px; padding: 4px 12px; border-radius: 99px; font-size: 11px; font-weight: 600; font-family: var(--f-mono); background: var(--bg-3); border: 1px solid var(--line); color: var(--ink-3); }
 .hero__chip--ok { border-color: oklch(0.78 0.14 155 / 0.3); color: oklch(0.55 0.14 155); }
 .hero__chip--warn { border-color: oklch(0.75 0.16 75 / 0.3); color: oklch(0.55 0.14 75); }
@@ -4668,7 +4681,11 @@ button { font: inherit; color: inherit; cursor: pointer; }
       var cls = c.grade === "AAA" || c.grade === "AA" ? "hero__chip--ok" : "hero__chip--warn";
       h += '<div class="hero__chip ' + cls + '">' + esc(k.replace(/-/g," ")) + ' · ' + c.ratio.toFixed(1) + ':1 ' + c.grade + '</div>';
     });
-    h += '</div></div>';
+    h += '</div>';
+    h += '<div class="hero__actions">';
+    h += '<button class="hero__claude-btn" id="openInClaudeBtn"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M13.5 3.5c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v8.5H4c-.83 0-1.5.67-1.5 1.5S3.17 15 4 15h6.5v5.5c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5V15H20c.83 0 1.5-.67 1.5-1.5S20.83 12 20 12h-6.5V3.5z" fill="currentColor"/></svg> Open in Claude</button>';
+    h += '</div>';
+    h += '</div>';
 
     /* ═══ 01 COLORS ═══ */
     h += '<section class="ds-section" id="colors">';
@@ -5232,6 +5249,76 @@ button { font: inherit; color: inherit; cursor: pointer; }
             if (el) el.style.display = id === target ? "" : "none";
           });
         });
+      });
+    }
+
+    /* Open in Claude */
+    var claudeBtn = document.getElementById("openInClaudeBtn");
+    if (claudeBtn) {
+      claudeBtn.addEventListener("click", function() {
+        if (!_exportData) { alert("Generate a design system first"); return; }
+
+        /* Build a focused system prompt — concise enough for a URL */
+        var d = _exportData;
+        var style = d.dsStyle || "soft";
+        var brand500 = d.brand["500"].hex;
+        var rad = d.radius;
+
+        var prompt = [
+          "You are building UI using a custom design system. design-system.css is already imported — ALWAYS use its classes, never write custom CSS.",
+          "",
+          "IDENTITY",
+          "- Brand: " + brand500 + " → var(--brand)",
+          "- Font: " + d.typo.families.sans + " → var(--font-sans)",
+          "- Style: " + style + " (radius-md: " + rad.md + ", radius-lg: " + rad.lg + ")",
+          "",
+          "KEY CLASSES",
+          "- Buttons: c-btn c-btn--primary / c-btn--secondary / c-btn--ghost / c-btn--danger",
+          "- Inputs: c-field > c-field__label + c-field__input (always label above)",
+          "- Cards: c-card > c-card-content + c-card-actions",
+          "- Badges: c-badge c-badge--pos/neg/warn/info/brand",
+          "- Alerts: c-alert c-alert--pos/neg/warn",
+          "- Tabs: tabs-bar > tab-item (add 'active' class)",
+          "- Metrics: metric-card > metric-label + metric-value + metric-delta",
+          "",
+          "COLOR TOKENS",
+          "- var(--brand) = " + brand500,
+          "- var(--pos) = " + d.semantic.success.base + " (success)",
+          "- var(--neg) = " + d.semantic.error.base + " (error)",
+          "- var(--warn) = " + d.semantic.warning.base + " (warning)",
+          "- var(--ink) = primary text, var(--ink-3) = muted text",
+          "- var(--bg-2) = card background, var(--bg-3) = input background",
+          "",
+          "10 RULES",
+          "1. Never write inline border-radius, colors, or font-size — use classes",
+          "2. Max ONE c-btn--primary per view",
+          "3. Every input needs a label above it — never floating labels",
+          "4. Spacing in multiples of " + d.spacing.base + "px (8, 16, 24, 32...)",
+          "5. Raw hex forbidden — always CSS variables",
+          "6. Icons: stroke SVG, 16px inline, 20px in buttons",
+          "7. Shadows only on floating elements (modal, dropdown, tooltip)",
+          "8. Destructive actions need confirmation",
+          "9. Dark/light via data-theme attribute on <html>",
+          "10. Never build from scratch what a class already provides",
+          "",
+          "Now you're ready. What would you like me to build?"
+        ].join("\n");
+
+        var url = "https://claude.ai/new?q=" + encodeURIComponent(prompt);
+
+        /* Open Claude in new tab */
+        window.open(url, "_blank");
+
+        /* Button feedback */
+        var orig = claudeBtn.innerHTML;
+        claudeBtn.classList.add("success");
+        claudeBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Opening Claude…';
+        setTimeout(function() {
+          claudeBtn.classList.remove("success");
+          claudeBtn.innerHTML = orig;
+        }, 3000);
+
+        if (window.htd) htd.track("open_in_claude", { hex: d.source, style: style });
       });
     }
 
