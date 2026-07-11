@@ -357,6 +357,40 @@ button { font: inherit; color: inherit; cursor: pointer; }
    Based on: translucent surfaces + specular rim + refraction
    ══════════════════════════════════════════════════════════ */
 
+/* ── Remove all borders — glass needs no stroke ── */
+:root[data-ui-style="glass"] .ds-preview,
+:root[data-ui-style="glass"] .ds-hero,
+:root[data-ui-style="glass"] .c-card,
+:root[data-ui-style="glass"] .ds-spec,
+:root[data-ui-style="glass"] .dropdown-menu,
+:root[data-ui-style="glass"] .c-menu,
+:root[data-ui-style="glass"] .theme-split,
+:root[data-ui-style="glass"] .theme-card,
+:root[data-ui-style="glass"] .c-bottom-sheet,
+:root[data-ui-style="glass"] .c-dropzone,
+:root[data-ui-style="glass"] .c-expansion,
+:root[data-ui-style="glass"] .panel,
+:root[data-ui-style="glass"] .metric-card,
+:root[data-ui-style="glass"] .content-card,
+:root[data-ui-style="glass"] .c-btn,
+:root[data-ui-style="glass"] .c-input,
+:root[data-ui-style="glass"] .c-select,
+:root[data-ui-style="glass"] .c-textarea,
+:root[data-ui-style="glass"] .c-field__input,
+:root[data-ui-style="glass"] .c-field__textarea,
+:root[data-ui-style="glass"] .c-badge,
+:root[data-ui-style="glass"] .c-alert,
+:root[data-ui-style="glass"] .c-tooltip,
+:root[data-ui-style="glass"] .tabs-bar,
+:root[data-ui-style="glass"] .c-progress-track,
+:root[data-ui-style="glass"] .progress-track,
+:root[data-ui-style="glass"] .c-slide-toggle-track,
+:root[data-ui-style="glass"] .skeleton,
+:root[data-ui-style="glass"] .ds-section-num,
+:root[data-ui-style="glass"] .hero__chip,
+:root[data-ui-style="glass"] .export-code,
+:root[data-ui-style="glass"] .sidebar { border: none !important; }
+
 /* ── Page background ── */
 :root[data-ui-style="glass"] .main-content {
   background:
@@ -389,7 +423,6 @@ button { font: inherit; color: inherit; cursor: pointer; }
   background: rgba(255,255,255,0.06) !important;
   backdrop-filter: blur(24px) saturate(1.8) brightness(1.04);
   -webkit-backdrop-filter: blur(24px) saturate(1.8) brightness(1.04);
-  border: 1px solid rgba(255,255,255,0.14) !important;
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,0.28),
     inset 0 -1px 0 rgba(255,255,255,0.06),
@@ -415,7 +448,6 @@ button { font: inherit; color: inherit; cursor: pointer; }
   background: rgba(255,255,255,0.52) !important;
   backdrop-filter: blur(24px) saturate(1.6);
   -webkit-backdrop-filter: blur(24px) saturate(1.6);
-  border: 1px solid rgba(255,255,255,0.75) !important;
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,0.95),
     inset 0 -1px 0 rgba(255,255,255,0.4),
@@ -428,7 +460,6 @@ button { font: inherit; color: inherit; cursor: pointer; }
   background: color-mix(in oklch, var(--brand) 70%, transparent) !important;
   backdrop-filter: blur(20px) saturate(2);
   -webkit-backdrop-filter: blur(20px) saturate(2);
-  border: 1px solid rgba(255,255,255,0.35) !important;
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,0.45),
     inset 0 -1px 0 rgba(0,0,0,0.15),
@@ -451,7 +482,6 @@ button { font: inherit; color: inherit; cursor: pointer; }
   background: rgba(255,255,255,0.09) !important;
   backdrop-filter: blur(12px) saturate(1.5);
   -webkit-backdrop-filter: blur(12px) saturate(1.5);
-  border: 1px solid rgba(255,255,255,0.2) !important;
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,0.3),
     inset 0 -1px 0 rgba(255,255,255,0.06),
@@ -462,7 +492,6 @@ button { font: inherit; color: inherit; cursor: pointer; }
 :root[data-ui-style="glass"][data-theme="light"] .c-btn--ghost,
 :root[data-ui-style="glass"][data-theme="light"] .c-btn:not(.c-btn--primary):not(.c-btn--danger) {
   background: rgba(255,255,255,0.6) !important;
-  border: 1px solid rgba(255,255,255,0.8) !important;
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.95), 0 2px 8px rgba(0,0,0,0.06);
 }
 
@@ -471,7 +500,6 @@ button { font: inherit; color: inherit; cursor: pointer; }
   background: rgba(222,59,61,0.35) !important;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255,120,120,0.3) !important;
   box-shadow: inset 0 1px 0 rgba(255,180,180,0.3), 0 4px 16px rgba(222,59,61,0.25);
 }
 
@@ -484,7 +512,6 @@ button { font: inherit; color: inherit; cursor: pointer; }
   background: rgba(255,255,255,0.07) !important;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255,255,255,0.14) !important;
   box-shadow:
     inset 0 1px 3px rgba(0,0,0,0.12),
     inset 0 1px 0 rgba(255,255,255,0.05);
@@ -492,7 +519,6 @@ button { font: inherit; color: inherit; cursor: pointer; }
 }
 :root[data-ui-style="glass"] .c-input:focus,
 :root[data-ui-style="glass"] .c-field__input:focus {
-  border-color: color-mix(in oklch, var(--brand) 70%, rgba(255,255,255,0.4)) !important;
   box-shadow:
     inset 0 1px 3px rgba(0,0,0,0.1),
     0 0 0 3px color-mix(in oklch, var(--brand) 20%, transparent) !important;
@@ -503,7 +529,6 @@ button { font: inherit; color: inherit; cursor: pointer; }
 :root[data-ui-style="glass"][data-theme="light"] .c-textarea,
 :root[data-ui-style="glass"][data-theme="light"] .c-field__input {
   background: rgba(255,255,255,0.65) !important;
-  border: 1px solid rgba(255,255,255,0.85) !important;
   box-shadow: inset 0 1px 3px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.9);
 }
 
@@ -515,12 +540,11 @@ button { font: inherit; color: inherit; cursor: pointer; }
 }
 :root[data-ui-style="glass"] .c-badge--brand {
   background: color-mix(in oklch, var(--brand) 22%, transparent) !important;
-  border: 1px solid color-mix(in oklch, var(--brand) 40%, rgba(255,255,255,0.2));
 }
-:root[data-ui-style="glass"] .c-badge--pos  { background: rgba(4,171,98,0.18) !important; border: 1px solid rgba(4,171,98,0.3); }
-:root[data-ui-style="glass"] .c-badge--neg  { background: rgba(222,59,61,0.18) !important; border: 1px solid rgba(222,59,61,0.3); }
-:root[data-ui-style="glass"] .c-badge--warn { background: rgba(232,157,0,0.18) !important; border: 1px solid rgba(232,157,0,0.3); }
-:root[data-ui-style="glass"] .c-badge--neutral { background: rgba(255,255,255,0.08) !important; border: 1px solid rgba(255,255,255,0.15); }
+:root[data-ui-style="glass"] .c-badge--pos  { background: rgba(4,171,98,0.18) !important; }
+:root[data-ui-style="glass"] .c-badge--neg  { background: rgba(222,59,61,0.18) !important; }
+:root[data-ui-style="glass"] .c-badge--warn { background: rgba(232,157,0,0.18) !important; }
+:root[data-ui-style="glass"] .c-badge--neutral { background: rgba(255,255,255,0.08) !important; }
 
 /* ── Alerts ── */
 :root[data-ui-style="glass"] .c-alert {
@@ -528,22 +552,20 @@ button { font: inherit; color: inherit; cursor: pointer; }
   -webkit-backdrop-filter: blur(16px) saturate(1.6);
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.25), 0 4px 16px rgba(0,0,0,0.12);
 }
-:root[data-ui-style="glass"] .c-alert--pos  { background: rgba(4,171,98,0.12) !important; border: 1px solid rgba(4,171,98,0.25) !important; }
-:root[data-ui-style="glass"] .c-alert--neg  { background: rgba(222,59,61,0.12) !important; border: 1px solid rgba(222,59,61,0.25) !important; }
-:root[data-ui-style="glass"] .c-alert--warn { background: rgba(232,157,0,0.12) !important; border: 1px solid rgba(232,157,0,0.25) !important; }
-:root[data-ui-style="glass"] .c-alert--info { background: rgba(0,157,211,0.12) !important; border: 1px solid rgba(0,157,211,0.25) !important; }
+:root[data-ui-style="glass"] .c-alert--pos  { background: rgba(4,171,98,0.12) !important; }
+:root[data-ui-style="glass"] .c-alert--neg  { background: rgba(222,59,61,0.12) !important; }
+:root[data-ui-style="glass"] .c-alert--warn { background: rgba(232,157,0,0.12) !important; }
+:root[data-ui-style="glass"] .c-alert--info { background: rgba(0,157,211,0.12) !important; }
 
 /* ── Tooltip ── */
 :root[data-ui-style="glass"] .c-tooltip {
   background: rgba(15,15,20,0.65) !important;
   backdrop-filter: blur(20px) saturate(1.8);
   -webkit-backdrop-filter: blur(20px) saturate(1.8);
-  border: 1px solid rgba(255,255,255,0.15);
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 8px 24px rgba(0,0,0,0.3);
 }
 :root[data-ui-style="glass"][data-theme="light"] .c-tooltip {
   background: rgba(255,255,255,0.75) !important;
-  border: 1px solid rgba(255,255,255,0.9);
   color: var(--ink);
 }
 
@@ -552,7 +574,6 @@ button { font: inherit; color: inherit; cursor: pointer; }
   background: rgba(255,255,255,0.05);
   backdrop-filter: blur(12px);
   border-radius: var(--r-2);
-  border: 1px solid rgba(255,255,255,0.1);
   padding: 3px;
 }
 :root[data-ui-style="glass"] .tab-item.active {
@@ -575,7 +596,6 @@ button { font: inherit; color: inherit; cursor: pointer; }
 :root[data-ui-style="glass"] .progress-track {
   background: rgba(255,255,255,0.08) !important;
   box-shadow: inset 0 1px 3px rgba(0,0,0,0.15);
-  border: 1px solid rgba(255,255,255,0.1);
 }
 :root[data-ui-style="glass"] .c-progress-fill,
 :root[data-ui-style="glass"] .progress-fill {
@@ -586,7 +606,6 @@ button { font: inherit; color: inherit; cursor: pointer; }
 :root[data-ui-style="glass"] .c-slide-toggle-track {
   background: rgba(255,255,255,0.12) !important;
   backdrop-filter: blur(8px);
-  border: 1px solid rgba(255,255,255,0.15);
   box-shadow: inset 0 1px 3px rgba(0,0,0,0.15);
 }
 :root[data-ui-style="glass"] .c-slide-toggle-track.checked {
@@ -603,13 +622,11 @@ button { font: inherit; color: inherit; cursor: pointer; }
     rgba(255,255,255,0.06) 25%,
     rgba(255,255,255,0.12) 50%,
     rgba(255,255,255,0.06) 75%) !important;
-  border: 1px solid rgba(255,255,255,0.08);
 }
 
 /* ── Section numbers ── */
 :root[data-ui-style="glass"] .ds-section-num {
   background: rgba(255,255,255,0.08) !important;
-  border: 1px solid rgba(255,255,255,0.14);
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.2);
   backdrop-filter: blur(8px);
 }
@@ -617,7 +634,6 @@ button { font: inherit; color: inherit; cursor: pointer; }
 /* ── Hero card specifics ── */
 :root[data-ui-style="glass"] .hero__chip {
   background: rgba(255,255,255,0.08) !important;
-  border: 1px solid rgba(255,255,255,0.15) !important;
   backdrop-filter: blur(10px);
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.2);
 }
@@ -633,7 +649,6 @@ button { font: inherit; color: inherit; cursor: pointer; }
   background: rgba(0,0,0,0.25) !important;
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255,255,255,0.1) !important;
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
 }
 
