@@ -283,6 +283,16 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .sidebar__nav-num { font-size: 10px; font-family: var(--f-mono); font-weight: 600; color: var(--ink-4); min-width: 18px; }
 
 .sidebar__bottom { padding: 12px 16px; border-top: 1px solid var(--line); }
+.sidebar__claude-btn {
+  width: 100%; height: 36px; border: none; border-radius: var(--r-2);
+  background: linear-gradient(135deg, #CC785C, #D4A574);
+  color: #fff; font-size: 13px; font-weight: 600; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 7px;
+  transition: all 0.15s; margin-bottom: 8px;
+  box-shadow: 0 2px 8px rgba(204,120,92,0.3);
+}
+.sidebar__claude-btn:hover { opacity: 0.92; box-shadow: 0 4px 16px rgba(204,120,92,0.45); transform: translateY(-1px); }
+.sidebar__claude-btn svg { width: 15px; height: 15px; flex-shrink: 0; }
 .sidebar__export-btn {
   width: 100%; height: 36px; border: none; border-radius: var(--r-2);
   background: var(--brand); color: var(--brand-ink);
@@ -1856,6 +1866,10 @@ button { font: inherit; color: inherit; cursor: pointer; }
   </nav>
 
   <div class="sidebar__bottom">
+    <button class="sidebar__claude-btn" id="sidebarClaudeBtn">
+      <svg width="15" height="15" viewBox="0 0 512 512" fill="currentColor"><path d="M318.663 149.787h-43.368l78.952 212.423 43.368.004-78.952-212.427zm-125.326 0l-78.952 212.427h44.255l15.932-44.608 82.846-.004 16.107 44.612h44.255l-79.443-212.427zm-8.826 135.418 27.812-77.842 28.464 77.842H184.511z"/></svg>
+      Open in Claude
+    </button>
     <button class="sidebar__export-btn" id="exportBtn">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
       Download All — Free
@@ -3919,6 +3933,25 @@ button { font: inherit; color: inherit; cursor: pointer; }
       triggerExportDownload("css", "css", btnEl);
     };
     document.head.appendChild(script);
+  }
+
+  /* Sidebar Open in Claude button */
+  var sidebarClaudeBtn = document.getElementById("sidebarClaudeBtn");
+  if (sidebarClaudeBtn) {
+    sidebarClaudeBtn.addEventListener("click", function() {
+      var heroBtn = document.getElementById("openInClaudeBtn");
+      if (heroBtn) { heroBtn.click(); return; }
+      /* Fallback if hero not rendered yet */
+      if (!_exportData) { alert("Generate a design system first"); return; }
+      var d = _exportData;
+      var style = d.dsStyle || "soft";
+      var prompt = "You are building UI using the custom design system from hextodesign. design-system.css is imported. Brand: " + d.brand["500"].hex + " (var(--brand)). Font: " + d.typo.families.sans + ". Style: " + style + ". Use classes: c-btn c-btn--primary/secondary/ghost/danger, c-field > c-field__label + c-field__input, c-card > c-card-content + c-card-actions, c-badge c-badge--pos/neg/warn/info, c-alert c-alert--pos/neg/warn, metric-card, tabs-bar > tab-item. Never write raw hex or inline border-radius. What would you like me to build?";
+      window.open("https://claude.ai/new?q=" + encodeURIComponent(prompt), "_blank");
+      var orig = sidebarClaudeBtn.innerHTML;
+      sidebarClaudeBtn.style.background = "linear-gradient(135deg, var(--pos), oklch(0.55 0.16 155))";
+      sidebarClaudeBtn.innerHTML = '✓ Opening Claude…';
+      setTimeout(function() { sidebarClaudeBtn.style.background = ""; sidebarClaudeBtn.innerHTML = orig; }, 2500);
+    });
   }
 
   /* Sidebar export button — downloads ZIP with everything */
