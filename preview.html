@@ -221,6 +221,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .sidebar__generate-btn.pulse { animation: btnPulse 1.5s ease infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
 @keyframes btnPulse { 0%,100% { box-shadow: 0 0 0 0 var(--brand-soft); } 50% { box-shadow: 0 0 0 8px transparent; } }
+@keyframes slideUp { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
 /* ── Font Picker ── */
 .font-picker { position: relative; width: 100%; }
 .font-picker__input {
@@ -3936,22 +3937,79 @@ button { font: inherit; color: inherit; cursor: pointer; }
   }
 
   /* Sidebar Open in Claude button */
+  /* Shared Open in Claude handler */
+  function triggerOpenInClaude(btnEl) {
+    if (!_exportData) { alert("Generate a design system first"); return; }
+
+    /* Build the FULL prompt.md — everything Claude needs */
+    var fullPrompt = buildPromptMD(_exportData);
+
+    /* Step 1: Copy full prompt to clipboard */
+    navigator.clipboard.writeText(fullPrompt).then(function() {
+
+      /* Step 2: Open Claude */
+      window.open("https://claude.ai/new", "_blank");
+
+      /* Step 3: Show instruction overlay */
+      showClaudeOverlay();
+
+    }).catch(function() {
+      /* Clipboard failed — still open Claude with short URL prompt */
+      var d = _exportData;
+      var shortPrompt = "I have a design system for " + d.source + " (brand color). I will paste my full design system context now — please read it carefully and confirm you are ready to build consistent UI following it exactly.";
+      window.open("https://claude.ai/new?q=" + encodeURIComponent(shortPrompt), "_blank");
+      showClaudeOverlay();
+    });
+
+    /* Button feedback */
+    var orig = btnEl.innerHTML;
+    btnEl.style.background = "linear-gradient(135deg, #3FB984, #2a9d6e)";
+    btnEl.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Copied & opening…';
+    setTimeout(function() { btnEl.style.background = ""; btnEl.innerHTML = orig; }, 3500);
+
+    if (window.htd) htd.track("open_in_claude", { hex: _exportData.source });
+  }
+
+  function showClaudeOverlay() {
+    var existing = document.getElementById("claudeOverlay");
+    if (existing) existing.remove();
+
+    var overlay = document.createElement("div");
+    overlay.id = "claudeOverlay";
+    overlay.style.cssText = "position:fixed;bottom:80px;right:24px;z-index:9999;background:var(--bg-1);border:1px solid var(--line-2);border-radius:14px;padding:20px 24px;max-width:320px;box-shadow:0 8px 40px rgba(0,0,0,0.3);animation:slideUp 0.25s ease";
+    overlay.innerHTML = [
+      '<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">',
+        '<div style="width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#CC785C,#D4A574);display:flex;align-items:center;justify-content:center;flex-shrink:0">',
+          '<svg width="18" height="18" viewBox="0 0 512 512" fill="white"><path d="M318.663 149.787h-43.368l78.952 212.423 43.368.004-78.952-212.427zm-125.326 0l-78.952 212.427h44.255l15.932-44.608 82.846-.004 16.107 44.612h44.255l-79.443-212.427zm-8.826 135.418 27.812-77.842 28.464 77.842H184.511z"/></svg>',
+        '</div>',
+        '<div>',
+          '<div style="font-size:13px;font-weight:700;color:var(--ink)">Claude is opening</div>',
+          '<div style="font-size:11px;color:var(--ink-3);margin-top:1px">Your full design system is ready to paste</div>',
+        '</div>',
+      '</div>',
+      '<div style="background:var(--bg-3);border-radius:8px;padding:12px 14px;margin-bottom:12px">',
+        '<div style="font-size:12px;font-weight:600;color:var(--ink-2);margin-bottom:6px">In Claude, press:</div>',
+        '<div style="display:flex;align-items:center;gap:8px">',
+          '<kbd style="background:var(--bg-2);border:1px solid var(--line-2);border-radius:6px;padding:4px 10px;font-family:var(--f-mono);font-size:13px;font-weight:600;color:var(--ink)">⌘V</kbd>',
+          '<span style="font-size:13px;color:var(--ink-2)">to paste your full design system</span>',
+        '</div>',
+      '</div>',
+      '<div style="font-size:11px;color:var(--ink-4);line-height:1.5">Everything is copied — brand tokens, component classes, page templates, rules, and working HTML examples.</div>',
+      '<button onclick="document.getElementById(\'claudeOverlay\').remove()" style="position:absolute;top:12px;right:12px;background:none;border:none;cursor:pointer;color:var(--ink-4);font-size:18px;line-height:1;padding:4px">×</button>',
+    ].join('');
+
+    document.body.appendChild(overlay);
+
+    /* Auto-dismiss after 12s */
+    setTimeout(function() {
+      var el = document.getElementById("claudeOverlay");
+      if (el) { el.style.opacity = "0"; el.style.transition = "opacity 0.3s"; setTimeout(function() { if (el.parentNode) el.remove(); }, 300); }
+    }, 12000);
+  }
+
   var sidebarClaudeBtn = document.getElementById("sidebarClaudeBtn");
   if (sidebarClaudeBtn) {
-    sidebarClaudeBtn.addEventListener("click", function() {
-      var heroBtn = document.getElementById("openInClaudeBtn");
-      if (heroBtn) { heroBtn.click(); return; }
-      /* Fallback if hero not rendered yet */
-      if (!_exportData) { alert("Generate a design system first"); return; }
-      var d = _exportData;
-      var style = d.dsStyle || "soft";
-      var prompt = "You are building UI using the custom design system from hextodesign. design-system.css is imported. Brand: " + d.brand["500"].hex + " (var(--brand)). Font: " + d.typo.families.sans + ". Style: " + style + ". Use classes: c-btn c-btn--primary/secondary/ghost/danger, c-field > c-field__label + c-field__input, c-card > c-card-content + c-card-actions, c-badge c-badge--pos/neg/warn/info, c-alert c-alert--pos/neg/warn, metric-card, tabs-bar > tab-item. Never write raw hex or inline border-radius. What would you like me to build?";
-      window.open("https://claude.ai/new?q=" + encodeURIComponent(prompt), "_blank");
-      var orig = sidebarClaudeBtn.innerHTML;
-      sidebarClaudeBtn.style.background = "linear-gradient(135deg, var(--pos), oklch(0.55 0.16 155))";
-      sidebarClaudeBtn.innerHTML = '✓ Opening Claude…';
-      setTimeout(function() { sidebarClaudeBtn.style.background = ""; sidebarClaudeBtn.innerHTML = orig; }, 2500);
-    });
+    sidebarClaudeBtn.addEventListener("click", function() { triggerOpenInClaude(sidebarClaudeBtn); });
   }
 
   /* Sidebar export button — downloads ZIP with everything */
@@ -5285,74 +5343,10 @@ button { font: inherit; color: inherit; cursor: pointer; }
       });
     }
 
-    /* Open in Claude */
+    /* Open in Claude (hero button) */
     var claudeBtn = document.getElementById("openInClaudeBtn");
     if (claudeBtn) {
-      claudeBtn.addEventListener("click", function() {
-        if (!_exportData) { alert("Generate a design system first"); return; }
-
-        /* Build a focused system prompt — concise enough for a URL */
-        var d = _exportData;
-        var style = d.dsStyle || "soft";
-        var brand500 = d.brand["500"].hex;
-        var rad = d.radius;
-
-        var prompt = [
-          "You are building UI using a custom design system. design-system.css is already imported — ALWAYS use its classes, never write custom CSS.",
-          "",
-          "IDENTITY",
-          "- Brand: " + brand500 + " → var(--brand)",
-          "- Font: " + d.typo.families.sans + " → var(--font-sans)",
-          "- Style: " + style + " (radius-md: " + rad.md + ", radius-lg: " + rad.lg + ")",
-          "",
-          "KEY CLASSES",
-          "- Buttons: c-btn c-btn--primary / c-btn--secondary / c-btn--ghost / c-btn--danger",
-          "- Inputs: c-field > c-field__label + c-field__input (always label above)",
-          "- Cards: c-card > c-card-content + c-card-actions",
-          "- Badges: c-badge c-badge--pos/neg/warn/info/brand",
-          "- Alerts: c-alert c-alert--pos/neg/warn",
-          "- Tabs: tabs-bar > tab-item (add 'active' class)",
-          "- Metrics: metric-card > metric-label + metric-value + metric-delta",
-          "",
-          "COLOR TOKENS",
-          "- var(--brand) = " + brand500,
-          "- var(--pos) = " + d.semantic.success.base + " (success)",
-          "- var(--neg) = " + d.semantic.error.base + " (error)",
-          "- var(--warn) = " + d.semantic.warning.base + " (warning)",
-          "- var(--ink) = primary text, var(--ink-3) = muted text",
-          "- var(--bg-2) = card background, var(--bg-3) = input background",
-          "",
-          "10 RULES",
-          "1. Never write inline border-radius, colors, or font-size — use classes",
-          "2. Max ONE c-btn--primary per view",
-          "3. Every input needs a label above it — never floating labels",
-          "4. Spacing in multiples of " + d.spacing.base + "px (8, 16, 24, 32...)",
-          "5. Raw hex forbidden — always CSS variables",
-          "6. Icons: stroke SVG, 16px inline, 20px in buttons",
-          "7. Shadows only on floating elements (modal, dropdown, tooltip)",
-          "8. Destructive actions need confirmation",
-          "9. Dark/light via data-theme attribute on <html>",
-          "10. Never build from scratch what a class already provides",
-          "",
-          "Now you're ready. What would you like me to build?"
-        ].join("\n");
-
-        var url = "https://claude.ai/new?q=" + encodeURIComponent(prompt);
-
-        /* Open Claude in new tab */
-        window.open(url, "_blank");
-
-        /* Button feedback */
-        var orig = claudeBtn.innerHTML;
-        claudeBtn.classList.add("success");
-        claudeBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Opening Claude…';
-        setTimeout(function() {
-          claudeBtn.classList.remove("success");
-          claudeBtn.innerHTML = orig;
-        }, 3000);
-
-        if (window.htd) htd.track("open_in_claude", { hex: d.source, style: style });
-      });
+      claudeBtn.addEventListener("click", function() { triggerOpenInClaude(claudeBtn); });
     }
 
     /* Copy & Download for export section */
