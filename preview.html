@@ -729,6 +729,66 @@ button { font: inherit; color: inherit; cursor: pointer; }
 /* ── Chart labels and axis text ── */
 :root[data-ui-style="glass"][data-theme="dark"] .chart-label { color: rgba(255,255,255,0.65); }
 
+/* ── Metric cards ── */
+:root[data-ui-style="glass"][data-theme="dark"] .metric-label { color: rgba(255,255,255,0.55) !important; }
+:root[data-ui-style="glass"][data-theme="dark"] .metric-value { color: #fff !important; }
+:root[data-ui-style="glass"][data-theme="dark"] .metric-card { background: rgba(255,255,255,0.06) !important; }
+
+/* ── Period selector buttons ── */
+:root[data-ui-style="glass"][data-theme="dark"] .period-btn {
+  background: rgba(255,255,255,0.06) !important;
+  color: rgba(255,255,255,0.65) !important;
+  border: none !important;
+  backdrop-filter: blur(8px);
+}
+:root[data-ui-style="glass"][data-theme="dark"] .period-btn:hover {
+  background: rgba(255,255,255,0.12) !important;
+  color: #fff !important;
+}
+:root[data-ui-style="glass"][data-theme="dark"] .period-btn.active {
+  background: color-mix(in oklch, var(--brand) 80%, transparent) !important;
+  color: #fff !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.3), 0 2px 12px color-mix(in oklch, var(--brand) 40%, transparent);
+}
+
+/* ── Dropzone ── */
+:root[data-ui-style="glass"][data-theme="dark"] .c-dropzone__text { color: rgba(255,255,255,0.85) !important; }
+:root[data-ui-style="glass"][data-theme="dark"] .c-dropzone__hint { color: rgba(255,255,255,0.55) !important; }
+:root[data-ui-style="glass"][data-theme="dark"] .c-dropzone__icon { color: rgba(255,255,255,0.55) !important; }
+
+/* ── Breadcrumbs ── */
+:root[data-ui-style="glass"][data-theme="dark"] .breadcrumbs a { color: rgba(255,255,255,0.55) !important; }
+:root[data-ui-style="glass"][data-theme="dark"] .breadcrumbs .current { color: rgba(255,255,255,0.90) !important; }
+:root[data-ui-style="glass"][data-theme="dark"] .breadcrumbs .sep { color: rgba(255,255,255,0.30) !important; }
+
+/* ── Dashboard subtitle ── */
+:root[data-ui-style="glass"][data-theme="dark"] .ds-preview p { color: rgba(255,255,255,0.70) !important; }
+:root[data-ui-style="glass"][data-theme="dark"] .ds-preview h3 { color: rgba(255,255,255,0.95) !important; }
+:root[data-ui-style="glass"][data-theme="dark"] .ds-preview h4 { color: rgba(255,255,255,0.90) !important; }
+:root[data-ui-style="glass"][data-theme="dark"] .ds-preview label { color: rgba(255,255,255,0.80) !important; }
+:root[data-ui-style="glass"][data-theme="dark"] .ds-preview small,
+:root[data-ui-style="glass"][data-theme="dark"] .ds-preview span[style*="ink-3"],
+:root[data-ui-style="glass"][data-theme="dark"] .ds-preview span[style*="ink-4"] { color: rgba(255,255,255,0.60) !important; }
+
+/* ── Cards inner text ── */
+:root[data-ui-style="glass"][data-theme="dark"] .c-card-content h3 { color: rgba(255,255,255,0.95) !important; }
+:root[data-ui-style="glass"][data-theme="dark"] .c-card-content p { color: rgba(255,255,255,0.68) !important; }
+:root[data-ui-style="glass"][data-theme="dark"] .c-card-actions { background: rgba(0,0,0,0.1) !important; }
+
+/* ── Hero chips ── */
+:root[data-ui-style="glass"][data-theme="dark"] .hero__chip { color: rgba(255,255,255,0.80) !important; }
+:root[data-ui-style="glass"][data-theme="dark"] .hero__chip--ok { color: rgba(150,255,200,0.90) !important; }
+:root[data-ui-style="glass"][data-theme="dark"] .hero__chip--warn { color: rgba(255,210,120,0.90) !important; }
+
+/* ── Color system section ── */
+:root[data-ui-style="glass"][data-theme="dark"] .color-label { color: rgba(255,255,255,0.75) !important; }
+:root[data-ui-style="glass"][data-theme="dark"] .color-hex { color: rgba(255,255,255,0.55) !important; }
+:root[data-ui-style="glass"][data-theme="dark"] .color-name { color: rgba(255,255,255,0.75) !important; }
+
+/* ── Typography section ── */
+:root[data-ui-style="glass"][data-theme="dark"] .ds-preview .type-sample { color: rgba(255,255,255,0.90) !important; }
+:root[data-ui-style="glass"][data-theme="dark"] .ds-preview .type-meta { color: rgba(255,255,255,0.50) !important; }
+
 /* ═══ Floating theme toggle ═══ */
 /* Floating bottom bar */
 #theme-toggle-portal {
