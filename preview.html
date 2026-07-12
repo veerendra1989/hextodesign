@@ -284,16 +284,23 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .sidebar__nav-num { font-size: 10px; font-family: var(--f-mono); font-weight: 600; color: var(--ink-4); min-width: 18px; }
 
 .sidebar__bottom { padding: 12px 16px; border-top: 1px solid var(--line); }
+.sidebar__claude-wrap { margin-bottom: 8px; }
 .sidebar__claude-btn {
   width: 100%; height: 36px; border: none; border-radius: var(--r-2);
   background: linear-gradient(135deg, #CC785C, #D4A574);
   color: #fff; font-size: 13px; font-weight: 600; cursor: pointer;
   display: flex; align-items: center; justify-content: center; gap: 7px;
-  transition: all 0.15s; margin-bottom: 8px;
+  transition: all 0.15s;
   box-shadow: 0 2px 8px rgba(204,120,92,0.3);
 }
 .sidebar__claude-btn:hover { opacity: 0.92; box-shadow: 0 4px 16px rgba(204,120,92,0.45); transform: translateY(-1px); }
 .sidebar__claude-btn svg { width: 15px; height: 15px; flex-shrink: 0; }
+.sidebar__claude-hint {
+  display: flex; align-items: center; gap: 5px; margin-top: 6px;
+  font-size: 11px; font-weight: 600; color: var(--pos);
+  animation: fadeIn 0.3s ease;
+}
+@keyframes fadeIn { from { opacity:0; transform:translateY(-4px); } to { opacity:1; transform:translateY(0); } }
 .sidebar__export-btn {
   width: 100%; height: 36px; border: none; border-radius: var(--r-2);
   background: var(--brand); color: var(--brand-ink);
@@ -1867,10 +1874,13 @@ button { font: inherit; color: inherit; cursor: pointer; }
   </nav>
 
   <div class="sidebar__bottom">
-    <button class="sidebar__claude-btn" id="sidebarClaudeBtn">
-      <svg width="15" height="15" viewBox="0 0 512 512" fill="currentColor"><path d="M318.663 149.787h-43.368l78.952 212.423 43.368.004-78.952-212.427zm-125.326 0l-78.952 212.427h44.255l15.932-44.608 82.846-.004 16.107 44.612h44.255l-79.443-212.427zm-8.826 135.418 27.812-77.842 28.464 77.842H184.511z"/></svg>
-      Open in Claude
-    </button>
+    <div class="sidebar__claude-wrap">
+      <button class="sidebar__claude-btn" id="sidebarClaudeBtn">
+        <svg width="15" height="15" viewBox="0 0 512 512" fill="currentColor"><path d="M318.663 149.787h-43.368l78.952 212.423 43.368.004-78.952-212.427zm-125.326 0l-78.952 212.427h44.255l15.932-44.608 82.846-.004 16.107 44.612h44.255l-79.443-212.427zm-8.826 135.418 27.812-77.842 28.464 77.842H184.511z"/></svg>
+        Copy to Claude
+      </button>
+      <span class="sidebar__claude-hint" id="sidebarClaudeHint"></span>
+    </div>
     <button class="sidebar__export-btn" id="exportBtn">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
       Download All — Free
@@ -3936,80 +3946,36 @@ button { font: inherit; color: inherit; cursor: pointer; }
     document.head.appendChild(script);
   }
 
-  /* Sidebar Open in Claude button */
-  /* Shared Open in Claude handler */
-  function triggerOpenInClaude(btnEl) {
+  /* Copy to Claude — copies full prompt.md, shows inline hint */
+  function triggerCopyToClaude(btnEl, hintEl) {
     if (!_exportData) { alert("Generate a design system first"); return; }
-
-    /* Build the FULL prompt.md — everything Claude needs */
     var fullPrompt = buildPromptMD(_exportData);
-
-    /* Step 1: Copy full prompt to clipboard */
     navigator.clipboard.writeText(fullPrompt).then(function() {
-
-      /* Step 2: Open Claude */
-      window.open("https://claude.ai/new", "_blank");
-
-      /* Step 3: Show instruction overlay */
-      showClaudeOverlay();
-
+      /* Button: brief copied state */
+      var orig = btnEl.innerHTML;
+      btnEl.style.background = "linear-gradient(135deg, #3FB984, #2a9d6e)";
+      btnEl.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Copied!';
+      /* Show inline hint */
+      if (hintEl) {
+        hintEl.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Now paste in Claude';
+        hintEl.style.display = "flex";
+      }
+      setTimeout(function() {
+        btnEl.style.background = "";
+        btnEl.innerHTML = orig;
+      }, 2000);
+      if (window.htd) htd.track("copy_to_claude", { hex: _exportData.source });
     }).catch(function() {
-      /* Clipboard failed — still open Claude with short URL prompt */
-      var d = _exportData;
-      var shortPrompt = "I have a design system for " + d.source + " (brand color). I will paste my full design system context now — please read it carefully and confirm you are ready to build consistent UI following it exactly.";
-      window.open("https://claude.ai/new?q=" + encodeURIComponent(shortPrompt), "_blank");
-      showClaudeOverlay();
+      alert("Could not copy — please download prompt.md and paste it manually into Claude.");
     });
-
-    /* Button feedback */
-    var orig = btnEl.innerHTML;
-    btnEl.style.background = "linear-gradient(135deg, #3FB984, #2a9d6e)";
-    btnEl.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Copied & opening…';
-    setTimeout(function() { btnEl.style.background = ""; btnEl.innerHTML = orig; }, 3500);
-
-    if (window.htd) htd.track("open_in_claude", { hex: _exportData.source });
-  }
-
-  function showClaudeOverlay() {
-    var existing = document.getElementById("claudeOverlay");
-    if (existing) existing.remove();
-
-    var overlay = document.createElement("div");
-    overlay.id = "claudeOverlay";
-    overlay.style.cssText = "position:fixed;bottom:80px;right:24px;z-index:9999;background:var(--bg-1);border:1px solid var(--line-2);border-radius:14px;padding:20px 24px;max-width:320px;box-shadow:0 8px 40px rgba(0,0,0,0.3);animation:slideUp 0.25s ease";
-    overlay.innerHTML = [
-      '<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">',
-        '<div style="width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#CC785C,#D4A574);display:flex;align-items:center;justify-content:center;flex-shrink:0">',
-          '<svg width="18" height="18" viewBox="0 0 512 512" fill="white"><path d="M318.663 149.787h-43.368l78.952 212.423 43.368.004-78.952-212.427zm-125.326 0l-78.952 212.427h44.255l15.932-44.608 82.846-.004 16.107 44.612h44.255l-79.443-212.427zm-8.826 135.418 27.812-77.842 28.464 77.842H184.511z"/></svg>',
-        '</div>',
-        '<div>',
-          '<div style="font-size:13px;font-weight:700;color:var(--ink)">Claude is opening</div>',
-          '<div style="font-size:11px;color:var(--ink-3);margin-top:1px">Your full design system is ready to paste</div>',
-        '</div>',
-      '</div>',
-      '<div style="background:var(--bg-3);border-radius:8px;padding:12px 14px;margin-bottom:12px">',
-        '<div style="font-size:12px;font-weight:600;color:var(--ink-2);margin-bottom:6px">In Claude, press:</div>',
-        '<div style="display:flex;align-items:center;gap:8px">',
-          '<kbd style="background:var(--bg-2);border:1px solid var(--line-2);border-radius:6px;padding:4px 10px;font-family:var(--f-mono);font-size:13px;font-weight:600;color:var(--ink)">⌘V</kbd>',
-          '<span style="font-size:13px;color:var(--ink-2)">to paste your full design system</span>',
-        '</div>',
-      '</div>',
-      '<div style="font-size:11px;color:var(--ink-4);line-height:1.5">Everything is copied — brand tokens, component classes, page templates, rules, and working HTML examples.</div>',
-      '<button onclick="document.getElementById(\'claudeOverlay\').remove()" style="position:absolute;top:12px;right:12px;background:none;border:none;cursor:pointer;color:var(--ink-4);font-size:18px;line-height:1;padding:4px">×</button>',
-    ].join('');
-
-    document.body.appendChild(overlay);
-
-    /* Auto-dismiss after 12s */
-    setTimeout(function() {
-      var el = document.getElementById("claudeOverlay");
-      if (el) { el.style.opacity = "0"; el.style.transition = "opacity 0.3s"; setTimeout(function() { if (el.parentNode) el.remove(); }, 300); }
-    }, 12000);
   }
 
   var sidebarClaudeBtn = document.getElementById("sidebarClaudeBtn");
+  var sidebarClaudeHint = document.getElementById("sidebarClaudeHint");
   if (sidebarClaudeBtn) {
-    sidebarClaudeBtn.addEventListener("click", function() { triggerOpenInClaude(sidebarClaudeBtn); });
+    sidebarClaudeBtn.addEventListener("click", function() {
+      triggerCopyToClaude(sidebarClaudeBtn, sidebarClaudeHint);
+    });
   }
 
   /* Sidebar export button — downloads ZIP with everything */
@@ -4774,7 +4740,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
     });
     h += '</div>';
     h += '<div class="hero__actions">';
-    h += '<button class="hero__claude-btn" id="openInClaudeBtn"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M13.5 3.5c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v8.5H4c-.83 0-1.5.67-1.5 1.5S3.17 15 4 15h6.5v5.5c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5V15H20c.83 0 1.5-.67 1.5-1.5S20.83 12 20 12h-6.5V3.5z" fill="currentColor"/></svg> Open in Claude</button>';
+    h += '<div style="display:flex;align-items:center;gap:10px"><button class="hero__claude-btn" id="openInClaudeBtn"><svg width="15" height="15" viewBox="0 0 512 512" fill="currentColor"><path d="M318.663 149.787h-43.368l78.952 212.423 43.368.004-78.952-212.427zm-125.326 0l-78.952 212.427h44.255l15.932-44.608 82.846-.004 16.107 44.612h44.255l-79.443-212.427zm-8.826 135.418 27.812-77.842 28.464 77.842H184.511z"/></svg> Copy to Claude</button><span id="heroClaudeHint" style="font-size:12px;font-weight:600;color:var(--pos);display:none;align-items:center;gap:5px"></span></div>';
     h += '</div>';
     h += '</div>';
 
@@ -5343,10 +5309,14 @@ button { font: inherit; color: inherit; cursor: pointer; }
       });
     }
 
-    /* Open in Claude (hero button) */
+    /* Copy to Claude (hero button) */
     var claudeBtn = document.getElementById("openInClaudeBtn");
     if (claudeBtn) {
-      claudeBtn.addEventListener("click", function() { triggerOpenInClaude(claudeBtn); });
+      var heroHint = document.getElementById("heroClaudeHint");
+      claudeBtn.addEventListener("click", function() {
+        triggerCopyToClaude(claudeBtn, heroHint);
+        if (heroHint) heroHint.style.display = "flex";
+      });
     }
 
     /* Copy & Download for export section */
