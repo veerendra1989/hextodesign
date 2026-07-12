@@ -1294,9 +1294,9 @@ button { font: inherit; color: inherit; cursor: pointer; }
 
 /* --- Indicators --- */
 .c-badge-wrap { position: relative; display: inline-flex; }
-.c-badge-dot { position: absolute; top: -4px; right: -4px; min-width: 18px; height: 18px; border-radius: 9px; font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; padding: 0 5px; }
-.c-badge-dot--brand { background: var(--brand); color: var(--brand-ink); }
-.c-badge-dot--neg { background: var(--neg); color: #fff; }
+.c-notif-dot { position: absolute; top: -4px; right: -4px; min-width: 18px; height: 18px; border-radius: 9px; font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; padding: 0 5px; }
+.c-notif-dot--brand { background: var(--brand); color: var(--brand-ink); }
+.c-notif-dot--neg { background: var(--neg); color: #fff; }
 
 .c-chip { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 99px; font-size: 12px; font-weight: 500; border: 1px solid var(--line-2); color: var(--ink-2); background: var(--card-bg); cursor: pointer; transition: all 0.12s; }
 .c-chip:hover { background: var(--bg-3); }
@@ -5047,8 +5047,8 @@ button { font: inherit; color: inherit; cursor: pointer; }
     h += '<p class="ds-section-desc">Badges, chips, progress bars, spinners, and steppers.</p>';
 
     h += '<div class="ds-subsection"><div class="ds-subsection-title">Badge</div><div class="ds-preview"><div class="ds-preview-row" style="gap:32px">';
-    h += '<div class="c-badge-wrap"><button class="c-btn c-btn--secondary c-btn--sm"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg> Alerts</button><span class="c-badge-dot c-badge-dot--brand">3</span></div>';
-    h += '<div class="c-badge-wrap"><button class="c-btn c-btn--secondary c-btn--sm"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg> Mail</button><span class="c-badge-dot c-badge-dot--neg">12</span></div>';
+    h += '<div class="c-badge-wrap"><button class="c-btn c-btn--secondary c-btn--sm"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg> Alerts</button><span class="c-notif-dot c-notif-dot--brand">3</span></div>';
+    h += '<div class="c-badge-wrap"><button class="c-btn c-btn--secondary c-btn--sm"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg> Mail</button><span class="c-notif-dot c-notif-dot--neg">12</span></div>';
     h += '</div></div></div>';
 
     h += '<div class="ds-subsection"><div class="ds-subsection-title">Chips</div><div class="ds-preview"><div class="ds-preview-row" style="flex-wrap:wrap;gap:8px">';
