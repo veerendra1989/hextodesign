@@ -1146,7 +1146,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .typo-font-picker { position: relative; margin-left: auto; flex-shrink: 0; }
 .typo-font-btn {
   display: inline-flex; align-items: center; gap: 6px;
-  padding: 5px 11px; border-radius: var(--r-2);
+  padding: 5px 11px; border-radius: 8px;
   border: 1px solid var(--line-2); background: none;
   font-size: 12px; font-weight: 600; color: var(--ink-3);
   cursor: pointer; font-family: inherit;
@@ -1160,9 +1160,9 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .typo-font-picker.open .typo-font-btn svg { transform: rotate(180deg); }
 .typo-font-dropdown {
   position: absolute; right: 0; top: calc(100% + 6px);
-  width: 360px; z-index: 200;
+  width: 300px; z-index: 200;
   background: var(--bg-1); border: 1px solid var(--line);
-  border-radius: var(--r-3);
+  border-radius: 10px;
   box-shadow: 0 8px 32px rgba(0,0,0,0.16), 0 2px 8px rgba(0,0,0,0.08);
   display: grid; grid-template-rows: 0fr; overflow: hidden;
   transition: grid-template-rows 0.26s cubic-bezier(0.4,0,0.2,1);
