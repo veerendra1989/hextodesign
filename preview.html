@@ -47,6 +47,8 @@
   --pos-soft: oklch(0.78 0.14 155 / 0.12); --neg-soft: oklch(0.70 0.18 25 / 0.12); --warn-soft: oklch(0.75 0.16 75 / 0.12); --info-soft: oklch(0.65 0.14 230 / 0.12);
   --f-sans: "Geist", ui-sans-serif, system-ui, sans-serif;
   --f-mono: "Geist Mono", ui-monospace, monospace;
+  --ds-sans: "Geist", ui-sans-serif, system-ui, sans-serif;
+  --ds-mono: "Geist Mono", ui-monospace, monospace;
   --r-1: 4px; --r-2: 6px; --r-3: 10px; --r-4: 14px;
   --shadow-sm: 0 1px 3px rgba(0,0,0,0.10), 0 1px 2px rgba(0,0,0,0.06);
   --shadow-md: 0 4px 12px rgba(0,0,0,0.15);
@@ -318,6 +320,17 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .main-content {
   margin-left: var(--sidebar-w); height: 100vh; overflow-y: auto; overflow-x: hidden;
   background: radial-gradient(900px 500px at 50% -60px, var(--brand-faint), transparent 60%), var(--bg);
+  font-family: var(--ds-sans);
+}
+/* Platform chrome inside main content always uses the fixed UI font */
+.ds-hero, .ds-hero h1, .ds-hero p,
+.ds-hero-stat-val, .ds-hero-stat-label, .ds-hero button,
+.ds-section-header, .ds-section-title, .ds-section-desc,
+.typo-font-btn, .typo-font-search, .typo-font-group-label,
+.typo-font-item-name, .typo-font-empty,
+.export-tab, .export-tab-panel,
+.btn-set-label, .color-ramp-label, .color-token-label {
+  font-family: var(--f-sans);
 }
 .ds-body { max-width: 1000px; margin: 0 auto; padding: 32px 32px 100px; }
 
@@ -4388,8 +4401,8 @@ button { font: inherit; color: inherit; cursor: pointer; }
       link.rel = "stylesheet"; link.href = font.googleUrl; link.setAttribute("data-font", "1");
       document.head.appendChild(link);
     }
-    root.style.setProperty("--f-sans", font.cssVar);
-    root.style.setProperty("--f-mono", font.monoVar);
+    root.style.setProperty("--ds-sans", font.cssVar);
+    root.style.setProperty("--ds-mono", font.monoVar);
   }
 
   /* ═══ Theme toggle ═══ */
@@ -5013,8 +5026,8 @@ button { font: inherit; color: inherit; cursor: pointer; }
 
     root.style.setProperty("--brand-h", ds.color.hue.toFixed(1));
     root.style.setProperty("--brand-c", Math.min(0.20, Math.max(0.06, ds.color.chroma)).toFixed(3));
-    if (typo.families.cssVar) root.style.setProperty("--f-sans", typo.families.cssVar);
-    if (typo.families.monoVar) root.style.setProperty("--f-mono", typo.families.monoVar);
+    if (typo.families.cssVar) root.style.setProperty("--ds-sans", typo.families.cssVar);
+    if (typo.families.monoVar) root.style.setProperty("--ds-mono", typo.families.monoVar);
     loadFont(fontConf);
     setTheme(currentTheme);
 
