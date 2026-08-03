@@ -1155,22 +1155,37 @@ button { font: inherit; color: inherit; cursor: pointer; }
   transition: grid-template-rows 0.26s cubic-bezier(0.4,0,0.2,1);
 }
 .typo-font-picker.open .typo-font-dropdown { grid-template-rows: 1fr; }
-.typo-font-dropdown-inner { overflow-y: auto; max-height: 400px; }
+.typo-font-dropdown-inner { display: flex; flex-direction: column; overflow: hidden; }
+.typo-font-search-wrap {
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 12px; border-bottom: 1px solid var(--line-2); flex-shrink: 0;
+}
+.typo-font-search-icon { width: 14px; height: 14px; flex-shrink: 0; color: var(--ink-4); }
+.typo-font-search {
+  flex: 1; background: none; border: none; outline: none;
+  font-size: 12px; font-family: inherit; color: var(--ink);
+}
+.typo-font-search::placeholder { color: var(--ink-4); }
+.typo-font-list { overflow-y: auto; max-height: 360px; }
+.typo-font-group-label {
+  padding: 8px 14px 4px; font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.07em; color: var(--ink-4);
+  position: sticky; top: 0; background: var(--bg-1); z-index: 1;
+}
 .typo-font-item {
-  padding: 12px 16px; cursor: pointer;
+  padding: 10px 14px; cursor: pointer;
   border-bottom: 1px solid var(--line-2);
-  opacity: 0; transform: translateY(-4px);
-  transition: background 0.13s, opacity 0.22s ease, transform 0.22s ease;
+  transition: background 0.13s;
 }
 .typo-font-item:last-child { border-bottom: none; }
 .typo-font-item:hover { background: var(--bg-2); }
-.typo-font-picker.open .typo-font-item { opacity: 1; transform: translateY(0); }
 .typo-font-item.active { background: var(--bg-2); }
 .typo-font-item-name { font-size: 11px; font-weight: 700; color: var(--ink-3);
-  text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
+  text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 3px; }
 .typo-font-item.active .typo-font-item-name { color: var(--brand); }
-.typo-font-item-preview { font-size: 22px; color: var(--ink); line-height: 1.25;
+.typo-font-item-preview { font-size: 20px; color: var(--ink); line-height: 1.25;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.typo-font-empty { padding: 20px 14px; font-size: 12px; color: var(--ink-4); text-align: center; }
 
 .add-palette-swatch-pick {
   width: 36px; height: 36px; border-radius: 8px;
@@ -5155,13 +5170,11 @@ button { font: inherit; color: inherit; cursor: pointer; }
     h += '<button class="typo-font-btn" id="typoFontBtn">' + esc(typo.families.sans);
     h += '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></button>';
     h += '<div class="typo-font-dropdown" id="typoFontDropdown"><div class="typo-font-dropdown-inner">';
-    FONT_PAIRINGS.forEach(function(f) {
-      var isActive = fontConf && fontConf.id === f.id;
-      h += '<div class="typo-font-item' + (isActive ? ' active' : '') + '" data-font-id="' + f.id + '">';
-      h += '<div class="typo-font-item-name">' + esc(f.name) + '</div>';
-      h += '<div class="typo-font-item-preview" style="font-family:' + f.cssVar + '">Everyone has the right to freedom of thought</div>';
-      h += '</div>';
-    });
+    h += '<div class="typo-font-search-wrap">';
+    h += '<svg class="typo-font-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>';
+    h += '<input type="text" class="typo-font-search" id="typoFontSearch" placeholder="Search all fonts..." autocomplete="off">';
+    h += '</div>';
+    h += '<div class="typo-font-list" id="typoFontList"></div>';
     h += '</div></div></div>';
     h += '</div>';
     h += '<p class="ds-section-desc">' + esc(typo.families.sans) + ' as the primary typeface. Major Third (' + typo.ratio + ') modular scale from a ' + typo.base + 'px base.</p>';
@@ -5833,31 +5846,101 @@ button { font: inherit; color: inherit; cursor: pointer; }
       if (typoFontBtn && !typoFontBtn._typoBound) {
         typoFontBtn._typoBound = true;
 
+        function renderTypoFontList(query) {
+          var fontList = document.getElementById("typoFontList");
+          if (!fontList) return;
+          var q = (query || "").trim();
+          var results = q ? filterFonts(q) : { pairings: FONT_PAIRINGS, google: GOOGLE_FONTS.slice(0, 40) };
+          var activeId = fontConf ? fontConf.id : null;
+          var html = "";
+
+          if (results.pairings.length > 0) {
+            html += '<div class="typo-font-group-label">Recommended Pairings</div>';
+            results.pairings.forEach(function(f) {
+              var cls = "typo-font-item" + (f.id === activeId ? " active" : "");
+              html += '<div class="' + cls + '" data-font-type="pairing" data-font-id="' + f.id + '">';
+              html += '<div class="typo-font-item-name">' + f.name + '</div>';
+              var fCss = f.cssVar.replace(/"/g, "'");
+              html += '<div class="typo-font-item-preview" style="font-family:' + fCss + '">The quick brown fox</div>';
+              html += '</div>';
+            });
+          }
+
+          if (results.google.length > 0) {
+            html += '<div class="typo-font-group-label">Google Fonts</div>';
+            results.google.forEach(function(name) {
+              var gId = name.toLowerCase().replace(/\s+/g, "-");
+              var cls = "typo-font-item" + (gId === activeId ? " active" : "");
+              var familyCss = "'" + name + "', sans-serif";
+              html += '<div class="' + cls + '" data-font-type="google" data-font-name="' + name + '">';
+              html += '<div class="typo-font-item-name">' + name + '</div>';
+              html += '<div class="typo-font-item-preview" style="font-family:' + familyCss + '">The quick brown fox</div>';
+              html += '</div>';
+            });
+
+            /* Batch-load Google Fonts shown in list */
+            var toLoad = results.google.filter(function(name) {
+              return !document.querySelector('link[data-gf="' + name + '"]');
+            });
+            if (toLoad.length > 0) {
+              var url = "https://fonts.googleapis.com/css2?" + toLoad.map(function(name) {
+                return "family=" + name.replace(/\s+/g, "+") + ":wght@400";
+              }).join("&") + "&display=swap";
+              var lnk = document.createElement("link");
+              lnk.rel = "stylesheet"; lnk.href = url;
+              toLoad.forEach(function(name) { lnk.setAttribute("data-gf", name); });
+              document.head.appendChild(lnk);
+            }
+          }
+
+          if (!html) {
+            html = '<div class="typo-font-empty">No fonts found</div>';
+          }
+
+          fontList.innerHTML = html;
+
+          fontList.querySelectorAll(".typo-font-item").forEach(function(item) {
+            item.addEventListener("click", function() {
+              var type = item.getAttribute("data-font-type");
+              var f;
+              if (type === "pairing") {
+                var fontId = item.getAttribute("data-font-id");
+                f = FONT_PAIRINGS.find(function(x) { return x.id === fontId; });
+              } else {
+                var name = item.getAttribute("data-font-name");
+                f = makeGoogleFontConf(name);
+              }
+              if (!f) return;
+              fontConf = f;
+              try { localStorage.setItem("pp-font", JSON.stringify(fontConf)); } catch(e2) {}
+              typoFontPicker.classList.remove("open");
+              var fontSearch = document.getElementById("fontSearch");
+              if (fontSearch) fontSearch.value = f.name + (f.tag ? " · " + f.tag : "");
+              var fontPreviewEl = document.getElementById("fontPreview");
+              if (fontPreviewEl) fontPreviewEl.style.fontFamily = f.cssVar;
+              loadFont(f); triggerRegen();
+            });
+          });
+        }
+
         typoFontBtn.addEventListener("click", function(e) {
           e.stopPropagation();
-          typoFontPicker.classList.toggle("open");
+          var isOpen = typoFontPicker.classList.toggle("open");
+          if (isOpen) {
+            var typoSearch = document.getElementById("typoFontSearch");
+            renderTypoFontList(typoSearch ? typoSearch.value : "");
+            if (typoSearch) { typoSearch.value = ""; setTimeout(function() { typoSearch.focus(); }, 50); }
+          }
         });
 
-        typoFontDropdown.querySelectorAll(".typo-font-item").forEach(function(item) {
-          item.addEventListener("click", function() {
-            var fontId = item.getAttribute("data-font-id");
-            var f = FONT_PAIRINGS.find(function(x) { return x.id === fontId; });
-            if (!f || (fontConf && fontConf.id === f.id)) {
-              typoFontPicker.classList.remove("open");
-              return;
-            }
-            fontConf = f;
-            try { localStorage.setItem("pp-font", JSON.stringify(fontConf)); } catch(e) {}
-            typoFontPicker.classList.remove("open");
-            /* Sync sidebar picker display */
-            var fontSearch = document.getElementById("fontSearch");
-            if (fontSearch) fontSearch.value = f.name + (f.tag ? " · " + f.tag : "");
-            var fontPreviewEl = document.getElementById("fontPreview");
-            if (fontPreviewEl) fontPreviewEl.style.fontFamily = f.cssVar;
-            loadFont(f);
-            triggerRegen();
+        var typoSearchEl = document.getElementById("typoFontSearch");
+        if (typoSearchEl && !typoSearchEl._typoBound) {
+          typoSearchEl._typoBound = true;
+          typoSearchEl.addEventListener("input", function() {
+            renderTypoFontList(typoSearchEl.value);
           });
-        });
+          typoSearchEl.addEventListener("click", function(e) { e.stopPropagation(); });
+        }
 
         document.addEventListener("click", function closeTypoPicker(e) {
           if (typoFontPicker && !typoFontPicker.contains(e.target)) {
