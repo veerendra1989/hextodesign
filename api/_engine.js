@@ -224,7 +224,7 @@ function generateTypeScale(fontConfig) {
   var cssVar = fontConfig ? fontConfig.cssVar : '"Geist", ui-sans-serif, sans-serif';
   var monoVar = fontConfig ? fontConfig.monoVar : '"Geist Mono", ui-monospace, monospace';
 
-  function round(n) { return Math.round(n * 100) / 100; }
+  function round(n) { return Math.round(n); }
 
   var scale = {
     "display":  { size: round(base * Math.pow(ratio, 5)), weight: 700, lineHeight: 1.1,  letterSpacing: "-0.04em" },

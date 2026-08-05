@@ -349,6 +349,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 :root[data-ds-style="pill"] .c-btn { border-radius: 9999px; padding: 0 22px; }
 :root[data-ds-style="pill"] .c-btn--sm { padding: 0 16px; }
 :root[data-ds-style="pill"] .c-btn--lg { padding: 0 28px; }
+:root[data-ds-style="pill"] .c-btn--xl { border-radius: 9999px; padding: 0 40px; }
 :root[data-ds-style="pill"] .c-input { border-radius: 9999px; padding: 0 20px; }
 :root[data-ds-style="pill"] .c-select { border-radius: 9999px; padding: 0 40px 0 20px; }
 :root[data-ds-style="pill"] .c-tooltip { border-radius: 9999px; padding: 6px 14px; }
@@ -377,11 +378,39 @@ button { font: inherit; color: inherit; cursor: pointer; }
 :root[data-ds-style="pill"] .chart-palette { border-radius: 8px; }
 
 /* ═══ Edge style overrides ═══ */
-:root[data-ds-style="edge"] .c-bottom-sheet { border-radius: 0; }
-:root[data-ds-style="edge"] .dropdown-menu { border-radius: 2px; }
-:root[data-ds-style="edge"] .hero__style-trigger { border-radius: 2px; }
-:root[data-ds-style="edge"] .hero__style-panel { border-radius: 4px; }
-:root[data-ds-style="edge"] .hero__style-option { border-radius: 2px; }
+:root[data-ds-style="edge"] {
+  --r-1: 0px; --r-2: 0px; --r-3: 0px; --r-4: 0px;
+}
+:root[data-ds-style="edge"] .c-btn,
+:root[data-ds-style="edge"] .c-input,
+:root[data-ds-style="edge"] .c-select,
+:root[data-ds-style="edge"] .c-textarea,
+:root[data-ds-style="edge"] .c-tag,
+:root[data-ds-style="edge"] .c-badge,
+:root[data-ds-style="edge"] .c-alert,
+:root[data-ds-style="edge"] .c-tooltip,
+:root[data-ds-style="edge"] .c-card,
+:root[data-ds-style="edge"] .c-dropzone,
+:root[data-ds-style="edge"] .c-bottom-sheet,
+:root[data-ds-style="edge"] .c-field__input,
+:root[data-ds-style="edge"] .c-field__textarea,
+:root[data-ds-style="edge"] .dropdown-menu,
+:root[data-ds-style="edge"] .hero__style-trigger,
+:root[data-ds-style="edge"] .hero__style-panel,
+:root[data-ds-style="edge"] .hero__style-option,
+:root[data-ds-style="edge"] .theme-card,
+:root[data-ds-style="edge"] .theme-card__btn,
+:root[data-ds-style="edge"] .theme-card__input,
+:root[data-ds-style="edge"] .focus-demo,
+:root[data-ds-style="edge"] .skeleton,
+:root[data-ds-style="edge"] .chart-bar,
+:root[data-ds-style="edge"] .chart-palette,
+:root[data-ds-style="edge"] .motion-card,
+:root[data-ds-style="edge"] .metric-card,
+:root[data-ds-style="edge"] .ds-section-num,
+:root[data-ds-style="edge"] .ds-hero,
+:root[data-ds-style="edge"] .color-ramp,
+:root[data-ds-style="edge"] .radius-box { border-radius: 0 !important; }
 
 /* ══════════════════════════════════════════════════════════
    LIQUID GLASS UI  —  Apple-inspired material system
@@ -1008,6 +1037,9 @@ button { font: inherit; color: inherit; cursor: pointer; }
    ═══════════════════════════════════════════ */
 .ds-section { margin-bottom: 48px; }
 .ds-section-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--line); }
+.ds-section-header:has(.typo-font-picker),
+.ds-section-header--no-line,
+#typography .ds-section-header { border-bottom: none !important; padding-bottom: 0 !important; }
 .ds-section-num { font-size: 11px; font-weight: 700; color: var(--ink-4); background: var(--bg-2); padding: 3px 10px; border-radius: var(--r-2); letter-spacing: 0.5px; font-family: var(--f-mono); }
 :root[data-theme="light"] .ds-section-num { background: var(--bg-3); }
 .ds-section-title { font-size: 20px; font-weight: 700; letter-spacing: -0.3px; }
@@ -1145,17 +1177,17 @@ button { font: inherit; color: inherit; cursor: pointer; }
 /* ── Typography section font picker ── */
 .typo-font-picker { position: relative; margin-left: auto; flex-shrink: 0; }
 .typo-font-btn {
-  display: inline-flex; align-items: center; gap: 6px;
-  padding: 5px 11px; border-radius: 8px;
+  display: inline-flex; align-items: center; justify-content: space-between; gap: 6px;
+  width: 300px; height: 36px; padding: 0 11px; border-radius: 8px;
   border: 1px solid var(--line-2); background: none;
   font-size: 12px; font-weight: 600; color: var(--ink-3);
   cursor: pointer; font-family: inherit;
   transition: color 0.13s, border-color 0.13s, background 0.13s;
-  white-space: nowrap;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .typo-font-btn:hover { color: var(--ink); border-color: var(--ink-3); background: var(--bg-2); }
-.typo-font-btn:active { transform: scale(0.95); }
-.typo-font-btn svg { width: 12px; height: 12px; flex-shrink: 0;
+.typo-font-btn:active { }
+.typo-font-btn svg { width: 18px; height: 18px; flex-shrink: 0;
   transition: transform 0.24s cubic-bezier(0.4,0,0.2,1); }
 .typo-font-picker.open .typo-font-btn svg { transform: rotate(180deg); }
 .typo-font-dropdown {
@@ -1171,7 +1203,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .typo-font-dropdown-inner { display: flex; flex-direction: column; overflow: hidden; }
 .typo-font-search-wrap {
   display: flex; align-items: center; gap: 8px;
-  padding: 10px 12px; border-bottom: 1px solid var(--line-2); flex-shrink: 0;
+  padding: 10px 12px; flex-shrink: 0;
 }
 .typo-font-search-icon { width: 14px; height: 14px; flex-shrink: 0; color: var(--ink-4); }
 .typo-font-search {
@@ -1278,6 +1310,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .c-btn--danger:hover { opacity: 0.9; }
 .c-btn--sm { height: 30px; padding: 0 12px; font-size: 12px; }
 .c-btn--lg { height: 42px; padding: 0 20px; font-size: 14px; }
+.c-btn--xl { height: 52px; padding: 0 32px; font-size: 16px; font-weight: 600; letter-spacing: -0.01em; }
 .c-btn:disabled { opacity: 0.4; cursor: not-allowed; pointer-events: none; }
 .c-btn:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
 .c-input:focus-visible, .c-select:focus-visible, .c-textarea:focus-visible { outline: none; }
@@ -3745,7 +3778,8 @@ button { font: inherit; color: inherit; cursor: pointer; }
     L.push("The design-system.css file is already imported. ALWAYS use its classes — never write custom CSS.");
     L.push("");
     L.push("DESIGN SYSTEM IDENTITY");
-    L.push("- Brand color: " + brand500 + " → use var(--brand)");
+    L.push("- Brand identity: " + brand500 + " → var(--brand-500) [decorative use only: logos, icons, badges — NEVER for buttons]");
+    L.push("- Brand interactive: var(--brand) [WCAG AA-compliant version of the brand — use for ALL buttons, links, focus rings]");
     L.push("- Font: '" + ty.families.sans + "' → use var(--font-sans)");
     L.push("- Mono: '" + ty.families.mono + "' → use var(--font-mono)");
     L.push("- Style: " + style + " — " + (style === "soft" ? "6px corners, balanced" : style === "edge" ? "sharp 2px corners, minimal" : "pill-shaped buttons, generous curves"));
@@ -3753,11 +3787,11 @@ button { font: inherit; color: inherit; cursor: pointer; }
     L.push("");
     L.push("THE 10 RULES (never break these)");
     L.push("1. Use CSS class names from design-system.css — never write border-radius, colors, or font-size inline");
-    L.push("2. Primary buttons: class=\"c-btn c-btn--primary\" — max ONE per view");
+    L.push("2. Primary buttons: class=\"c-btn c-btn--primary\" — uses var(--brand) which is already WCAG AA compliant — max ONE per view");
     L.push("3. Secondary actions: class=\"c-btn c-btn--secondary\" or class=\"c-btn c-btn--ghost\"");
     L.push("4. Inputs ALWAYS need a label above them — never float labels");
     L.push("5. Spacing: use gap, padding, margin with multiples of " + sp.base + "px only (4, 8, 12, 16, 24, 32...)");
-    L.push("6. Colors via CSS variables — never raw hex. var(--brand), var(--pos), var(--neg), var(--ink), var(--bg-2)");
+    L.push("6. Colors via CSS variables — never raw hex. NEVER adjust colors yourself — the design system pre-computes WCAG AA compliance. var(--brand), var(--pos), var(--neg), var(--ink), var(--bg-2)");
     L.push("7. Icons: stroke-style SVG, 16px inline, 20px in buttons, 24px standalone");
     L.push("8. Cards use class=\"c-card\" — never build card structure from scratch");
     L.push("9. Shadows only on floating elements (modals, dropdowns, tooltips) — never on cards in flat layouts");
@@ -3772,24 +3806,30 @@ button { font: inherit; color: inherit; cursor: pointer; }
     L.push("");
     L.push("### Colors");
     L.push("```css");
-    L.push("/* Brand palette */");
+    L.push("/* Brand palette — identity stops (decorative use only) */");
     Object.keys(b).forEach(function(s) {
-      L.push("--brand-" + s + ": " + b[s].hex + ";");
+      var note = s === "500" ? "  /* ← original input — identity color, NOT for interactive elements */" : "";
+      L.push("--brand-" + s + ": " + b[s].hex + ";" + note);
     });
     L.push("");
-    L.push("/* Semantic */");
-    L.push("--pos:  " + sem.pos.base + ";   /* success */");
-    L.push("--neg:  " + sem.neg.base + ";   /* error / danger */");
-    L.push("--warn: " + sem.warn.base + ";  /* warning */");
-    L.push("--info: " + sem.info.base + ";  /* informational */");
+    L.push("/* ⚠ ALL colors below are reference only. Use CSS variables in code — NEVER raw hex. */");
+    L.push("/* ⚠ Every value is pre-computed for WCAG AA. Do NOT substitute or adjust any color. */");
+    L.push("/* var(--brand) = WCAG AA-compliant interactive brand (use for buttons, links, focus rings) */");
+    L.push("/* var(--brand-500) = identity-only (logos, decorative — not for interactive elements) */");
     L.push("");
-    L.push("/* Text */");
+    L.push("/* Semantic — pre-computed, WCAG AA compliant — use vars only */");
+    L.push("--pos:  " + sem.pos.base + ";   /* success — use var(--pos) */");
+    L.push("--neg:  " + sem.neg.base + ";   /* error / danger — use var(--neg) */");
+    L.push("--warn: " + sem.warn.base + ";  /* warning — use var(--warn) */");
+    L.push("--info: " + sem.info.base + ";  /* informational — use var(--info) */");
+    L.push("");
+    L.push("/* Text — use vars only, never hardcode */");
     L.push("--ink:   (primary text)");
     L.push("--ink-2: (secondary text)");
     L.push("--ink-3: (placeholder / caption)");
     L.push("--ink-4: (disabled / muted)");
     L.push("");
-    L.push("/* Surfaces */");
+    L.push("/* Surfaces — use vars only, never hardcode */");
     L.push("--bg:   (page background)");
     L.push("--bg-1: (slightly elevated)");
     L.push("--bg-2: (card / panel)");
@@ -3836,6 +3876,10 @@ button { font: inherit; color: inherit; cursor: pointer; }
     L.push("<!-- Sizes -->");
     L.push("<button class=\"c-btn c-btn--primary c-btn--sm\">Small</button>");
     L.push("<button class=\"c-btn c-btn--primary c-btn--lg\">Large</button>");
+    L.push("");
+    L.push("<!-- Mobile CTA (XL) — 52px height, full-width, min 48px touch target -->");
+    L.push("<button class=\"c-btn c-btn--primary c-btn--xl\" style=\"width:100%\">Get started</button>");
+    L.push("<!-- Use c-btn--xl for primary CTAs on mobile screens. Always full-width on mobile. -->");
     L.push("");
     L.push("<!-- With icon -->");
     L.push("<button class=\"c-btn c-btn--primary\">");
@@ -4135,8 +4179,19 @@ button { font: inherit; color: inherit; cursor: pointer; }
   }
 
   /* Download a single format file */
+  function _guardDirty() {
+    if (_isDirty) {
+      regenBtn.scrollIntoView({ behavior: "smooth", block: "center" });
+      regenBtn.classList.add("pulse");
+      alert("Your design system settings have changed — click Generate to update before exporting.");
+      return true;
+    }
+    return false;
+  }
+
   function triggerExportDownload(format, ext, btnEl) {
     if (!_exportData) { alert("Generate a design system first"); return; }
+    if (_guardDirty()) return;
     var content;
     try {
     if (format === "css") content = buildFullCSS(_exportData);
@@ -4177,6 +4232,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
   /* Download ALL formats as a ZIP bundle */
   function triggerZipDownload(btnEl) {
     if (!_exportData) { alert("Generate a design system first"); return; }
+    if (_guardDirty()) return;
     var origHTML = btnEl.innerHTML;
     btnEl.disabled = true;
     btnEl.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="animation:spin 0.6s linear infinite"><path d="M12 3V6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 18V21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 12H6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M18 12H21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M5.63607 5.63623L7.75739 7.75755" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M16.2427 16.2427L18.364 18.364" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M5.63604 18.364L7.75736 16.2427" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M16.2427 7.75736L18.364 5.63604" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Building...';
@@ -4269,6 +4325,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
   /* Copy to Claude — copies full prompt.md, shows inline hint */
   function triggerCopyToClaude(btnEl, hintEl) {
     if (!_exportData) { alert("Generate a design system first"); return; }
+    if (_guardDirty()) return;
     var fullPrompt = buildPromptMD(_exportData);
     navigator.clipboard.writeText(fullPrompt).then(function() {
       /* Button: brief copied state */
@@ -4434,10 +4491,10 @@ button { font: inherit; color: inherit; cursor: pointer; }
     } else {
       brandL = mode === "light" ? Math.max(0.62, srcOklch.L) : Math.max(0.78, srcOklch.L);
       if (mode === "light") brandC = Math.min(0.16, brandC);
-      root.style.setProperty("--brand-ink", "oklch(0.18 0.05 " + H.toFixed(1) + ")");
       var brandHex = PPColorUtils.oklchToHex(brandL, brandC, H);
       var brandRgb = PPColorUtils.hexToRgb(brandHex);
       var brandLum = 0.2126 * brandRgb[0] + 0.7152 * brandRgb[1] + 0.0722 * brandRgb[2];
+      root.style.setProperty("--brand-ink", (1.05 / (brandLum + 0.05)) >= 2.0 ? "#fff" : "oklch(0.18 0.05 " + H.toFixed(1) + ")");
       var pageLum = mode === "light" ? 0.92 : 0.01;
       var ratio = (Math.max(brandLum, pageLum) + 0.05) / (Math.min(brandLum, pageLum) + 0.05);
       if (ratio < 2.5) {
@@ -4587,6 +4644,31 @@ button { font: inherit; color: inherit; cursor: pointer; }
   var addColorBtn = document.getElementById("addColorBtn");
   var colorIdCounter = brandColors.length;
 
+  function liveUpdateBrand(newHex) {
+    try {
+      var srcRgb = PPColorUtils.hexToRgb(newHex);
+      var srcOklch = PPColorUtils.rgbToOklch(srcRgb[0], srcRgb[1], srcRgb[2]);
+      var H = srcOklch.H;
+      var brandC = Math.min(0.20, Math.max(0.06, srcOklch.C));
+      var isDarkBrand = srcOklch.L < 0.65;
+      var brandL;
+      root.style.setProperty("--brand-h", H.toFixed(1));
+      root.style.setProperty("--brand-c", brandC.toFixed(3));
+      if (isDarkBrand) {
+        brandL = Math.max(0.30, srcOklch.L);
+        root.style.setProperty("--brand-l", brandL.toFixed(2));
+        root.style.setProperty("--brand-ink", "#fff");
+      } else {
+        brandL = currentTheme === "light" ? Math.max(0.62, srcOklch.L) : Math.max(0.78, srcOklch.L);
+        root.style.setProperty("--brand-l", brandL.toFixed(2));
+        var adjHex = PPColorUtils.oklchToHex(brandL, brandC, H);
+        var adjRgb = PPColorUtils.hexToRgb(adjHex);
+        var adjLum = 0.2126 * adjRgb[0] + 0.7152 * adjRgb[1] + 0.0722 * adjRgb[2];
+        root.style.setProperty("--brand-ink", (1.05 / (adjLum + 0.05)) >= 2.0 ? "#fff" : "oklch(0.18 0.05 " + H.toFixed(1) + ")");
+      }
+    } catch(e) {}
+  }
+
   function saveColors() {
     try { localStorage.setItem("pp-colors", JSON.stringify(brandColors)); } catch(e) {}
   }
@@ -4650,7 +4732,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
           brandColors[idx].hex = newHex;
           swatch.style.background = newHex;
           picker.value = newHex;
-          if (idx === 0) { hex = newHex; root.style.setProperty("--brand-h", PPColorUtils.rgbToOklch.apply(null, PPColorUtils.hexToRgb(newHex)).H.toFixed(1)); }
+          if (idx === 0) { hex = newHex; liveUpdateBrand(newHex); }
           saveColors();
           markDirty();
         }
@@ -4660,7 +4742,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
         brandColors[idx].hex = newHex;
         textInput.value = newHex.replace("#","");
         swatch.style.background = newHex;
-        if (idx === 0) { hex = newHex; root.style.setProperty("--brand-h", PPColorUtils.rgbToOklch.apply(null, PPColorUtils.hexToRgb(newHex)).H.toFixed(1)); }
+        if (idx === 0) { hex = newHex; liveUpdateBrand(newHex); }
         saveColors();
         markDirty();
       });
@@ -5177,7 +5259,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 
     /* ═══ 02 TYPOGRAPHY ═══ */
     h += '<section class="ds-section" id="typography">';
-    h += '<div class="ds-section-header"><span class="ds-section-num">02</span><h2 class="ds-section-title">Typography</h2>';
+    h += '<div class="ds-section-header ds-section-header--no-line" style="border-bottom:none;padding-bottom:0"><span class="ds-section-num">02</span><h2 class="ds-section-title">Typography</h2>';
     /* Font picker dropdown */
     h += '<div class="typo-font-picker" id="typoFontPicker">';
     h += '<button class="typo-font-btn" id="typoFontBtn">' + esc(typo.families.sans);
@@ -5200,25 +5282,9 @@ button { font: inherit; color: inherit; cursor: pointer; }
     });
     h += '</div></section>';
 
-    /* ═══ 03 SPACING ═══ */
-    h += '<section class="ds-section" id="elevation">';
-    h += '<div class="ds-section-header"><span class="ds-section-num">03</span><h2 class="ds-section-title">Elevation &amp; radius</h2></div>';
-    h += '<div class="ds-subsection"><div class="ds-subsection-title">Border radius</div><div class="ds-preview"><div class="radius-grid">';
-    Object.keys(radius).forEach(function(key) {
-      h += '<div class="radius-cell"><div class="radius-box" style="border-radius:' + radius[key] + '"></div><div class="radius-name">' + esc(key) + '</div><div class="radius-val">' + radius[key] + '</div></div>';
-    });
-    h += '</div></div></div>';
-    h += '<div class="ds-subsection"><div class="ds-subsection-title">Shadows</div><div class="ds-preview"><div class="ds-preview-row" style="gap:24px">';
-    Object.keys(shadows).forEach(function(key) {
-      h += '<div class="elevation-demo" style="background:var(--card-bg);border:1px solid var(--line);box-shadow:' + shadows[key] + '">' + esc(key) + '</div>';
-    });
-    h += '</div></div><div class="ds-spec">';
-    Object.keys(radius).forEach(function(key) { h += '<span class="k">--radius-' + key + ':</span> <span class="v">' + radius[key] + '</span>;\n'; });
-    h += '</div></div></section>';
-
-    /* ═══ 05 BUTTONS ═══ */
+    /* ═══ 03 BUTTONS ═══ */
     h += '<section class="ds-section" id="buttons">';
-    h += '<div class="ds-section-header"><span class="ds-section-num">04</span><h2 class="ds-section-title">Buttons</h2></div>';
+    h += '<div class="ds-section-header"><span class="ds-section-num">03</span><h2 class="ds-section-title">Buttons</h2></div>';
     h += '<p class="ds-section-desc">Four variants with clear hierarchy. Height: 36px default. Maximum one Primary button per view.</p>';
     h += '<div class="ds-subsection"><div class="ds-subsection-title">Variants</div><div class="ds-preview"><div class="ds-preview-label">DEFAULT SIZE (36px)</div><div class="ds-preview-row">';
     h += '<button class="c-btn c-btn--primary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Create new</button>';
@@ -5231,11 +5297,17 @@ button { font: inherit; color: inherit; cursor: pointer; }
     h += '<button class="c-btn c-btn--primary">Default (36px)</button>';
     h += '<button class="c-btn c-btn--primary c-btn--lg">Large (42px)</button>';
     h += '<button class="c-btn c-btn--primary" disabled>Disabled</button>';
+    h += '</div></div></div>';
+    h += '<div class="ds-subsection"><div class="ds-subsection-title">Mobile CTA (XL)</div><div class="ds-preview">';
+    h += '<p style="font-size:12px;color:var(--ink-3);margin-bottom:12px">52px height · min 48px touch target · use full-width for mobile primary actions</p>';
+    h += '<div style="max-width:360px;display:flex;flex-direction:column;gap:10px">';
+    h += '<button class="c-btn c-btn--primary c-btn--xl" style="width:100%">Get started — it\'s free</button>';
+    h += '<button class="c-btn c-btn--secondary c-btn--xl" style="width:100%">Learn more</button>';
     h += '</div></div></div></section>';
 
-    /* ═══ 06 FORMS ═══ */
+    /* ═══ 04 FORMS ═══ */
     h += '<section class="ds-section" id="forms">';
-    h += '<div class="ds-section-header"><span class="ds-section-num">05</span><h2 class="ds-section-title">Form elements</h2></div>';
+    h += '<div class="ds-section-header"><span class="ds-section-num">04</span><h2 class="ds-section-title">Form elements</h2></div>';
     h += '<p class="ds-section-desc">All inputs share: 44px height, 1px border, ' + radius.sm + ' radius. Focus state uses brand border + brand-faint ring.</p>';
     h += '<div class="ds-subsection"><div class="ds-subsection-title">Text inputs</div><div class="ds-preview"><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;max-width:720px">';
     h += '<div class="input-group"><label class="input-label">Full name</label><input class="c-input" value="Alex Morgan"/></div>';
@@ -5259,6 +5331,22 @@ button { font: inherit; color: inherit; cursor: pointer; }
     ["Design","Tokens","OKLCH"].forEach(function(t) { h += '<span class="c-tag">' + t + ' <span class="c-tag-remove" onclick="this.parentElement.remove()"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span></span>'; });
     h += '<button class="c-btn c-btn--ghost c-btn--sm"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Add tag</button>';
     h += '</div></div></div></section>';
+
+    /* ═══ 05 ELEVATION ═══ */
+    h += '<section class="ds-section" id="elevation">';
+    h += '<div class="ds-section-header"><span class="ds-section-num">05</span><h2 class="ds-section-title">Elevation &amp; radius</h2></div>';
+    h += '<div class="ds-subsection"><div class="ds-subsection-title">Border radius</div><div class="ds-preview"><div class="radius-grid">';
+    Object.keys(radius).forEach(function(key) {
+      h += '<div class="radius-cell"><div class="radius-box" style="border-radius:' + radius[key] + '"></div><div class="radius-name">' + esc(key) + '</div><div class="radius-val">' + radius[key] + '</div></div>';
+    });
+    h += '</div></div></div>';
+    h += '<div class="ds-subsection"><div class="ds-subsection-title">Shadows</div><div class="ds-preview"><div class="ds-preview-row" style="gap:24px">';
+    Object.keys(shadows).forEach(function(key) {
+      h += '<div class="elevation-demo" style="background:var(--card-bg);border:1px solid var(--line);box-shadow:' + shadows[key] + '">' + esc(key) + '</div>';
+    });
+    h += '</div></div><div class="ds-spec">';
+    Object.keys(radius).forEach(function(key) { h += '<span class="k">--radius-' + key + ':</span> <span class="v">' + radius[key] + '</span>;\n'; });
+    h += '</div></div></section>';
 
     /* ═══ 07 DATA DISPLAY ═══ */
     h += '<section class="ds-section" id="data">';
