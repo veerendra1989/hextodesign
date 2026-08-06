@@ -206,21 +206,28 @@ button { font: inherit; color: inherit; cursor: pointer; }
 }
 .sidebar__add-color:hover { border-color: var(--brand); color: var(--brand); background: var(--brand-faint); }
 .sidebar__add-color svg { width: 12px; height: 12px; }
-.sidebar__generate-btn {
-  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-  width: calc(100% - 32px); margin: 12px 16px; padding: 12px 18px;
-  border: 1px solid transparent; border-radius: 6px;
-  background: var(--brand); color: var(--brand-ink);
-  font-size: 14px; font-weight: 600; letter-spacing: -0.005em;
-  cursor: pointer; white-space: nowrap;
-  box-shadow: 0 0 0 1px rgba(255,255,255,0.06) inset, 0 10px 30px -8px var(--brand-soft);
-  transition: transform 120ms ease, background 200ms, box-shadow 200ms, filter 200ms;
+/* inline generate bar */
+.inline-regen-wrap {
+  display: flex; align-items: center; gap: 14px;
+  margin: 0 0 32px; padding: 16px 20px;
+  border: 1px solid var(--line-2); border-radius: var(--r-3);
+  background: var(--bg-1);
 }
-.sidebar__generate-btn:hover { transform: translateY(-1px); filter: brightness(1.05); box-shadow: 0 0 0 1px rgba(255,255,255,0.15) inset, 0 14px 40px -8px var(--brand-soft); }
-.sidebar__generate-btn:active { transform: translateY(0); }
-.sidebar__generate-btn.loading { opacity: 0.7; pointer-events: none; }
-.sidebar__generate-btn.loading svg { animation: spin 0.8s linear infinite; }
-.sidebar__generate-btn.pulse { animation: btnPulse 1.5s ease infinite; }
+.inline-regen-btn {
+  display: inline-flex; align-items: center; gap: 7px; flex-shrink: 0;
+  padding: 0 20px; height: 40px; border-radius: 6px;
+  border: 1px solid transparent;
+  background: var(--brand); color: var(--brand-ink);
+  font-size: 13px; font-weight: 600; cursor: pointer;
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.06) inset, 0 8px 24px -6px var(--brand-soft);
+  transition: transform 120ms ease, filter 200ms, box-shadow 200ms;
+}
+.inline-regen-btn:hover { transform: translateY(-1px); filter: brightness(1.05); }
+.inline-regen-btn:active { transform: translateY(0); }
+.inline-regen-btn.loading { opacity: 0.7; pointer-events: none; }
+.inline-regen-btn.loading svg { animation: spin 0.8s linear infinite; }
+.inline-regen-btn.pulse { animation: btnPulse 1.5s ease infinite; }
+.inline-regen-hint { font-size: 12px; color: var(--ink-4); line-height: 1.5; }
 @keyframes spin { to { transform: rotate(360deg); } }
 @keyframes btnPulse { 0%,100% { box-shadow: 0 0 0 0 var(--brand-soft); } 50% { box-shadow: 0 0 0 8px transparent; } }
 @keyframes slideUp { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
@@ -2174,25 +2181,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
     </button>
   </div>
 
-  <div class="sidebar__section">
-    <div class="sidebar__label">Font pairing</div>
-    <div class="font-picker" id="fontPicker">
-      <input class="font-picker__input" id="fontSearch" type="text" placeholder="Search Google Fonts..." autocomplete="off" />
-      <div class="font-picker__dropdown" id="fontDropdown"></div>
-    </div>
-    <div style="margin-top:8px;font-size:11px;color:var(--ink-4);font-weight:500;letter-spacing:0.02em;display:flex;align-items:center;gap:4px;">
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-      Google Font Integrated
-    </div>
-    <div style="height:24px;"></div>
-    <div class="font-picker__preview-label">Preview</div>
-    <div class="font-picker__preview" id="fontPreview">The quick brown fox jumps over the lazy dog</div>
-  </div>
-
-  <button class="sidebar__generate-btn" id="regenBtn">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18.8906 12.846C18.5371 14.189 16.8667 15.138 13.5257 17.0361C10.296 18.8709 8.6812 19.7884 7.37983 19.4196C6.8418 19.2671 6.35159 18.9776 5.95624 18.5787C5 17.6139 5 15.7426 5 12C5 8.2574 5 6.3861 5.95624 5.42132C6.35159 5.02245 6.8418 4.73288 7.37983 4.58042C8.6812 4.21165 10.296 5.12907 13.5257 6.96393C16.8667 8.86197 18.5371 9.811 18.8906 11.154C19.0365 11.7084 19.0365 12.2916 18.8906 12.846Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
-    Generate
-  </button>
+  <button id="regenBtn" style="display:none" aria-hidden="true"></button>
 
   <div class="sidebar__divider"></div>
 
@@ -4183,8 +4172,9 @@ button { font: inherit; color: inherit; cursor: pointer; }
   /* Download a single format file */
   function _guardDirty() {
     if (_isDirty) {
-      regenBtn.scrollIntoView({ behavior: "smooth", block: "center" });
-      regenBtn.classList.add("pulse");
+      var btn = getRegenBtn();
+      btn.scrollIntoView({ behavior: "smooth", block: "center" });
+      btn.classList.add("pulse");
       alert("Your design system settings have changed — click Generate to update before exporting.");
       return true;
     }
@@ -4495,8 +4485,9 @@ button { font: inherit; color: inherit; cursor: pointer; }
       if (mode === "light") brandC = Math.min(0.16, brandC);
       var brandHex = PPColorUtils.oklchToHex(brandL, brandC, H);
       var brandRgb = PPColorUtils.hexToRgb(brandHex);
-      var brandLum = 0.2126 * brandRgb[0] + 0.7152 * brandRgb[1] + 0.0722 * brandRgb[2];
-      root.style.setProperty("--brand-ink", (1.05 / (brandLum + 0.05)) >= 2.0 ? "#fff" : "oklch(0.18 0.05 " + H.toFixed(1) + ")");
+      var _linB = function(c){ return c > 0.04045 ? Math.pow((c+0.055)/1.055, 2.4) : c/12.92; };
+      var brandLum = 0.2126*_linB(brandRgb[0]) + 0.7152*_linB(brandRgb[1]) + 0.0722*_linB(brandRgb[2]);
+      root.style.setProperty("--brand-ink", brandLum <= 0.22 ? "#fff" : "oklch(0.18 0.05 " + H.toFixed(1) + ")");
       var pageLum = mode === "light" ? 0.92 : 0.01;
       var ratio = (Math.max(brandLum, pageLum) + 0.05) / (Math.min(brandLum, pageLum) + 0.05);
       if (ratio < 2.5) {
@@ -4665,8 +4656,9 @@ button { font: inherit; color: inherit; cursor: pointer; }
         root.style.setProperty("--brand-l", brandL.toFixed(2));
         var adjHex = PPColorUtils.oklchToHex(brandL, brandC, H);
         var adjRgb = PPColorUtils.hexToRgb(adjHex);
-        var adjLum = 0.2126 * adjRgb[0] + 0.7152 * adjRgb[1] + 0.0722 * adjRgb[2];
-        root.style.setProperty("--brand-ink", (1.05 / (adjLum + 0.05)) >= 2.0 ? "#fff" : "oklch(0.18 0.05 " + H.toFixed(1) + ")");
+        var _linA = function(c){ return c > 0.04045 ? Math.pow((c+0.055)/1.055, 2.4) : c/12.92; };
+        var adjLum = 0.2126*_linA(adjRgb[0]) + 0.7152*_linA(adjRgb[1]) + 0.0722*_linA(adjRgb[2]);
+        root.style.setProperty("--brand-ink", adjLum <= 0.179 ? "#fff" : "oklch(0.18 0.05 " + H.toFixed(1) + ")");
       }
     } catch(e) {}
   }
@@ -4758,27 +4750,33 @@ button { font: inherit; color: inherit; cursor: pointer; }
   }
 
   /* ═══ Dirty state + Generate button ═══ */
-  var regenBtn = document.getElementById("regenBtn");
+  var regenBtn = document.getElementById("regenBtn"); /* hidden sentinel — real btn is #inlineRegenBtn */
   var _isDirty = false;
+
+  function getRegenBtn() { return document.getElementById("inlineRegenBtn") || regenBtn; }
 
   function markDirty() {
     _isDirty = true;
-    regenBtn.classList.add("pulse");
+    getRegenBtn().classList.add("pulse");
   }
 
+  var REGEN_ICON = '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18.8906 12.846C18.5371 14.189 16.8667 15.138 13.5257 17.0361C10.296 18.8709 8.6812 19.7884 7.37983 19.4196C6.8418 19.2671 6.35159 18.9776 5.95624 18.5787C5 17.6139 5 15.7426 5 12C5 8.2574 5 6.3861 5.95624 5.42132C6.35159 5.02245 6.8418 4.73288 7.37983 4.58042C8.6812 4.21165 10.296 5.12907 13.5257 6.96393C16.8667 8.86197 18.5371 9.811 18.8906 11.154C19.0365 11.7084 19.0365 12.2916 18.8906 12.846Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg> Generate';
+  var REGEN_LOADING_ICON = '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 3V6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 18V21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 12H6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M18 12H21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M5.63607 5.63623L7.75739 7.75755" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M16.2427 16.2427L18.364 18.364" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M5.63604 18.364L7.75736 16.2427" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M16.2427 7.75736L18.364 5.63604" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Generating…';
+
   function triggerRegen() {
-    if (regenBtn.classList.contains("loading")) return;
+    var btn = getRegenBtn();
+    if (btn.classList.contains("loading")) return;
     _isDirty = false;
-    regenBtn.classList.remove("pulse");
-    regenBtn.classList.add("loading");
-    regenBtn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 3V6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 18V21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 12H6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M18 12H21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M5.63607 5.63623L7.75739 7.75755" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M16.2427 16.2427L18.364 18.364" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M5.63604 18.364L7.75736 16.2427" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M16.2427 7.75736L18.364 5.63604" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Generating…';
+    btn.classList.remove("pulse");
+    btn.classList.add("loading");
+    btn.innerHTML = REGEN_LOADING_ICON;
 
     hex = brandColors[0].hex;
     var scrollTop = mainContent.scrollTop;
     generateDSAsync(hex, fontConf, function(err, result) {
       if (err) {
-        regenBtn.classList.remove("loading");
-        regenBtn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18.8906 12.846C18.5371 14.189 16.8667 15.138 13.5257 17.0361C10.296 18.8709 8.6812 19.7884 7.37983 19.4196C6.8418 19.2671 6.35159 18.9776 5.95624 18.5787C5 17.6139 5 15.7426 5 12C5 8.2574 5 6.3861 5.95624 5.42132C6.35159 5.02245 6.8418 4.73288 7.37983 4.58042C8.6812 4.21165 10.296 5.12907 13.5257 6.96393C16.8667 8.86197 18.5371 9.811 18.8906 11.154C19.0365 11.7084 19.0365 12.2916 18.8906 12.846Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg> Generate';
+        getRegenBtn().classList.remove("loading");
+        getRegenBtn().innerHTML = REGEN_ICON;
         alert("Generation failed: " + err.message);
         return;
       }
@@ -4788,13 +4786,11 @@ button { font: inherit; color: inherit; cursor: pointer; }
         renderPreview(ds);
         setTheme(currentTheme);
         mainContent.scrollTop = scrollTop;
-        regenBtn.classList.remove("loading");
-        regenBtn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18.8906 12.846C18.5371 14.189 16.8667 15.138 13.5257 17.0361C10.296 18.8709 8.6812 19.7884 7.37983 19.4196C6.8418 19.2671 6.35159 18.9776 5.95624 18.5787C5 17.6139 5 15.7426 5 12C5 8.2574 5 6.3861 5.95624 5.42132C6.35159 5.02245 6.8418 4.73288 7.37983 4.58042C8.6812 4.21165 10.296 5.12907 13.5257 6.96393C16.8667 8.86197 18.5371 9.811 18.8906 11.154C19.0365 11.7084 19.0365 12.2916 18.8906 12.846Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg> Generate';
+        getRegenBtn().classList.remove("loading");
+        getRegenBtn().innerHTML = REGEN_ICON;
       });
     });
   }
-
-  regenBtn.addEventListener("click", triggerRegen);
 
   /* Pre-fetch extra color palettes (for multi-color) */
   function fetchExtraPalettes(callback) {
@@ -5623,6 +5619,9 @@ button { font: inherit; color: inherit; cursor: pointer; }
     h += '<div class="theme-split__pane theme-split__pane--light"><div class="theme-split__label">Light</div><div style="padding:10px 14px;background:oklch(0.78 0.14 155/0.12);border-radius:' + radius.md + ';border:1px solid oklch(0.60 0.12 155/0.3);margin-bottom:10px"><span style="color:#2a7a50;font-size:13px;font-weight:500">&#10003; System generated successfully.</span></div><div style="display:flex;gap:8px;flex-wrap:wrap"><span style="display:inline-flex;align-items:center;height:24px;padding:0 10px;border-radius:99px;background:' + b500 + ';color:' + (isLight(b500)?"#111":"#fff") + ';font-size:11px;font-weight:600">Brand</span><span style="display:inline-flex;align-items:center;height:24px;padding:0 10px;border-radius:99px;background:oklch(0.70 0.18 25/0.12);color:#b83a20;font-size:11px;font-weight:600">Error</span><span style="display:inline-flex;align-items:center;height:24px;padding:0 10px;border-radius:99px;background:oklch(0.75 0.16 75/0.12);color:#8a6d10;font-size:11px;font-weight:600">Warning</span></div></div>';
     h += '</div></div></div></section>';
 
+    /* ═══ Generate bar ═══ */
+    h += '<div class="inline-regen-wrap" id="inlineRegenWrap"><button class="inline-regen-btn" id="inlineRegenBtn"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M18.8906 12.846C18.5371 14.189 16.8667 15.138 13.5257 17.0361C10.296 18.8709 8.6812 19.7884 7.37983 19.4196C6.8418 19.2671 6.35159 18.9776 5.95624 18.5787C5 17.6139 5 15.7426 5 12C5 8.2574 5 6.3861 5.95624 5.42132C6.35159 5.02245 6.8418 4.73288 7.37983 4.58042C8.6812 4.21165 10.296 5.12907 13.5257 6.96393C16.8667 8.86197 18.5371 9.811 18.8906 11.154C19.0365 11.7084 19.0365 12.2916 18.8906 12.846Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg> Generate</button><span class="inline-regen-hint">Change brand color or font, then regenerate to update exports</span></div>';
+
     /* ═══ 26 RESPONSIVE ═══ */
     h += '<section class="ds-section" id="tokens">';
     h += '<div class="ds-section-header"><span class="ds-section-num">17</span><h2 class="ds-section-title">Export</h2></div>';
@@ -5747,6 +5746,8 @@ button { font: inherit; color: inherit; cursor: pointer; }
 
   /* ═══ Bind interactive behaviors ═══ */
   function bindInteractions() {
+    var inlineBtn = document.getElementById("inlineRegenBtn");
+    if (inlineBtn) inlineBtn.addEventListener("click", triggerRegen);
 
     document.querySelectorAll(".period-group").forEach(function(group) {
       group.querySelectorAll(".period-btn").forEach(function(btn) {
