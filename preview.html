@@ -1338,6 +1338,18 @@ button { font: inherit; color: inherit; cursor: pointer; }
 /* Select */
 .c-select { height: 44px; padding: 0 36px 0 12px; border: 1px solid var(--line-2); border-radius: var(--r-2); font-family: inherit; font-size: 13px; color: var(--ink); background: var(--bg-1); outline: none; width: 100%; appearance: none; cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2344403a' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; }
 .c-select:focus { border-color: var(--brand); box-shadow: 0 0 0 2px var(--brand-faint); }
+/* Custom select (replaces native <select> in preview) */
+.c-custom-select { position: relative; width: 100%; }
+.c-custom-select-trigger { display: flex; align-items: center; justify-content: space-between; height: 44px; padding: 0 12px; border: 1px solid var(--line-2); border-radius: var(--r-2); font-family: inherit; font-size: 13px; color: var(--ink); background: var(--bg-1); outline: none; width: 100%; cursor: pointer; transition: border-color 0.15s, box-shadow 0.15s; }
+.c-custom-select-trigger:focus, .c-custom-select.open .c-custom-select-trigger { border-color: var(--brand); box-shadow: 0 0 0 2px var(--brand-faint); }
+.c-custom-select-trigger svg { width: 14px; height: 14px; color: var(--ink-4); flex-shrink: 0; transition: transform 0.15s; }
+.c-custom-select.open .c-custom-select-trigger svg { transform: rotate(180deg); }
+.c-custom-select-dropdown { position: absolute; z-index: 200; top: calc(100% + 4px); left: 0; right: 0; background: var(--card-bg); border: 1px solid var(--line); border-radius: var(--r-2); box-shadow: var(--shadow-md); overflow: hidden; display: none; }
+.c-custom-select.open .c-custom-select-dropdown { display: block; }
+.c-custom-select-item { padding: 10px 14px; font-size: 13px; cursor: pointer; color: var(--ink-2); transition: background 0.1s; }
+.c-custom-select-item:hover { background: var(--bg-3); }
+.c-custom-select-item.selected { color: var(--brand); font-weight: 600; background: var(--brand-faint); }
+:root[data-theme="light"] .c-custom-select-trigger { background-color: #fff; }
 
 /* Textarea */
 .c-textarea { padding: 10px 12px; border: 1px solid var(--line-2); border-radius: var(--r-2); font-family: inherit; font-size: 13px; color: var(--ink); background: var(--bg-1); outline: none; width: 100%; resize: vertical; min-height: 80px; }
@@ -5304,7 +5316,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
     h += '<div class="input-group"><label class="input-label">Password (error)</label><input class="c-input error" value="abc"/><span class="input-error">Must be at least 8 characters</span></div>';
     h += '</div></div></div>';
     h += '<div class="ds-subsection"><div class="ds-subsection-title">Select, textarea &amp; disabled</div><div class="ds-preview"><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;max-width:720px">';
-    h += '<div class="input-group"><label class="input-label">Role</label><select class="c-select"><option>Designer</option><option>Developer</option><option>Manager</option></select></div>';
+    h += '<div class="input-group"><label class="input-label">Role</label><div class="c-custom-select"><button class="c-custom-select-trigger" type="button"><span>Designer</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></button><div class="c-custom-select-dropdown"><div class="c-custom-select-item selected">Designer</div><div class="c-custom-select-item">Developer</div><div class="c-custom-select-item">Manager</div></div></div></div>';
     h += '<div class="input-group"><label class="input-label">Disabled</label><input class="c-input" value="Read only" disabled/></div>';
     h += '<div class="input-group"><label class="input-label">Search</label><input class="c-input" placeholder="Search tokens..."/></div>';
     h += '</div><div style="max-width:480px;margin-top:16px"><div class="input-group"><label class="input-label">Message</label><textarea class="c-textarea" placeholder="Enter your message..."></textarea></div></div></div></div>';
@@ -6149,6 +6161,38 @@ button { font: inherit; color: inherit; cursor: pointer; }
           }
         });
       });
+
+      /* Custom select dropdowns */
+      document.querySelectorAll(".c-custom-select").forEach(function(sel) {
+        if (sel._csBound) return; sel._csBound = true;
+        var trigger = sel.querySelector(".c-custom-select-trigger");
+        var dropdown = sel.querySelector(".c-custom-select-dropdown");
+        var label = trigger && trigger.querySelector("span");
+        if (!trigger || !dropdown) return;
+        trigger.addEventListener("click", function(e) {
+          e.stopPropagation();
+          var isOpen = sel.classList.toggle("open");
+          if (isOpen) {
+            /* close other open custom selects */
+            document.querySelectorAll(".c-custom-select.open").forEach(function(o) { if (o !== sel) o.classList.remove("open"); });
+          }
+        });
+        dropdown.querySelectorAll(".c-custom-select-item").forEach(function(item) {
+          item.addEventListener("click", function() {
+            if (label) label.textContent = item.textContent;
+            dropdown.querySelectorAll(".c-custom-select-item").forEach(function(i) { i.classList.remove("selected"); });
+            item.classList.add("selected");
+            sel.classList.remove("open");
+          });
+        });
+      });
+      /* Close custom selects on outside click */
+      if (!document._csOutsideBound) {
+        document._csOutsideBound = true;
+        document.addEventListener("click", function() {
+          document.querySelectorAll(".c-custom-select.open").forEach(function(o) { o.classList.remove("open"); });
+        });
+      }
 
       /* Sync colour on any edit forms that are already open (e.g. primary pre-opened) */
       document.querySelectorAll(".edit-palette-form.open").forEach(function(form) {
