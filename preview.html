@@ -6150,6 +6150,24 @@ button { font: inherit; color: inherit; cursor: pointer; }
         });
       });
 
+      /* Sync colour on any edit forms that are already open (e.g. primary pre-opened) */
+      document.querySelectorAll(".edit-palette-form.open").forEach(function(form) {
+        var colorInput = form.querySelector("input[type=color]");
+        var swatchBtn  = form.querySelector(".add-palette-swatch-pick");
+        var confirmBtn = form.querySelector(".add-palette-confirm");
+        function _syncOpen(hex) {
+          if (swatchBtn) swatchBtn.style.background = hex;
+          if (confirmBtn) { confirmBtn.style.background = hex; confirmBtn.style.color = isLight(hex) ? "#111" : "#fff"; }
+        }
+        if (colorInput) {
+          _syncOpen(colorInput.value);
+          if (!colorInput._editSyncBound) {
+            colorInput._editSyncBound = true;
+            colorInput.addEventListener("input", function() { _syncOpen(colorInput.value); });
+          }
+        }
+      });
+
       /* Edit palette cancel */
       document.querySelectorAll(".edit-palette-form .add-palette-cancel").forEach(function(btn) {
         if (btn._cancelBound) return; btn._cancelBound = true;
