@@ -5176,7 +5176,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
       h += '</div></div>';
 
       /* Inline edit form */
-      h += '<div class="edit-palette-form add-palette-form" id="' + editId + '">';
+      h += '<div class="edit-palette-form add-palette-form' + (pi === 0 ? ' open' : '') + '" id="' + editId + '">';
       h += '<div class="ep-form-inner">';
       h += '<label>Color</label>';
       h += '<button class="add-palette-swatch-pick" id="' + editSwatchId + '" type="button" style="background:' + baseHex + '"><input type="color" id="' + editColorId + '" value="' + baseHex + '"></button>';
