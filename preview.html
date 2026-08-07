@@ -5326,8 +5326,8 @@ button { font: inherit; color: inherit; cursor: pointer; }
     h += '<div class="ds-section-header"><span class="ds-section-num">05</span><h2 class="ds-section-title">Elevation &amp; radius</h2></div>';
     h += '<div class="ds-subsection"><div class="ds-subsection-title">Border radius</div><div class="ds-preview"><div class="radius-grid">';
     Object.keys(radius).forEach(function(key) {
-      var displayVal = _baseRadius[key] !== undefined ? _baseRadius[key] : radius[key];
-      h += '<div class="radius-cell"><div class="radius-box" style="border-radius:' + radius[key] + '"></div><div class="radius-name">' + esc(key) + '</div><div class="radius-val">' + displayVal + '</div></div>';
+      var baseVal = _baseRadius[key] !== undefined ? _baseRadius[key] : radius[key];
+      h += '<div class="radius-cell"><div class="radius-box" style="border-radius:' + baseVal + '"></div><div class="radius-name">' + esc(key) + '</div><div class="radius-val">' + baseVal + '</div></div>';
     });
     h += '</div></div></div>';
     h += '<div class="ds-subsection"><div class="ds-subsection-title">Shadows</div><div class="ds-preview"><div class="ds-preview-row" style="gap:24px">';
