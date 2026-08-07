@@ -2189,11 +2189,10 @@ button { font: inherit; color: inherit; cursor: pointer; }
     <a href="#cards"><span class="sidebar__nav-num">10</span> Cards</a>
     <a href="#selection"><span class="sidebar__nav-num">11</span> Selection</a>
     <a href="#indicators"><span class="sidebar__nav-num">12</span> Indicators</a>
-    <a href="#dataviz"><span class="sidebar__nav-num">13</span> Data Viz</a>
-    <a href="#validation"><span class="sidebar__nav-num">14</span> Validation</a>
-    <a href="#upload"><span class="sidebar__nav-num">15</span> Upload</a>
-    <a href="#themecompare"><span class="sidebar__nav-num">16</span> Themes</a>
-    <a href="#tokens"><span class="sidebar__nav-num">17</span> Export</a>
+    <a href="#validation"><span class="sidebar__nav-num">13</span> Validation</a>
+    <a href="#upload"><span class="sidebar__nav-num">14</span> Upload</a>
+    <a href="#themecompare"><span class="sidebar__nav-num">15</span> Themes</a>
+    <a href="#tokens"><span class="sidebar__nav-num">16</span> Export</a>
   </nav>
 
   <div class="sidebar__bottom">
@@ -2268,7 +2267,6 @@ button { font: inherit; color: inherit; cursor: pointer; }
   <a href="#cards" class="mobile-tab">Cards</a>
   <a href="#selection" class="mobile-tab">Selection</a>
   <a href="#indicators" class="mobile-tab">Indicators</a>
-  <a href="#dataviz" class="mobile-tab">Data Viz</a>
   <a href="#validation" class="mobile-tab">Validation</a>
   <a href="#upload" class="mobile-tab">Upload</a>
   <a href="#themecompare" class="mobile-tab">Themes</a>
@@ -5556,28 +5554,9 @@ button { font: inherit; color: inherit; cursor: pointer; }
     h += '</div></div></div></div></section>';
 
     /* ═══ 15 OVERLAYS ═══ */
-    h += '<section class="ds-section" id="dataviz">';
-    h += '<div class="ds-section-header"><span class="ds-section-num">13</span><h2 class="ds-section-title">Data visualization</h2></div>';
-    h += '<p class="ds-section-desc">Chart color palette derived from brand hue. Categorical and sequential sequences.</p>';
-    var cHue = ds.color.hue;
-    var cColors = [];
-    [0,60,120,180,240,300,40,200].forEach(function(off) { cColors.push(PPColorUtils.oklchToHex(0.65, 0.15, (cHue + off) % 360).toUpperCase()); });
-    h += '<div class="ds-subsection"><div class="ds-subsection-title">Categorical palette</div><div class="ds-preview"><div class="chart-palette">';
-    var catN = ["Primary","Secondary","Tertiary","Quaternary","Quinary","Senary","Septenary","Octonary"];
-    cColors.forEach(function(c, i) { h += '<div class="chart-swatch" style="background:' + c + ';color:' + (isLight(c) ? "#111" : "#fff") + '">' + (i+1) + '</div>'; });
-    h += '</div><div class="chart-legend">';
-    cColors.forEach(function(c, i) { h += '<div class="chart-legend-item"><div class="chart-legend-dot" style="background:' + c + '"></div>' + catN[i] + ' · ' + c + '</div>'; });
-    h += '</div></div></div>';
-    h += '<div class="ds-subsection"><div class="ds-subsection-title">Bar chart demo</div><div class="ds-preview"><div class="chart-bar-demo">';
-    [65,85,45,72,90,55,78,40].forEach(function(v, i) { h += '<div class="chart-bar" style="height:' + v + '%;background:' + cColors[i] + '"></div>'; });
-    h += '</div></div></div>';
-    h += '<div class="ds-subsection"><div class="ds-subsection-title">Sequential scale</div><div class="ds-preview"><div class="chart-palette">';
-    for (var si = 0; si < 8; si++) { var sHex = PPColorUtils.oklchToHex(0.35 + si * 0.08, 0.05 + si * 0.015, cHue).toUpperCase(); h += '<div class="chart-swatch" style="background:' + sHex + ';color:' + (isLight(sHex) ? "#111" : "#fff") + '">' + ((si+1)*100) + '</div>'; }
-    h += '</div></div></div></section>';
-
-    /* ═══ 21 FORM VALIDATION ═══ */
+    /* ═══ 13 FORM VALIDATION ═══ */
     h += '<section class="ds-section" id="validation">';
-    h += '<div class="ds-section-header"><span class="ds-section-num">14</span><h2 class="ds-section-title">Form validation</h2></div>';
+    h += '<div class="ds-section-header"><span class="ds-section-num">13</span><h2 class="ds-section-title">Form validation</h2></div>';
     h += '<p class="ds-section-desc">Complete form with inline validation states — error, success, and warning.</p>';
     h += '<div class="ds-subsection"><div class="ds-subsection-title">Registration form</div><div class="ds-preview"><div class="form-demo">';
     h += '<div class="c-field c-field--success"><label class="c-field__label">First name</label><input class="c-field__input" value="Veerendra" readonly/><span class="c-field__hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="vertical-align:-2px"><polyline points="20 6 9 17 4 12"/></svg> Looks good</span></div>';
@@ -5590,7 +5569,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 
     /* ═══ 22 FILE UPLOAD ═══ */
     h += '<section class="ds-section" id="upload">';
-    h += '<div class="ds-section-header"><span class="ds-section-num">15</span><h2 class="ds-section-title">File upload</h2></div>';
+    h += '<div class="ds-section-header"><span class="ds-section-num">14</span><h2 class="ds-section-title">File upload</h2></div>';
     h += '<p class="ds-section-desc">Drag-and-drop dropzone with idle, hover, uploading, success, and error states.</p>';
     h += '<div class="ds-subsection"><div class="ds-subsection-title">Dropzone states</div><div class="ds-preview"><div class="dropzone-grid">';
     h += '<div class="c-dropzone"><div class="c-dropzone__icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div><div class="c-dropzone__text">Drag files here or click to browse</div><div class="c-dropzone__hint">PNG, JPG, SVG up to 10MB</div></div>';
@@ -5601,7 +5580,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 
     /* ═══ 23 COMMAND PALETTE ═══ */
     h += '<section class="ds-section" id="themecompare">';
-    h += '<div class="ds-section-header"><span class="ds-section-num">16</span><h2 class="ds-section-title">Theme comparison</h2></div>';
+    h += '<div class="ds-section-header"><span class="ds-section-num">15</span><h2 class="ds-section-title">Theme comparison</h2></div>';
     h += '<p class="ds-section-desc">Side-by-side dark &amp; light preview — proves your system works on any background.</p>';
     h += '<div class="ds-subsection"><div class="ds-subsection-title">Card component</div><div class="ds-preview" style="padding:0"><div class="theme-split">';
     h += '<div class="theme-split__pane theme-split__pane--dark"><div class="theme-split__label">Dark theme</div><div class="theme-card"><div class="theme-card__title">Project overview</div><div class="theme-card__desc">Track your design tokens across 3 platforms.</div><input class="theme-card__input" value="My design system" readonly/><div style="display:flex;gap:8px;justify-content:flex-end"><button class="theme-card__btn" style="background:' + b500 + ';color:' + (isLight(b500) ? "#111" : "#fff") + '">Save changes</button><button class="theme-card__btn" style="background:#2a2d36;color:#f3f1ec">Cancel</button></div></div></div>';
@@ -5617,7 +5596,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 
     /* ═══ 26 RESPONSIVE ═══ */
     h += '<section class="ds-section" id="tokens">';
-    h += '<div class="ds-section-header"><span class="ds-section-num">17</span><h2 class="ds-section-title">Export</h2></div>';
+    h += '<div class="ds-section-header"><span class="ds-section-num">16</span><h2 class="ds-section-title">Export</h2></div>';
     h += '<p class="ds-section-desc">Complete design system export — tokens, component classes, dark/light themes, utilities, and more. Download includes everything on this page.</p>';
     h += '<div class="ds-subsection"><div class="ds-subsection-title">Export preview</div><div class="ds-preview" style="padding:0">';
     var cssT = '<span class="ec">/* Brand colors */</span>\n';
