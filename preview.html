@@ -2013,22 +2013,22 @@ button { font: inherit; color: inherit; cursor: pointer; }
 /* ═══ 25 THEME COMPARE ═══ */
 .theme-split { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border-radius: var(--r-3); overflow: hidden; border: 1px solid var(--line); }
 .theme-split__pane { padding: 24px; }
-.theme-split__pane--dark { background: #0f1118; color: #f3f1ec; }
-.theme-split__pane--light { background: #f7f5f0; color: #14120e; }
+.theme-split__pane--dark { background: var(--thd-bg, #0f1118); color: var(--thd-ink, #f3f1ec); }
+.theme-split__pane--light { background: var(--thl-bg, #f7f5f0); color: var(--thl-ink, #14120e); }
 .theme-split__label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 16px; }
-.theme-split__pane--dark .theme-split__label { color: #8b877e; }
-.theme-split__pane--light .theme-split__label { color: #78736a; }
+.theme-split__pane--dark .theme-split__label { color: var(--thd-ink3, #8b877e); }
+.theme-split__pane--light .theme-split__label { color: var(--thl-ink3, #78736a); }
 .theme-card { border-radius: var(--r-2); padding: 16px; }
-.theme-split__pane--dark .theme-card { background: #181b24; border: 1px solid #2a2d36; }
-.theme-split__pane--light .theme-card { background: #fff; border: 1px solid #e5e2da; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+.theme-split__pane--dark .theme-card { background: var(--thd-bg2, #181b24); border: 1px solid var(--thd-bg4, #2a2d36); }
+.theme-split__pane--light .theme-card { background: var(--thl-bg1, #fff); border: 1px solid var(--thl-bg3, #e5e2da); box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
 .theme-card__title { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
 .theme-card__desc { font-size: 12px; margin-bottom: 12px; }
-.theme-split__pane--dark .theme-card__desc { color: #8b877e; }
-.theme-split__pane--light .theme-card__desc { color: #78736a; }
+.theme-split__pane--dark .theme-card__desc { color: var(--thd-ink3, #8b877e); }
+.theme-split__pane--light .theme-card__desc { color: var(--thl-ink3, #78736a); }
 .theme-card__btn { display: inline-flex; align-items: center; height: 32px; padding: 0 14px; border: none; border-radius: var(--r-2); font-size: 12px; font-weight: 600; cursor: pointer; }
 .theme-card__input { width: 100%; height: 36px; padding: 0 10px; border-radius: var(--r-2); font-size: 13px; margin-bottom: 10px; outline: none; }
-.theme-split__pane--dark .theme-card__input { background: #0f1118; border: 1px solid #2a2d36; color: #f3f1ec; }
-.theme-split__pane--light .theme-card__input { background: #f7f5f0; border: 1px solid #e5e2da; color: #14120e; }
+.theme-split__pane--dark .theme-card__input { background: var(--thd-bg, #0f1118); border: 1px solid var(--thd-bg4, #2a2d36); color: var(--thd-ink, #f3f1ec); }
+.theme-split__pane--light .theme-card__input { background: var(--thl-bg, #f7f5f0); border: 1px solid var(--thl-bg3, #e5e2da); color: var(--thl-ink, #14120e); }
 
 /* ═══ 26 RESPONSIVE ═══ */
 .responsive-frames { display: grid; grid-template-columns: 1fr; gap: 24px; }
@@ -5037,6 +5037,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
   /* ═══ Helpers ═══ */
   function esc(s) { return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
   function isLight(h) { var rgb = PPColorUtils.hexToRgb(h); return 0.2126*rgb[0]+0.7152*rgb[1]+0.0722*rgb[2] > 0.5; }
+  function hexAlpha(h, a) { var rgb = PPColorUtils.hexToRgb(h); return 'rgba('+rgb[0]+','+rgb[1]+','+rgb[2]+','+a+')'; }
 
   /* ═══ DS Style radius overrides ═══ */
   function applyDSStyle(baseRadius, style) {
@@ -5090,6 +5091,24 @@ button { font: inherit; color: inherit; cursor: pointer; }
     root.style.setProperty("--r-3", rv[2]);
     root.style.setProperty("--r-4", rv[3]);
     root.setAttribute("data-ds-style", currentDSStyle);
+    /* Surface theme CSS vars for theme-comparison section */
+    var _sd = surfaces.dark, _sl = surfaces.light;
+    root.style.setProperty("--thd-bg",   _sd.bg);
+    root.style.setProperty("--thd-bg1",  _sd.bg1);
+    root.style.setProperty("--thd-bg2",  _sd.bg2);
+    root.style.setProperty("--thd-bg3",  _sd.bg3);
+    root.style.setProperty("--thd-bg4",  _sd.bg4);
+    root.style.setProperty("--thd-ink",  _sd.ink);
+    root.style.setProperty("--thd-ink2", _sd.ink2);
+    root.style.setProperty("--thd-ink3", _sd.ink3);
+    root.style.setProperty("--thl-bg",   _sl.bg);
+    root.style.setProperty("--thl-bg1",  _sl.bg1);
+    root.style.setProperty("--thl-bg2",  _sl.bg2);
+    root.style.setProperty("--thl-bg3",  _sl.bg3);
+    root.style.setProperty("--thl-bg4",  _sl.bg4);
+    root.style.setProperty("--thl-ink",  _sl.ink);
+    root.style.setProperty("--thl-ink2", _sl.ink2);
+    root.style.setProperty("--thl-ink3", _sl.ink3);
 
     /* Store data for export builders */
     _exportData = {
@@ -5596,12 +5615,12 @@ button { font: inherit; color: inherit; cursor: pointer; }
     h += '<div class="ds-section-header"><span class="ds-section-num">15</span><h2 class="ds-section-title">Theme comparison</h2></div>';
     h += '<p class="ds-section-desc">Side-by-side dark &amp; light preview — proves your system works on any background.</p>';
     h += '<div class="ds-subsection"><div class="ds-subsection-title">Card component</div><div class="ds-preview" style="padding:0"><div class="theme-split">';
-    h += '<div class="theme-split__pane theme-split__pane--dark"><div class="theme-split__label">Dark theme</div><div class="theme-card"><div class="theme-card__title">Project overview</div><div class="theme-card__desc">Track your design tokens across 3 platforms.</div><input class="theme-card__input" value="My design system" readonly/><div style="display:flex;gap:8px;justify-content:flex-end"><button class="theme-card__btn" style="background:' + b500 + ';color:' + (isLight(b500) ? "#111" : "#fff") + '">Save changes</button><button class="theme-card__btn" style="background:#2a2d36;color:#f3f1ec">Cancel</button></div></div></div>';
-    h += '<div class="theme-split__pane theme-split__pane--light"><div class="theme-split__label">Light theme</div><div class="theme-card"><div class="theme-card__title">Project overview</div><div class="theme-card__desc">Track your design tokens across 3 platforms.</div><input class="theme-card__input" value="My design system" readonly/><div style="display:flex;gap:8px;justify-content:flex-end"><button class="theme-card__btn" style="background:' + b500 + ';color:' + (isLight(b500) ? "#111" : "#fff") + '">Save changes</button><button class="theme-card__btn" style="background:#e5e2da;color:#14120e">Cancel</button></div></div></div>';
+    h += '<div class="theme-split__pane theme-split__pane--dark"><div class="theme-split__label">Dark theme</div><div class="theme-card"><div class="theme-card__title">Project overview</div><div class="theme-card__desc">Track your design tokens across 3 platforms.</div><input class="theme-card__input" value="My design system" readonly/><div style="display:flex;gap:8px;justify-content:flex-end"><button class="theme-card__btn" style="background:' + b500 + ';color:' + (isLight(b500) ? "#111" : "#fff") + '">Save changes</button><button class="theme-card__btn" style="background:' + surfaces.dark.bg3 + ';color:' + surfaces.dark.ink + '">Cancel</button></div></div></div>';
+    h += '<div class="theme-split__pane theme-split__pane--light"><div class="theme-split__label">Light theme</div><div class="theme-card"><div class="theme-card__title">Project overview</div><div class="theme-card__desc">Track your design tokens across 3 platforms.</div><input class="theme-card__input" value="My design system" readonly/><div style="display:flex;gap:8px;justify-content:flex-end"><button class="theme-card__btn" style="background:' + b500 + ';color:' + (isLight(b500) ? "#111" : "#fff") + '">Save changes</button><button class="theme-card__btn" style="background:' + surfaces.light.bg3 + ';color:' + surfaces.light.ink + '">Cancel</button></div></div></div>';
     h += '</div></div></div>';
     h += '<div class="ds-subsection"><div class="ds-subsection-title">Alert &amp; badges</div><div class="ds-preview" style="padding:0"><div class="theme-split">';
-    h += '<div class="theme-split__pane theme-split__pane--dark"><div class="theme-split__label">Dark</div><div style="padding:10px 14px;background:oklch(0.40 0.10 155/0.12);border-radius:' + radius.md + ';border:1px solid oklch(0.50 0.12 155/0.3);margin-bottom:10px"><span style="color:#7cd4a8;font-size:13px;font-weight:500">&#10003; System generated successfully.</span></div><div style="display:flex;gap:8px;flex-wrap:wrap"><span style="display:inline-flex;align-items:center;height:24px;padding:0 10px;border-radius:99px;background:' + b500 + ';color:' + (isLight(b500)?"#111":"#fff") + ';font-size:11px;font-weight:600">Brand</span><span style="display:inline-flex;align-items:center;height:24px;padding:0 10px;border-radius:99px;background:oklch(0.50 0.18 25/0.15);color:#f09070;font-size:11px;font-weight:600">Error</span><span style="display:inline-flex;align-items:center;height:24px;padding:0 10px;border-radius:99px;background:oklch(0.55 0.14 75/0.15);color:#d4b85a;font-size:11px;font-weight:600">Warning</span></div></div>';
-    h += '<div class="theme-split__pane theme-split__pane--light"><div class="theme-split__label">Light</div><div style="padding:10px 14px;background:oklch(0.78 0.14 155/0.12);border-radius:' + radius.md + ';border:1px solid oklch(0.60 0.12 155/0.3);margin-bottom:10px"><span style="color:#2a7a50;font-size:13px;font-weight:500">&#10003; System generated successfully.</span></div><div style="display:flex;gap:8px;flex-wrap:wrap"><span style="display:inline-flex;align-items:center;height:24px;padding:0 10px;border-radius:99px;background:' + b500 + ';color:' + (isLight(b500)?"#111":"#fff") + ';font-size:11px;font-weight:600">Brand</span><span style="display:inline-flex;align-items:center;height:24px;padding:0 10px;border-radius:99px;background:oklch(0.70 0.18 25/0.12);color:#b83a20;font-size:11px;font-weight:600">Error</span><span style="display:inline-flex;align-items:center;height:24px;padding:0 10px;border-radius:99px;background:oklch(0.75 0.16 75/0.12);color:#8a6d10;font-size:11px;font-weight:600">Warning</span></div></div>';
+    h += '<div class="theme-split__pane theme-split__pane--dark"><div class="theme-split__label">Dark</div><div style="padding:10px 14px;background:' + hexAlpha(semantic.pos.base, 0.12) + ';border-radius:' + radius.md + ';border:1px solid ' + hexAlpha(semantic.pos.base, 0.3) + ';margin-bottom:10px"><span style="color:' + semantic.pos.light + ';font-size:13px;font-weight:500">&#10003; System generated successfully.</span></div><div style="display:flex;gap:8px;flex-wrap:wrap"><span style="display:inline-flex;align-items:center;height:24px;padding:0 10px;border-radius:99px;background:' + b500 + ';color:' + (isLight(b500)?"#111":"#fff") + ';font-size:11px;font-weight:600">Brand</span><span style="display:inline-flex;align-items:center;height:24px;padding:0 10px;border-radius:99px;background:' + hexAlpha(semantic.neg.base, 0.15) + ';color:' + semantic.neg.light + ';font-size:11px;font-weight:600">Error</span><span style="display:inline-flex;align-items:center;height:24px;padding:0 10px;border-radius:99px;background:' + hexAlpha(semantic.warn.base, 0.15) + ';color:' + semantic.warn.light + ';font-size:11px;font-weight:600">Warning</span></div></div>';
+    h += '<div class="theme-split__pane theme-split__pane--light"><div class="theme-split__label">Light</div><div style="padding:10px 14px;background:' + hexAlpha(semantic.pos.base, 0.10) + ';border-radius:' + radius.md + ';border:1px solid ' + hexAlpha(semantic.pos.base, 0.25) + ';margin-bottom:10px"><span style="color:' + semantic.pos.dark + ';font-size:13px;font-weight:500">&#10003; System generated successfully.</span></div><div style="display:flex;gap:8px;flex-wrap:wrap"><span style="display:inline-flex;align-items:center;height:24px;padding:0 10px;border-radius:99px;background:' + b500 + ';color:' + (isLight(b500)?"#111":"#fff") + ';font-size:11px;font-weight:600">Brand</span><span style="display:inline-flex;align-items:center;height:24px;padding:0 10px;border-radius:99px;background:' + hexAlpha(semantic.neg.base, 0.12) + ';color:' + semantic.neg.dark + ';font-size:11px;font-weight:600">Error</span><span style="display:inline-flex;align-items:center;height:24px;padding:0 10px;border-radius:99px;background:' + hexAlpha(semantic.warn.base, 0.12) + ';color:' + semantic.warn.dark + ';font-size:11px;font-weight:600">Warning</span></div></div>';
     h += '</div></div></div></section>';
 
     /* ═══ Generate bar ═══ */
