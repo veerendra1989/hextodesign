@@ -1058,6 +1058,11 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .gen-now-btn:active { transform: translateY(0); }
 .gen-now-btn svg { width: 16px; height: 16px; flex-shrink: 0; }
 
+.gen-cta-section { margin: 48px 0 40px; }
+.gen-cta-inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; background: color-mix(in oklch, var(--brand) 8%, var(--bg-2)); border: 1px solid color-mix(in oklch, var(--brand) 22%, transparent); border-radius: var(--r-3); padding: 28px 32px; flex-wrap: wrap; }
+.gen-cta-heading { font-size: 17px; font-weight: 700; color: var(--ink); margin-bottom: 4px; }
+.gen-cta-sub { font-size: 13px; color: var(--ink-3); line-height: 1.6; max-width: 420px; }
+
 /* ── Export modal ── */
 .gen-modal-backdrop {
   position: fixed; inset: 0; z-index: 9000;
@@ -5312,8 +5317,8 @@ button { font: inherit; color: inherit; cursor: pointer; }
     /* ═══ HERO ═══ */
     h += '<main class="ds-body">';
     h += '<div class="ds-hero">';
-    h += '<h1>Preview your design system</h1>';
-    h += '<p>Generated from <strong>' + esc(source) + '</strong> · ' + esc(typo.families.sans) + ' · Explore and fine-tune every token live. When it looks right, hit Generate to get your production files.</p>';
+    h += '<h1>Select your brand color, font &amp; style</h1>';
+    h += '<p>Choose a brand color below, pick a typeface, and dial in your component style — every token updates live as you refine. Once it looks right, hit <strong>Generate</strong> to export production-ready files.</p>';
     h += '<div class="ds-hero-stats">';
     h += '<div><div class="ds-hero-stat-val">' + shadeCount + '</div><div class="ds-hero-stat-label">Color shades</div></div>';
     h += '<div><div class="ds-hero-stat-val">' + typeCount + '</div><div class="ds-hero-stat-label">Type tokens</div></div>';
@@ -5328,7 +5333,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
     });
     h += '</div>';
     h += '<div class="hero__actions" style="margin-top:22px">';
-    h += '<button class="gen-now-btn" id="genNowBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg> Generate now</button>';
+    h += '<button class="gen-now-btn" id="startBuildBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg> Start building</button>';
     h += '</div>';
     h += '</div>';
 
@@ -5797,7 +5802,15 @@ button { font: inherit; color: inherit; cursor: pointer; }
     /* ═══ Generate bar ═══ */
     h += '<div class="inline-regen-wrap" id="inlineRegenWrap"><button class="inline-regen-btn" id="inlineRegenBtn"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M18.8906 12.846C18.5371 14.189 16.8667 15.138 13.5257 17.0361C10.296 18.8709 8.6812 19.7884 7.37983 19.4196C6.8418 19.2671 6.35159 18.9776 5.95624 18.5787C5 17.6139 5 15.7426 5 12C5 8.2574 5 6.3861 5.95624 5.42132C6.35159 5.02245 6.8418 4.73288 7.37983 4.58042C8.6812 4.21165 10.296 5.12907 13.5257 6.96393C16.8667 8.86197 18.5371 9.811 18.8906 11.154C19.0365 11.7084 19.0365 12.2916 18.8906 12.846Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg> Generate</button><span class="inline-regen-hint">Change brand color or font, then regenerate to update exports</span></div>';
 
-    /* ═══ 26 RESPONSIVE ═══ */
+    /* ═══ Generate now CTA ═══ */
+    h += '<div class="gen-cta-section">';
+    h += '<div class="gen-cta-inner">';
+    h += '<div class="gen-cta-text"><div class="gen-cta-heading">Your design system is ready</div><div class="gen-cta-sub">Export production-ready tokens, CSS variables, Tailwind config, and more — all from your selections above.</div></div>';
+    h += '<button class="gen-now-btn" id="genNowBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg> Generate now</button>';
+    h += '</div>';
+    h += '</div>';
+
+    /* ═══ 16 EXPORT ═══ */
     h += '<section class="ds-section" id="tokens">';
     h += '<div class="ds-section-header"><span class="ds-section-num">16</span><h2 class="ds-section-title">Export</h2></div>';
     h += '<p class="ds-section-desc">Complete design system export — tokens, component classes, dark/light themes, utilities, and more. Download includes everything on this page.</p>';
@@ -5926,6 +5939,14 @@ button { font: inherit; color: inherit; cursor: pointer; }
 
     /* Alert style toggle */
     /* Generate Now button → confetti → modal */
+    var startBuildBtn = document.getElementById("startBuildBtn");
+    if (startBuildBtn) {
+      startBuildBtn.addEventListener("click", function() {
+        var target = document.getElementById("colors");
+        if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    }
+
     var genNowBtn = document.getElementById("genNowBtn");
     var genModalBackdrop = document.getElementById("genModalBackdrop");
     var genModalClose = document.getElementById("genModalClose");
