@@ -359,6 +359,8 @@ button { font: inherit; color: inherit; cursor: pointer; }
 :root[data-ds-style="pill"] .c-btn--xl { border-radius: 9999px; padding: 0 40px; }
 :root[data-ds-style="pill"] .c-input { border-radius: 9999px; padding: 0 20px; }
 :root[data-ds-style="pill"] .c-select { border-radius: 9999px; padding: 0 40px 0 20px; }
+:root[data-ds-style="pill"] .c-custom-select-trigger { border-radius: 9999px; }
+:root[data-ds-style="pill"] .c-custom-select-dropdown { border-radius: 16px; }
 :root[data-ds-style="pill"] .c-tooltip { border-radius: 9999px; padding: 6px 14px; }
 :root[data-ds-style="pill"] .hero__style-trigger { border-radius: 9999px; }
 :root[data-ds-style="pill"] .hero__style-option { border-radius: 9999px; }
@@ -1042,7 +1044,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 /* ── Generate Now button ── */
 .gen-now-btn {
   display: inline-flex; align-items: center; gap: 8px;
-  padding: 11px 24px; border-radius: 99px; border: none; cursor: pointer;
+  padding: 11px 36px; border-radius: 99px; border: none; cursor: pointer;
   font-size: 14px; font-weight: 700; font-family: inherit; letter-spacing: -0.1px;
   background: var(--brand); color: var(--brand-ink, #fff);
   box-shadow: 0 2px 14px color-mix(in oklch, var(--brand) 45%, transparent);
@@ -1133,6 +1135,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 }
 .gen-export-btn--primary:hover { background: var(--brand); filter: brightness(0.9); border-color: transparent; transform: translateY(-2px); box-shadow: 0 6px 20px color-mix(in oklch, var(--brand) 55%, transparent); }
 .gen-export-btn--primary svg { color: currentColor; }
+.gen-export-btn--claude svg { color: #fff; }
 .gen-export-btn--claude {
   background: linear-gradient(135deg, #CC785C, #D4A574);
   color: #fff; border-color: transparent; justify-content: center; gap: 10px;
@@ -1511,10 +1514,10 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .c-alert--info { background: var(--info-soft); color: var(--info); }
 .c-alert--brand { background: var(--brand-faint); border: 1px solid var(--brand-soft); color: var(--brand-text, var(--brand)); }
 /* Alert filled variant */
-[data-alert-style="filled"] .c-alert--pos  { background: var(--pos);  color: var(--pos-ink,  #fff); }
-[data-alert-style="filled"] .c-alert--neg  { background: var(--neg);  color: var(--neg-ink,  #fff); }
-[data-alert-style="filled"] .c-alert--warn { background: var(--warn); color: var(--warn-ink, #111); }
-[data-alert-style="filled"] .c-alert--info { background: var(--info); color: var(--info-ink, #fff); }
+[data-alert-style="filled"] .c-alert--pos  { background: var(--pos);  color: #fff; }
+[data-alert-style="filled"] .c-alert--neg  { background: var(--neg);  color: #fff; }
+[data-alert-style="filled"] .c-alert--warn { background: var(--warn); color: #fff; }
+[data-alert-style="filled"] .c-alert--info { background: var(--info); color: #fff; }
 /* Alert style toggle pill */
 .alert-var-toggle { display: inline-flex; align-items: center; background: var(--bg-3); border-radius: 99px; padding: 2px; gap: 1px; }
 .alert-var-btn { height: 22px; padding: 0 11px; border-radius: 99px; border: none; background: transparent; font-size: 11px; font-weight: 600; color: var(--ink-3); cursor: pointer; font-family: inherit; letter-spacing: 0.02em; transition: background 0.15s, color 0.15s; }
@@ -2429,8 +2432,8 @@ button { font: inherit; color: inherit; cursor: pointer; }
           Download all (ZIP)
         </button>
         <button class="gen-export-btn gen-export-btn--claude" id="genClaudeBtn">
-          <svg width="15" height="15" viewBox="0 0 512 512" fill="currentColor"><path d="M318.663 149.787h-43.368l78.952 212.423 43.368.004-78.952-212.427zm-125.326 0l-78.952 212.427h44.255l15.932-44.608 82.846-.004 16.107 44.612h44.255l-79.443-212.427zm-8.826 135.418 27.812-77.842 28.464 77.842H184.511z"/></svg>
-          <span id="genClaudeBtnLabel">Copy to Claude</span>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 21H10C6.22876 21 4.34315 21 3.17157 19.8284C2 18.6569 2 16.7712 2 13V10C2 6.22876 2 4.34315 3.17157 3.17157C4.34315 2 6.22876 2 10 2H12C15.7712 2 17.6569 2 18.8284 3.17157C20 4.34315 20 6.22876 20 10V10.5"/><path d="M17.4069 14.4036C17.6192 13.8655 18.3808 13.8655 18.5931 14.4036L18.6298 14.4969C19.1482 15.8113 20.1887 16.8518 21.5031 17.3702L21.5964 17.4069C22.1345 17.6192 22.1345 18.3808 21.5964 18.5931L21.5031 18.6298C20.1887 19.1482 19.1482 20.1887 18.6298 21.5031L18.5931 21.5964C18.3808 22.1345 17.6192 22.1345 17.4069 21.5964L17.3702 21.5031C16.8518 20.1887 15.8113 19.1482 14.4969 18.6298L14.4036 18.5931C13.8655 18.3808 13.8655 17.6192 14.4036 17.4069L14.4969 17.3702C15.8113 16.8518 16.8518 15.8113 17.3702 14.4969L17.4069 14.4036Z"/><path d="M7 7H15M7 11.5H15M7 16H11"/></svg>
+          <span id="genClaudeBtnLabel">Copy prompt for AI</span>
         </button>
       </div>
       <hr class="gen-export-divider">
@@ -5259,11 +5262,11 @@ button { font: inherit; color: inherit; cursor: pointer; }
     root.style.setProperty("--thl-ink",  _sl.ink);
     root.style.setProperty("--thl-ink2", _sl.ink2);
     root.style.setProperty("--thl-ink3", _sl.ink3);
-    /* Semantic filled-alert ink colors */
-    root.style.setProperty("--pos-ink",  isLight(semantic.success.base)  ? "#111" : "#fff");
-    root.style.setProperty("--neg-ink",  isLight(semantic.error.base)    ? "#111" : "#fff");
-    root.style.setProperty("--warn-ink", isLight(semantic.warning.base)  ? "#111" : "#fff");
-    root.style.setProperty("--info-ink", isLight(semantic.info.base)     ? "#111" : "#fff");
+    /* Semantic colors from generated palette */
+    root.style.setProperty("--pos",  semantic.success.base);
+    root.style.setProperty("--neg",  semantic.error.base);
+    root.style.setProperty("--warn", semantic.warning.base);
+    root.style.setProperty("--info", semantic.info.base);
 
     /* Store data for export builders */
     _exportData = {
@@ -5921,6 +5924,68 @@ button { font: inherit; color: inherit; cursor: pointer; }
     var genDlBtn = document.getElementById("genDlBtn");
     var genClaudeBtn = document.getElementById("genClaudeBtn");
 
+    function playMagicSound() {
+      try {
+        var ac = new (window.AudioContext || window.webkitAudioContext)();
+        var master = ac.createGain();
+        master.gain.value = 0.7;
+        master.connect(ac.destination);
+
+        function bell(freq, startT, vol, dur) {
+          var mod  = ac.createOscillator();
+          var modG = ac.createGain();
+          var car  = ac.createOscillator();
+          var carG = ac.createGain();
+          mod.type = "sine";
+          mod.frequency.value = freq * 3.5;
+          modG.gain.setValueAtTime(freq * 6, startT);
+          modG.gain.exponentialRampToValueAtTime(1, startT + dur * 0.6);
+          mod.connect(modG);
+          modG.connect(car.frequency);
+          car.type = "sine";
+          car.frequency.value = freq;
+          carG.gain.setValueAtTime(0, startT);
+          carG.gain.linearRampToValueAtTime(vol, startT + 0.012);
+          carG.gain.exponentialRampToValueAtTime(0.001, startT + dur);
+          car.connect(carG);
+          carG.connect(master);
+          mod.start(startT); mod.stop(startT + dur);
+          car.start(startT); car.stop(startT + dur);
+        }
+
+        /* Magic arpeggio: D5 F#5 A5 D6 — then a glittery sweep */
+        var t0 = ac.currentTime;
+        bell(587.33, t0,        0.55, 1.1);
+        bell(739.99, t0 + 0.10, 0.45, 1.0);
+        bell(880.00, t0 + 0.19, 0.40, 0.95);
+        bell(1174.7, t0 + 0.27, 0.35, 0.9);
+        bell(1479.9, t0 + 0.33, 0.28, 0.85);
+
+        /* Sparkle sweep — fast sine glide up */
+        var sweep = ac.createOscillator();
+        var sweepG = ac.createGain();
+        sweep.type = "sine";
+        sweep.frequency.setValueAtTime(1800, t0 + 0.3);
+        sweep.frequency.exponentialRampToValueAtTime(5200, t0 + 0.75);
+        sweepG.gain.setValueAtTime(0, t0 + 0.3);
+        sweepG.gain.linearRampToValueAtTime(0.12, t0 + 0.38);
+        sweepG.gain.exponentialRampToValueAtTime(0.001, t0 + 0.78);
+        sweep.connect(sweepG); sweepG.connect(master);
+        sweep.start(t0 + 0.3); sweep.stop(t0 + 0.8);
+
+        /* Sub-bass thud for impact */
+        var thud = ac.createOscillator();
+        var thudG = ac.createGain();
+        thud.type = "sine";
+        thud.frequency.setValueAtTime(120, t0);
+        thud.frequency.exponentialRampToValueAtTime(40, t0 + 0.18);
+        thudG.gain.setValueAtTime(0.5, t0);
+        thudG.gain.exponentialRampToValueAtTime(0.001, t0 + 0.22);
+        thud.connect(thudG); thudG.connect(master);
+        thud.start(t0); thud.stop(t0 + 0.25);
+      } catch(e) {}
+    }
+
     function launchConfetti(brandHex) {
       var canvas = document.getElementById("confettiCanvas");
       if (!canvas) return;
@@ -5930,43 +5995,71 @@ button { font: inherit; color: inherit; cursor: pointer; }
       var ctx = canvas.getContext("2d");
       var rgb = PPColorUtils.hexToRgb(brandHex);
       var brandRgb = "rgb(" + Math.round(rgb[0]*255) + "," + Math.round(rgb[1]*255) + "," + Math.round(rgb[2]*255) + ")";
-      var colors = [brandRgb, "#fff", "#f0e6ff", "#c9b8ff", "#ffd6a5", "#caffbf", "#ffadad"];
+      /* Complementary sparkle palette */
+      var colors = [brandRgb, "#ffffff", "#ffe066", "#ff6bdf", "#6bffde", "#ff9f43", "#a29bfe", "#fd79a8", "#55efc4"];
+      var cx = canvas.width / 2, cy = canvas.height / 2;
       var particles = [];
-      for (var i = 0; i < 160; i++) {
+
+      function star(ctx, r, pts) {
+        ctx.beginPath();
+        for (var k = 0; k < pts * 2; k++) {
+          var a = (k * Math.PI) / pts - Math.PI / 2;
+          var rad = k % 2 === 0 ? r : r * 0.42;
+          k === 0 ? ctx.moveTo(Math.cos(a)*rad, Math.sin(a)*rad) : ctx.lineTo(Math.cos(a)*rad, Math.sin(a)*rad);
+        }
+        ctx.closePath();
+        ctx.fill();
+      }
+
+      var shapes = ["star4", "star5", "circle", "rect", "ribbon"];
+      for (var i = 0; i < 280; i++) {
+        var angle = Math.random() * Math.PI * 2;
+        var speed = 5 + Math.random() * 18;
         particles.push({
-          x: Math.random() * canvas.width,
-          y: -10 - Math.random() * 120,
-          r: 4 + Math.random() * 5,
-          d: 1.5 + Math.random() * 2.5,
+          x: cx + (Math.random() - 0.5) * 20,
+          y: cy + (Math.random() - 0.5) * 20,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+          r: 3 + Math.random() * 8,
           color: colors[Math.floor(Math.random() * colors.length)],
-          tilt: Math.random() * 10 - 5,
-          tiltSpeed: 0.06 + Math.random() * 0.1,
           angle: Math.random() * Math.PI * 2,
-          shape: Math.random() > 0.5 ? "rect" : "circle"
+          spin: (Math.random() - 0.5) * 0.3,
+          shape: shapes[Math.floor(Math.random() * shapes.length)],
+          gravity: 0.18 + Math.random() * 0.14,
+          drag: 0.975,
+          life: 1
         });
       }
+
       var frame = 0;
-      var maxFrames = 140;
+      var maxFrames = 240;
       function draw() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         particles.forEach(function(p) {
+          p.vx *= p.drag;
+          p.vy = p.vy * p.drag + p.gravity;
+          p.x += p.vx;
+          p.y += p.vy;
+          p.angle += p.spin;
+          p.life = Math.max(0, 1 - frame / maxFrames);
+          if (p.y > canvas.height + 20) return;
           ctx.save();
           ctx.translate(p.x, p.y);
           ctx.rotate(p.angle);
+          ctx.globalAlpha = Math.min(1, p.life * 2.5);
           ctx.fillStyle = p.color;
-          ctx.globalAlpha = Math.max(0, 1 - frame / maxFrames);
-          if (p.shape === "rect") {
-            ctx.fillRect(-p.r, -p.r / 2, p.r * 2, p.r);
+          if (p.shape === "circle") {
+            ctx.beginPath(); ctx.arc(0, 0, p.r, 0, Math.PI * 2); ctx.fill();
+          } else if (p.shape === "rect") {
+            ctx.fillRect(-p.r, -p.r * 0.4, p.r * 2, p.r * 0.8);
+          } else if (p.shape === "ribbon") {
+            ctx.fillRect(-p.r * 1.4, -p.r * 0.25, p.r * 2.8, p.r * 0.5);
+          } else if (p.shape === "star4") {
+            star(ctx, p.r, 4);
           } else {
-            ctx.beginPath();
-            ctx.arc(0, 0, p.r, 0, Math.PI * 2);
-            ctx.fill();
+            star(ctx, p.r, 5);
           }
           ctx.restore();
-          p.y += p.d + frame * 0.012;
-          p.x += Math.sin(p.angle) * 1.2;
-          p.angle += p.tiltSpeed;
-          p.tilt = Math.sin(p.angle) * 8;
         });
         frame++;
         if (frame < maxFrames) {
@@ -6051,9 +6144,23 @@ button { font: inherit; color: inherit; cursor: pointer; }
 
     if (genNowBtn) {
       genNowBtn.addEventListener("click", function() {
+        if (genNowBtn.disabled) return;
         var hex = (_exportData && _exportData.brand["500"]) ? _exportData.brand["500"].hex : "#7B5BFF";
-        launchConfetti(hex);
-        setTimeout(openGenModal, 480);
+        /* Show loader */
+        var _origInner = genNowBtn.innerHTML;
+        genNowBtn.disabled = true;
+        genNowBtn.innerHTML =
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="animation:spin 0.7s linear infinite;width:16px;height:16px;flex-shrink:0">' +
+            '<path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>' +
+          '</svg> Generating…';
+        /* After 500ms: burst + sound + modal */
+        setTimeout(function() {
+          genNowBtn.innerHTML = _origInner;
+          genNowBtn.disabled = false;
+          launchConfetti(hex);
+          setTimeout(playMagicSound, 500);
+          setTimeout(openGenModal, 480);
+        }, 500);
       });
     }
     if (genModalClose) {
@@ -6082,7 +6189,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
           if (genClaudeLbl) genClaudeLbl.textContent = "Copied!";
           genClaudeBtn.style.filter = "brightness(1.15)";
           setTimeout(function() {
-            if (genClaudeLbl) genClaudeLbl.textContent = "Copy to Claude";
+            if (genClaudeLbl) genClaudeLbl.textContent = "Copy prompt for AI";
             genClaudeBtn.style.filter = "";
           }, 2000);
         }).catch(function() {});
