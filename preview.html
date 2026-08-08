@@ -1129,15 +1129,17 @@ button { font: inherit; color: inherit; cursor: pointer; }
 }
 .gen-export-btn--claude:hover { filter: brightness(1.08); border-color: transparent; }
 .gen-export-divider { border: none; border-top: 1px solid var(--line); margin: 4px 0; }
-.gen-modal-preview-bar { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 2px; }
-.gen-modal-tabs { display: flex; gap: 0; border-bottom: none; }
-.gen-modal-tab { background: none; border: none; cursor: pointer; font-family: inherit; font-size: 12px; font-weight: 500; color: var(--ink-3); padding: 6px 12px; border-radius: 6px 6px 0 0; border-bottom: 2px solid transparent; transition: color 0.15s, border-color 0.15s; }
-.gen-modal-tab:hover { color: var(--ink); }
-.gen-modal-tab.active { color: var(--brand); border-bottom-color: var(--brand); font-weight: 600; }
-.gen-modal-tab-actions { display: flex; gap: 6px; flex-shrink: 0; }
-.gen-modal-tab-btn { display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 6px; border: 1px solid var(--line); background: var(--bg-2); color: var(--ink-3); font-size: 11px; font-weight: 500; font-family: inherit; cursor: pointer; transition: background 0.15s, color 0.15s; white-space: nowrap; }
-.gen-modal-tab-btn:hover { background: var(--bg-3); color: var(--ink); }
-.gen-modal-code { font-family: var(--f-mono, ui-monospace, monospace); font-size: 11.5px; line-height: 1.65; color: var(--ink-2); background: var(--bg); border: 1px solid var(--line); border-top: none; border-radius: 0 0 8px 8px; padding: 16px 18px; max-height: 260px; overflow-y: auto; white-space: pre; tab-size: 2; }
+.gen-fmt-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.gen-fmt-card { background: var(--bg); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; }
+.gen-fmt-card-head { display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; border-bottom: 1px solid var(--line); flex-shrink: 0; }
+.gen-fmt-card-label { display: flex; align-items: baseline; gap: 5px; }
+.gen-fmt-card-name { font-size: 12px; font-weight: 700; color: var(--ink); }
+.gen-fmt-card-ext { font-size: 10px; color: var(--ink-4); font-family: var(--f-mono, monospace); }
+.gen-fmt-card-btns { display: flex; gap: 4px; }
+.gen-fmt-icon-btn { width: 26px; height: 26px; border-radius: 6px; border: 1px solid var(--line); background: var(--bg-2); color: var(--ink-3); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.15s, color 0.15s; flex-shrink: 0; }
+.gen-fmt-icon-btn:hover { background: var(--bg-3); color: var(--ink); }
+.gen-fmt-icon-btn svg { width: 12px; height: 12px; pointer-events: none; }
+.gen-fmt-card-preview { font-family: var(--f-mono, ui-monospace, monospace); font-size: 10px; line-height: 1.6; color: var(--ink-3); padding: 10px 12px; white-space: pre; overflow: hidden; flex: 1; }
 
 /* ── Confetti canvas ── */
 #confettiCanvas {
@@ -2438,26 +2440,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
         </button>
       </div>
       <hr class="gen-export-divider">
-      <div class="gen-modal-preview-bar">
-        <div class="gen-modal-tabs" id="genModalTabs">
-          <button class="gen-modal-tab active" data-fmt="css">CSS</button>
-          <button class="gen-modal-tab" data-fmt="tw">Tailwind</button>
-          <button class="gen-modal-tab" data-fmt="scss">SCSS</button>
-          <button class="gen-modal-tab" data-fmt="json">JSON</button>
-          <button class="gen-modal-tab" data-fmt="prompt">Prompt</button>
-        </div>
-        <div class="gen-modal-tab-actions">
-          <button class="gen-modal-tab-btn" id="genModalCopyBtn" title="Copy">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
-            Copy
-          </button>
-          <button class="gen-modal-tab-btn" id="genModalDownloadBtn" title="Download">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            Download
-          </button>
-        </div>
-      </div>
-      <div class="gen-modal-code custom-scroll" id="genModalCode"></div>
+      <div class="gen-fmt-cards" id="genFmtCards"></div>
     </div>
   </div>
 </div>
@@ -5854,7 +5837,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
     scssT += '\n<span class="ec">// Radius</span>\n';
     Object.keys(radius).forEach(function(k) { scssT += '<span class="ek">$radius-' + k + ':</span> <span class="ev">' + radius[k] + '</span>;\n'; });
 
-    var promptT = '<span class="ec"># ' + esc(ds.source) + ' Design System — Structured Prompts</span>\n\n';
+    var promptT = '<span class="ec"># ' + esc(source) + ' Design System — Structured Prompts</span>\n\n';
     promptT += '<span class="ec">&gt; Copy-paste any prompt block into Claude, Cursor, Copilot, v0, or any AI tool.</span>\n\n';
     promptT += '<span class="ek">## PROMPT 0 — Master System Prompt</span>\n';
     promptT += '- Brand: <span class="ev">' + brand["500"].hex + '</span> — var(--brand)\n';
@@ -6002,15 +5985,35 @@ button { font: inherit; color: inherit; cursor: pointer; }
       draw();
     }
 
-    var _activeGenFmt = "css";
-    var _fmtMeta = { css: { ext: "css", label: "CSS" }, tw: { ext: "js", label: "Tailwind" }, scss: { ext: "scss", label: "SCSS" }, json: { ext: "json", label: "JSON" }, prompt: { ext: "md", label: "Prompt" } };
+    var _fmtMeta = [
+      { fmt: "css",    label: "CSS",      ext: "css" },
+      { fmt: "tw",     label: "Tailwind", ext: "js"  },
+      { fmt: "scss",   label: "SCSS",     ext: "scss"},
+      { fmt: "json",   label: "JSON",     ext: "json"},
+      { fmt: "prompt", label: "Prompt",   ext: "md"  }
+    ];
 
-    function genModalSetTab(fmt) {
-      _activeGenFmt = fmt;
-      var codeEl = document.getElementById("genModalCode");
-      if (codeEl && _exportPreview) codeEl.innerHTML = _exportPreview[fmt] || "";
-      document.querySelectorAll(".gen-modal-tab").forEach(function(t) {
-        t.classList.toggle("active", t.dataset.fmt === fmt);
+    var _svgCopy = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>';
+    var _svgDl   = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>';
+
+    function buildFmtCards() {
+      var wrap = document.getElementById("genFmtCards");
+      if (!wrap || !_exportPreview) return;
+      wrap.innerHTML = "";
+      _fmtMeta.forEach(function(m) {
+        var preview = (_exportPreview[m.fmt] || "").replace(/<[^>]+>/g, "").split("\n").slice(0, 5).join("\n");
+        var card = document.createElement("div");
+        card.className = "gen-fmt-card";
+        card.innerHTML =
+          '<div class="gen-fmt-card-head">' +
+            '<div class="gen-fmt-card-label"><span class="gen-fmt-card-name">' + m.label + '</span><span class="gen-fmt-card-ext">.' + m.ext + '</span></div>' +
+            '<div class="gen-fmt-card-btns">' +
+              '<button class="gen-fmt-icon-btn" data-card-copy="' + m.fmt + '" title="Copy">' + _svgCopy + '</button>' +
+              '<button class="gen-fmt-icon-btn" data-card-dl="' + m.fmt + '" title="Download">' + _svgDl + '</button>' +
+            '</div>' +
+          '</div>' +
+          '<div class="gen-fmt-card-preview">' + preview + '</div>';
+        wrap.appendChild(card);
       });
     }
 
@@ -6026,7 +6029,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
         var tc = Object.keys(_exportData.typo.scale).length;
         statsEl.textContent = sc + " color shades · " + tc + " type tokens · " + _exportData.spacing.base + "px grid";
       }
-      genModalSetTab("css");
+      buildFmtCards();
       if (genModalBackdrop) genModalBackdrop.classList.add("open");
       document.body.style.overflow = "hidden";
     }
@@ -6070,39 +6073,31 @@ button { font: inherit; color: inherit; cursor: pointer; }
         }).catch(function() {});
       });
     }
-    /* Modal tab switching */
-    document.querySelectorAll(".gen-modal-tab").forEach(function(btn) {
-      btn.addEventListener("click", function() { genModalSetTab(btn.dataset.fmt); });
-    });
-
-    /* Modal per-tab copy */
-    var genModalCopyBtn = document.getElementById("genModalCopyBtn");
-    if (genModalCopyBtn) {
-      genModalCopyBtn.addEventListener("click", function() {
-        if (!_exportData || !_exportPreview) return;
-        var fmtMap = { css: "css", tw: "tailwind", scss: "scss", json: "json", prompt: "prompt" };
-        var raw = "";
-        if (_activeGenFmt === "css") raw = buildFullCSS(_exportData);
-        else if (_activeGenFmt === "tw") raw = buildFullTailwind(_exportData);
-        else if (_activeGenFmt === "scss") raw = buildFullSCSS(_exportData);
-        else if (_activeGenFmt === "json") raw = buildFullJSON(_exportData);
-        else if (_activeGenFmt === "prompt") raw = buildPromptMD(_exportData);
-        navigator.clipboard.writeText(raw).then(function() {
-          var orig = genModalCopyBtn.innerHTML;
-          genModalCopyBtn.textContent = "Copied!";
-          setTimeout(function() { genModalCopyBtn.innerHTML = orig; }, 2000);
-        }).catch(function() {});
-      });
-    }
-
-    /* Modal per-tab download */
-    var genModalDownloadBtn = document.getElementById("genModalDownloadBtn");
-    if (genModalDownloadBtn) {
-      genModalDownloadBtn.addEventListener("click", function() {
-        if (!_exportData) return;
+    /* Card copy/download — event delegation */
+    var genFmtCards = document.getElementById("genFmtCards");
+    if (genFmtCards) {
+      genFmtCards.addEventListener("click", function(e) {
+        var btn = e.target.closest("[data-card-copy],[data-card-dl]");
+        if (!btn || !_exportData) return;
+        var fmt = btn.dataset.cardCopy || btn.dataset.cardDl;
+        var isCopy = !!btn.dataset.cardCopy;
         var fmtForTrigger = { css: "css", tw: "tailwind", scss: "scss", json: "json", prompt: "prompt" };
         var extMap = { css: "css", tw: "js", scss: "scss", json: "json", prompt: "md" };
-        triggerExportDownload(fmtForTrigger[_activeGenFmt], extMap[_activeGenFmt], genModalDownloadBtn);
+        if (isCopy) {
+          var raw = "";
+          if (fmt === "css") raw = buildFullCSS(_exportData);
+          else if (fmt === "tw") raw = buildFullTailwind(_exportData);
+          else if (fmt === "scss") raw = buildFullSCSS(_exportData);
+          else if (fmt === "json") raw = buildFullJSON(_exportData);
+          else if (fmt === "prompt") raw = buildPromptMD(_exportData);
+          navigator.clipboard.writeText(raw).then(function() {
+            var orig = btn.innerHTML;
+            btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>';
+            setTimeout(function() { btn.innerHTML = orig; }, 2000);
+          }).catch(function() {});
+        } else {
+          triggerExportDownload(fmtForTrigger[fmt], extMap[fmt], btn);
+        }
       });
     }
 
