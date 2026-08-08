@@ -1391,6 +1391,16 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .c-alert--warn { background: var(--warn-soft); color: var(--warn); }
 .c-alert--info { background: var(--info-soft); color: var(--info); }
 .c-alert--brand { background: var(--brand-faint); border: 1px solid var(--brand-soft); color: var(--brand-text, var(--brand)); }
+/* Alert filled variant */
+[data-alert-style="filled"] .c-alert--pos  { background: var(--pos);  color: var(--pos-ink,  #fff); }
+[data-alert-style="filled"] .c-alert--neg  { background: var(--neg);  color: var(--neg-ink,  #fff); }
+[data-alert-style="filled"] .c-alert--warn { background: var(--warn); color: var(--warn-ink, #111); }
+[data-alert-style="filled"] .c-alert--info { background: var(--info); color: var(--info-ink, #fff); }
+/* Alert style toggle pill */
+.alert-var-toggle { display: inline-flex; align-items: center; background: var(--bg-3); border-radius: 99px; padding: 2px; gap: 1px; }
+.alert-var-btn { height: 22px; padding: 0 11px; border-radius: 99px; border: none; background: transparent; font-size: 11px; font-weight: 600; color: var(--ink-3); cursor: pointer; font-family: inherit; letter-spacing: 0.02em; transition: background 0.15s, color 0.15s; }
+.alert-var-btn.active { background: var(--bg-1); color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,0.14); }
+.alert-var-btn:not(.active):hover { color: var(--ink-2); }
 
 /* Avatar */
 .c-avatar { display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; font-weight: 600; flex-shrink: 0; }
@@ -5109,6 +5119,11 @@ button { font: inherit; color: inherit; cursor: pointer; }
     root.style.setProperty("--thl-ink",  _sl.ink);
     root.style.setProperty("--thl-ink2", _sl.ink2);
     root.style.setProperty("--thl-ink3", _sl.ink3);
+    /* Semantic filled-alert ink colors */
+    root.style.setProperty("--pos-ink",  isLight(semantic.pos.base)  ? "#111" : "#fff");
+    root.style.setProperty("--neg-ink",  isLight(semantic.neg.base)  ? "#111" : "#fff");
+    root.style.setProperty("--warn-ink", isLight(semantic.warn.base) ? "#111" : "#fff");
+    root.style.setProperty("--info-ink", isLight(semantic.info.base) ? "#111" : "#fff");
 
     /* Store data for export builders */
     _exportData = {
@@ -5440,7 +5455,13 @@ button { font: inherit; color: inherit; cursor: pointer; }
     /* ═══ 09 FEEDBACK ═══ */
     h += '<section class="ds-section" id="feedback">';
     h += '<div class="ds-section-header"><span class="ds-section-num">08</span><h2 class="ds-section-title">Feedback &amp; overlays</h2></div>';
-    h += '<div class="ds-subsection"><div class="ds-subsection-title">Alerts</div><div class="ds-preview"><div class="ds-preview-col" style="max-width:560px">';
+    var _alertStyle = (typeof localStorage !== 'undefined' && localStorage.getItem('pp-alert-style')) || 'subtle';
+    h += '<div class="ds-subsection"><div class="ds-subsection-title" style="display:flex;align-items:center;justify-content:space-between">Alerts';
+    h += '<div class="alert-var-toggle" id="alertVarToggle">';
+    h += '<button class="alert-var-btn' + (_alertStyle === 'subtle' ? ' active' : '') + '" data-val="subtle">Subtle</button>';
+    h += '<button class="alert-var-btn' + (_alertStyle === 'filled' ? ' active' : '') + '" data-val="filled">Filled</button>';
+    h += '</div></div>';
+    h += '<div class="ds-preview"><div class="ds-preview-col" id="alertsPreviewWrap" data-alert-style="' + _alertStyle + '" style="max-width:560px">';
     h += '<div class="c-alert c-alert--pos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12Z"/><path d="M8 12.75C8 12.75 9.6 13.6625 10.4 15C10.4 15 12.8 9.75 16 8"/></svg> Design system generated successfully.</div>';
     h += '<div class="c-alert c-alert--warn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13.9248 21H10.0752C5.44476 21 3.12955 21 2.27636 19.4939C1.42317 17.9879 2.60736 15.9914 4.97574 11.9985L6.90057 8.75333C9.17559 4.91778 10.3131 3 12 3C13.6869 3 14.8244 4.91777 17.0994 8.75332L19.0243 11.9985C21.3926 15.9914 22.5768 17.9879 21.7236 19.4939C20.8704 21 18.5552 21 13.9248 21Z"/><path d="M12 9V13"/><path d="M12.125 16.75H12M12.25 16.75C12.25 16.8881 12.1381 17 12 17C11.8619 17 11.75 16.8881 11.75 16.75C11.75 16.6119 11.8619 16.5 12 16.5C12.1381 16.5 12.25 16.6119 12.25 16.75Z"/></svg> Some contrast ratios below AA. Review recommended.</div>';
     h += '<div class="c-alert c-alert--neg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12Z"/><path d="M14.9994 15L9 9M9.00064 15L15 9"/></svg> Export requires payment.</div>';
@@ -5752,6 +5773,22 @@ button { font: inherit; color: inherit; cursor: pointer; }
   function bindInteractions() {
     var inlineBtn = document.getElementById("inlineRegenBtn");
     if (inlineBtn) inlineBtn.addEventListener("click", triggerRegen);
+
+    /* Alert style toggle */
+    var alertToggle = document.getElementById("alertVarToggle");
+    if (alertToggle) {
+      alertToggle.querySelectorAll(".alert-var-btn").forEach(function(btn) {
+        btn.addEventListener("click", function() {
+          var val = btn.dataset.val;
+          var wrap = document.getElementById("alertsPreviewWrap");
+          if (wrap) wrap.setAttribute("data-alert-style", val);
+          alertToggle.querySelectorAll(".alert-var-btn").forEach(function(b) {
+            b.classList.toggle("active", b === btn);
+          });
+          try { localStorage.setItem("pp-alert-style", val); } catch(e) {}
+        });
+      });
+    }
 
     document.querySelectorAll(".period-group").forEach(function(group) {
       group.querySelectorAll(".period-btn").forEach(function(btn) {
