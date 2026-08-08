@@ -1094,6 +1094,17 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .gen-modal-close:hover { background: var(--bg-3); color: var(--ink); }
 .gen-modal-close svg { width: 14px; height: 14px; }
 .gen-modal-body { padding: 20px 28px 28px; display: flex; flex-direction: column; gap: 10px; }
+.gen-modal-meta { background: var(--bg-2); border: 1px solid var(--line); border-radius: var(--r-2); padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; }
+.gen-modal-colors { display: flex; flex-wrap: wrap; gap: 8px; }
+.gen-modal-color-chip { display: flex; align-items: center; gap: 7px; background: var(--bg); border: 1px solid var(--line); border-radius: 99px; padding: 4px 10px 4px 5px; }
+.gen-modal-color-dot { width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0; }
+.gen-modal-color-name { font-size: 11px; font-weight: 600; color: var(--ink); }
+.gen-modal-color-hex { font-size: 10px; color: var(--ink-3); font-family: var(--f-mono, monospace); }
+.gen-modal-attrs { display: flex; flex-wrap: wrap; gap: 6px; }
+.gen-modal-attr { display: flex; align-items: center; gap: 5px; background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 4px 10px; }
+.gen-modal-attr-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-4); }
+.gen-modal-attr-val { font-size: 12px; font-weight: 500; color: var(--ink); }
+.gen-modal-stats { font-size: 11px; color: var(--ink-3); }
 .gen-modal-swatch {
   display: flex; align-items: center; gap: 12px; padding: 14px 16px;
   background: var(--bg-2); border-radius: var(--r-2); border: 1px solid var(--line); margin-bottom: 6px;
@@ -2422,13 +2433,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
       </button>
     </div>
     <div class="gen-modal-body">
-      <div class="gen-modal-swatch" id="genModalSwatch">
-        <div class="gen-modal-swatch-dot" id="genModalDot"></div>
-        <div class="gen-modal-swatch-info">
-          <div class="gen-modal-swatch-hex" id="genModalHex"></div>
-          <div class="gen-modal-swatch-stats" id="genModalStats"></div>
-        </div>
-      </div>
+      <div class="gen-modal-meta" id="genModalMeta"></div>
       <div class="gen-export-grid">
         <button class="gen-export-btn gen-export-btn--primary" id="genDlBtn">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
@@ -6016,17 +6021,39 @@ button { font: inherit; color: inherit; cursor: pointer; }
       });
     }
 
+    var _dsStyleLabels = { soft: "Soft", edge: "Edge", pill: "Pill", flat: "Flat", glass: "Glass" };
+
     function openGenModal() {
       if (!_exportData) return;
-      var dot = document.getElementById("genModalDot");
-      var hexEl = document.getElementById("genModalHex");
-      var statsEl = document.getElementById("genModalStats");
-      if (dot) dot.style.background = _exportData.brand["500"].hex;
-      if (hexEl) hexEl.textContent = _exportData.source;
-      if (statsEl) {
+      var meta = document.getElementById("genModalMeta");
+      if (meta) {
         var sc = Object.keys(_exportData.brand).length * brandColors.length;
         var tc = Object.keys(_exportData.typo.scale).length;
-        statsEl.textContent = sc + " color shades · " + tc + " type tokens · " + _exportData.spacing.base + "px grid";
+
+        /* Colors */
+        var colorsHtml = '<div class="gen-modal-colors">';
+        brandColors.forEach(function(c) {
+          colorsHtml +=
+            '<div class="gen-modal-color-chip">' +
+              '<div class="gen-modal-color-dot" style="background:' + c.hex + '"></div>' +
+              '<span class="gen-modal-color-name">' + esc(c.name) + '</span>' +
+              '<span class="gen-modal-color-hex">' + c.hex.toUpperCase() + '</span>' +
+            '</div>';
+        });
+        colorsHtml += '</div>';
+
+        /* Font + Style attrs */
+        var styleLabel = _dsStyleLabels[_exportData.dsStyle] || _exportData.dsStyle;
+        var attrsHtml =
+          '<div class="gen-modal-attrs">' +
+            '<div class="gen-modal-attr"><span class="gen-modal-attr-label">Font</span><span class="gen-modal-attr-val">' + esc(_exportData.typo.families.sans) + '</span></div>' +
+            '<div class="gen-modal-attr"><span class="gen-modal-attr-label">Style</span><span class="gen-modal-attr-val">' + styleLabel + '</span></div>' +
+          '</div>';
+
+        /* Stats */
+        var statsHtml = '<div class="gen-modal-stats">' + sc + ' color shades · ' + tc + ' type tokens · ' + _exportData.spacing.base + 'px grid</div>';
+
+        meta.innerHTML = colorsHtml + attrsHtml + statsHtml;
       }
       buildFmtCards();
       if (genModalBackdrop) genModalBackdrop.classList.add("open");
