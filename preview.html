@@ -1139,7 +1139,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .gen-fmt-icon-btn { width: 26px; height: 26px; border-radius: 6px; border: 1px solid var(--line); background: var(--bg-2); color: var(--ink-3); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.15s, color 0.15s; flex-shrink: 0; }
 .gen-fmt-icon-btn:hover { background: var(--bg-3); color: var(--ink); }
 .gen-fmt-icon-btn svg { width: 12px; height: 12px; pointer-events: none; }
-.gen-fmt-card-preview { font-family: var(--f-mono, ui-monospace, monospace); font-size: 10px; line-height: 1.6; color: var(--ink-3); padding: 10px 12px; white-space: pre; overflow: hidden; flex: 1; }
+.gen-fmt-card-desc { font-size: 11px; line-height: 1.5; color: var(--ink-3); padding: 10px 12px; }
 
 /* ── Confetti canvas ── */
 #confettiCanvas {
@@ -5986,11 +5986,11 @@ button { font: inherit; color: inherit; cursor: pointer; }
     }
 
     var _fmtMeta = [
-      { fmt: "css",    label: "CSS",      ext: "css" },
-      { fmt: "tw",     label: "Tailwind", ext: "js"  },
-      { fmt: "scss",   label: "SCSS",     ext: "scss"},
-      { fmt: "json",   label: "JSON",     ext: "json"},
-      { fmt: "prompt", label: "Prompt",   ext: "md"  }
+      { fmt: "css",    label: "CSS",      ext: "css",  desc: "Custom properties for colors, type, spacing & radius" },
+      { fmt: "tw",     label: "Tailwind", ext: "js",   desc: "tailwind.config.js with brand colors and font stack" },
+      { fmt: "scss",   label: "SCSS",     ext: "scss", desc: "Variables for colors, typography and spacing scale" },
+      { fmt: "json",   label: "JSON",     ext: "json", desc: "Design tokens as structured JSON for any toolchain" },
+      { fmt: "prompt", label: "Prompt",   ext: "md",   desc: "15 AI prompts pre-loaded with your exact tokens" }
     ];
 
     var _svgCopy = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>';
@@ -5998,10 +5998,9 @@ button { font: inherit; color: inherit; cursor: pointer; }
 
     function buildFmtCards() {
       var wrap = document.getElementById("genFmtCards");
-      if (!wrap || !_exportPreview) return;
+      if (!wrap) return;
       wrap.innerHTML = "";
       _fmtMeta.forEach(function(m) {
-        var preview = (_exportPreview[m.fmt] || "").replace(/<[^>]+>/g, "").split("\n").slice(0, 5).join("\n");
         var card = document.createElement("div");
         card.className = "gen-fmt-card";
         card.innerHTML =
@@ -6012,7 +6011,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
               '<button class="gen-fmt-icon-btn" data-card-dl="' + m.fmt + '" title="Download">' + _svgDl + '</button>' +
             '</div>' +
           '</div>' +
-          '<div class="gen-fmt-card-preview">' + preview + '</div>';
+          '<div class="gen-fmt-card-desc">' + m.desc + '</div>';
         wrap.appendChild(card);
       });
     }
