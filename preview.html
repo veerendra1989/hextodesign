@@ -1129,6 +1129,15 @@ button { font: inherit; color: inherit; cursor: pointer; }
 }
 .gen-export-btn--claude:hover { filter: brightness(1.08); border-color: transparent; }
 .gen-export-divider { border: none; border-top: 1px solid var(--line); margin: 4px 0; }
+.gen-modal-preview-bar { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 2px; }
+.gen-modal-tabs { display: flex; gap: 0; border-bottom: none; }
+.gen-modal-tab { background: none; border: none; cursor: pointer; font-family: inherit; font-size: 12px; font-weight: 500; color: var(--ink-3); padding: 6px 12px; border-radius: 6px 6px 0 0; border-bottom: 2px solid transparent; transition: color 0.15s, border-color 0.15s; }
+.gen-modal-tab:hover { color: var(--ink); }
+.gen-modal-tab.active { color: var(--brand); border-bottom-color: var(--brand); font-weight: 600; }
+.gen-modal-tab-actions { display: flex; gap: 6px; flex-shrink: 0; }
+.gen-modal-tab-btn { display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 6px; border: 1px solid var(--line); background: var(--bg-2); color: var(--ink-3); font-size: 11px; font-weight: 500; font-family: inherit; cursor: pointer; transition: background 0.15s, color 0.15s; white-space: nowrap; }
+.gen-modal-tab-btn:hover { background: var(--bg-3); color: var(--ink); }
+.gen-modal-code { font-family: var(--f-mono, ui-monospace, monospace); font-size: 11.5px; line-height: 1.65; color: var(--ink-2); background: var(--bg); border: 1px solid var(--line); border-top: none; border-radius: 0 0 8px 8px; padding: 16px 18px; max-height: 260px; overflow-y: auto; white-space: pre; tab-size: 2; }
 
 /* ── Confetti canvas ── */
 #confettiCanvas {
@@ -2311,7 +2320,6 @@ button { font: inherit; color: inherit; cursor: pointer; }
     <a href="#validation"><span class="sidebar__nav-num">13</span> Validation</a>
     <a href="#upload"><span class="sidebar__nav-num">14</span> Upload</a>
     <a href="#themecompare"><span class="sidebar__nav-num">15</span> Themes</a>
-    <a href="#tokens"><span class="sidebar__nav-num">16</span> Export</a>
   </nav>
 
   <div class="sidebar__bottom">
@@ -2389,7 +2397,6 @@ button { font: inherit; color: inherit; cursor: pointer; }
   <a href="#validation" class="mobile-tab">Validation</a>
   <a href="#upload" class="mobile-tab">Upload</a>
   <a href="#themecompare" class="mobile-tab">Themes</a>
-  <a href="#tokens" class="mobile-tab">Export</a>
 </nav>
 
 <!-- MAIN -->
@@ -2420,7 +2427,6 @@ button { font: inherit; color: inherit; cursor: pointer; }
           <div class="gen-modal-swatch-stats" id="genModalStats"></div>
         </div>
       </div>
-      <div class="gen-modal-section-label">Export</div>
       <div class="gen-export-grid">
         <button class="gen-export-btn gen-export-btn--primary" id="genDlBtn">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
@@ -2432,25 +2438,26 @@ button { font: inherit; color: inherit; cursor: pointer; }
         </button>
       </div>
       <hr class="gen-export-divider">
-      <div class="gen-modal-section-label">Individual formats</div>
-      <div class="gen-export-grid">
-        <button class="gen-export-btn" data-gen-fmt="css">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-          <span>CSS variables<sub>.css</sub></span>
-        </button>
-        <button class="gen-export-btn" data-gen-fmt="tailwind">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14.5 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>
-          <span>Tailwind config<sub>.js</sub></span>
-        </button>
-        <button class="gen-export-btn" data-gen-fmt="scss">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-          <span>SCSS variables<sub>.scss</sub></span>
-        </button>
-        <button class="gen-export-btn" data-gen-fmt="json">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14.5 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>
-          <span>Design tokens<sub>.json</sub></span>
-        </button>
+      <div class="gen-modal-preview-bar">
+        <div class="gen-modal-tabs" id="genModalTabs">
+          <button class="gen-modal-tab active" data-fmt="css">CSS</button>
+          <button class="gen-modal-tab" data-fmt="tw">Tailwind</button>
+          <button class="gen-modal-tab" data-fmt="scss">SCSS</button>
+          <button class="gen-modal-tab" data-fmt="json">JSON</button>
+          <button class="gen-modal-tab" data-fmt="prompt">Prompt</button>
+        </div>
+        <div class="gen-modal-tab-actions">
+          <button class="gen-modal-tab-btn" id="genModalCopyBtn" title="Copy">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+            Copy
+          </button>
+          <button class="gen-modal-tab-btn" id="genModalDownloadBtn" title="Download">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download
+          </button>
+        </div>
       </div>
+      <div class="gen-modal-code custom-scroll" id="genModalCode"></div>
     </div>
   </div>
 </div>
@@ -2569,7 +2576,8 @@ button { font: inherit; color: inherit; cursor: pointer; }
   }
 
   /* ═══ Export download — client-side full export ═══ */
-  var _exportData = null; /* set by renderPreview */
+  var _exportData = null;    /* set by renderPreview */
+  var _exportPreview = null; /* set by renderPreview — {css, tw, scss, json, prompt} */
 
   function buildFullCSS(d) {
     var L = [];
@@ -5807,11 +5815,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
     h += '</div>';
     h += '</div>';
 
-    /* ═══ 16 EXPORT ═══ */
-    h += '<section class="ds-section" id="tokens">';
-    h += '<div class="ds-section-header"><span class="ds-section-num">16</span><h2 class="ds-section-title">Export</h2></div>';
-    h += '<p class="ds-section-desc">Complete design system export — tokens, component classes, dark/light themes, utilities, and more. Download includes everything on this page.</p>';
-    h += '<div class="ds-subsection"><div class="ds-subsection-title">Export preview</div><div class="ds-preview" style="padding:0">';
+    /* ═══ Build export preview strings → stored for modal ═══ */
     var cssT = '<span class="ec">/* Brand colors */</span>\n';
     Object.keys(brand).forEach(function(s) { cssT += '<span class="ek">--brand-' + s + ':</span> <span class="ev">' + brand[s].hex.toLowerCase() + '</span>;\n'; });
     cssT += '\n<span class="ec">/* Semantic */</span>\n';
@@ -5870,17 +5874,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
     promptT += '- Prompt 10–14: Layouts, Period Selector, Data Viz…\n';
     promptT += '...<span class="ec"> (download for full 15-prompt file)</span>\n';
 
-    h += '<div class="export-tabs" id="exportTabs"><button class="export-tab export-tab--active" data-tab="css">CSS</button><button class="export-tab" data-tab="tw">Tailwind</button><button class="export-tab" data-tab="scss">SCSS</button><button class="export-tab" data-tab="json">JSON</button><button class="export-tab" data-tab="prompt">Prompt</button></div>';
-    h += '<div class="export-actions" id="exportActions">';
-    h += '<button class="c-btn c-btn--secondary c-btn--sm" id="copyExportBtn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 15C9 12.1716 9 10.7574 9.87868 9.87868C10.7574 9 12.1716 9 15 9L16 9C18.8284 9 20.2426 9 21.1213 9.87868C22 10.7574 22 12.1716 22 15V16C22 18.8284 22 20.2426 21.1213 21.1213C20.2426 22 18.8284 22 16 22H15C12.1716 22 10.7574 22 9.87868 21.1213C9 20.2426 9 18.8284 9 16L9 15Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M16.9999 9C16.9975 6.04291 16.9528 4.51121 16.092 3.46243C15.9258 3.25989 15.7401 3.07418 15.5376 2.90796C14.4312 2 12.7875 2 9.5 2C6.21252 2 4.56878 2 3.46243 2.90796C3.25989 3.07417 3.07418 3.25989 2.90796 3.46243C2 4.56878 2 6.21252 2 9.5C2 12.7875 2 14.4312 2.90796 15.5376C3.07417 15.7401 3.25989 15.9258 3.46243 16.092C4.51121 16.9528 6.04291 16.9975 9 16.9999" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg> Copy</button>';
-    h += '<button class="c-btn c-btn--primary c-btn--sm" id="downloadExportBtn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16.9504 12.1817C17.1981 12.814 16.5076 13.5726 15.1267 15.0899C13.6702 16.6902 12.9201 17.4904 12 17.5C11.0799 17.4904 10.3298 16.6902 8.87331 15.0899C7.49239 13.5726 6.80193 12.814 7.04964 12.1817C7.05868 12.1586 7.06851 12.1359 7.0791 12.1135C7.34928 11.542 8.24477 11.5029 10 11.5002V4.99998C10 4.53501 10 4.30253 10.0511 4.11179C10.1898 3.59414 10.5941 3.1898 11.1118 3.05111C11.3025 3 11.535 3 12 3C12.4649 3 12.6974 3 12.8882 3.05111C13.4058 3.1898 13.8102 3.59414 13.9489 4.11179C14 4.30253 14 4.53501 14 4.99998V11.5002C15.7552 11.5029 16.6507 11.542 16.9209 12.1135C16.9315 12.1359 16.9413 12.1586 16.9504 12.1817Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M5.00006 21H19.0001" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg> Download</button>';
-    h += '</div>';
-    h += '<div class="export-code custom-scroll" id="exportCode-css">' + cssT + '</div>';
-    h += '<div class="export-code custom-scroll" id="exportCode-tw" style="display:none">' + twT + '</div>';
-    h += '<div class="export-code custom-scroll" id="exportCode-scss" style="display:none">' + scssT + '</div>';
-    h += '<div class="export-code custom-scroll" id="exportCode-json" style="display:none">' + jsT + '</div>';
-    h += '<div class="export-code custom-scroll" id="exportCode-prompt" style="display:none">' + promptT + '</div>';
-    h += '</div></div></section>';
+    _exportPreview = { css: cssT, tw: twT, scss: scssT, json: jsT, prompt: promptT };
 
     h += '</main>';
 
@@ -6008,6 +6002,18 @@ button { font: inherit; color: inherit; cursor: pointer; }
       draw();
     }
 
+    var _activeGenFmt = "css";
+    var _fmtMeta = { css: { ext: "css", label: "CSS" }, tw: { ext: "js", label: "Tailwind" }, scss: { ext: "scss", label: "SCSS" }, json: { ext: "json", label: "JSON" }, prompt: { ext: "md", label: "Prompt" } };
+
+    function genModalSetTab(fmt) {
+      _activeGenFmt = fmt;
+      var codeEl = document.getElementById("genModalCode");
+      if (codeEl && _exportPreview) codeEl.innerHTML = _exportPreview[fmt] || "";
+      document.querySelectorAll(".gen-modal-tab").forEach(function(t) {
+        t.classList.toggle("active", t.dataset.fmt === fmt);
+      });
+    }
+
     function openGenModal() {
       if (!_exportData) return;
       var dot = document.getElementById("genModalDot");
@@ -6020,6 +6026,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
         var tc = Object.keys(_exportData.typo.scale).length;
         statsEl.textContent = sc + " color shades · " + tc + " type tokens · " + _exportData.spacing.base + "px grid";
       }
+      genModalSetTab("css");
       if (genModalBackdrop) genModalBackdrop.classList.add("open");
       document.body.style.overflow = "hidden";
     }
@@ -6063,13 +6070,41 @@ button { font: inherit; color: inherit; cursor: pointer; }
         }).catch(function() {});
       });
     }
-    document.querySelectorAll("[data-gen-fmt]").forEach(function(btn) {
-      btn.addEventListener("click", function() {
-        var fmt = btn.dataset.genFmt;
-        var extMap = { css: "css", tailwind: "js", scss: "scss", json: "json" };
-        triggerExportDownload(fmt, extMap[fmt] || fmt, btn);
-      });
+    /* Modal tab switching */
+    document.querySelectorAll(".gen-modal-tab").forEach(function(btn) {
+      btn.addEventListener("click", function() { genModalSetTab(btn.dataset.fmt); });
     });
+
+    /* Modal per-tab copy */
+    var genModalCopyBtn = document.getElementById("genModalCopyBtn");
+    if (genModalCopyBtn) {
+      genModalCopyBtn.addEventListener("click", function() {
+        if (!_exportData || !_exportPreview) return;
+        var fmtMap = { css: "css", tw: "tailwind", scss: "scss", json: "json", prompt: "prompt" };
+        var raw = "";
+        if (_activeGenFmt === "css") raw = buildFullCSS(_exportData);
+        else if (_activeGenFmt === "tw") raw = buildFullTailwind(_exportData);
+        else if (_activeGenFmt === "scss") raw = buildFullSCSS(_exportData);
+        else if (_activeGenFmt === "json") raw = buildFullJSON(_exportData);
+        else if (_activeGenFmt === "prompt") raw = buildPromptMD(_exportData);
+        navigator.clipboard.writeText(raw).then(function() {
+          var orig = genModalCopyBtn.innerHTML;
+          genModalCopyBtn.textContent = "Copied!";
+          setTimeout(function() { genModalCopyBtn.innerHTML = orig; }, 2000);
+        }).catch(function() {});
+      });
+    }
+
+    /* Modal per-tab download */
+    var genModalDownloadBtn = document.getElementById("genModalDownloadBtn");
+    if (genModalDownloadBtn) {
+      genModalDownloadBtn.addEventListener("click", function() {
+        if (!_exportData) return;
+        var fmtForTrigger = { css: "css", tw: "tailwind", scss: "scss", json: "json", prompt: "prompt" };
+        var extMap = { css: "css", tw: "js", scss: "scss", json: "json", prompt: "md" };
+        triggerExportDownload(fmtForTrigger[_activeGenFmt], extMap[_activeGenFmt], genModalDownloadBtn);
+      });
+    }
 
     var alertToggle = document.getElementById("alertVarToggle");
     if (alertToggle) {
