@@ -1039,6 +1039,98 @@ button { font: inherit; color: inherit; cursor: pointer; }
 :root[data-theme="dark"] .hero__chip--ok { color: oklch(0.78 0.14 155); }
 :root[data-theme="dark"] .hero__chip--warn { color: oklch(0.75 0.16 75); }
 
+/* ── Generate Now button ── */
+.gen-now-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 11px 24px; border-radius: 99px; border: none; cursor: pointer;
+  font-size: 14px; font-weight: 700; font-family: inherit; letter-spacing: -0.1px;
+  background: var(--brand); color: var(--brand-ink, #fff);
+  box-shadow: 0 2px 14px color-mix(in oklch, var(--brand) 45%, transparent);
+  transition: transform 0.18s, box-shadow 0.18s, filter 0.18s;
+  position: relative; overflow: hidden;
+}
+.gen-now-btn::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.18) 0%, transparent 60%);
+  border-radius: inherit; pointer-events: none;
+}
+.gen-now-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 28px color-mix(in oklch, var(--brand) 55%, transparent); filter: brightness(1.06); }
+.gen-now-btn:active { transform: translateY(0); }
+.gen-now-btn svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+/* ── Export modal ── */
+.gen-modal-backdrop {
+  position: fixed; inset: 0; z-index: 9000;
+  background: rgba(0,0,0,0.55); backdrop-filter: blur(6px);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; visibility: hidden; transition: opacity 0.25s, visibility 0.25s;
+}
+.gen-modal-backdrop.open { opacity: 1; visibility: visible; }
+.gen-modal {
+  background: var(--bg-1); border: 1px solid var(--line-2);
+  border-radius: var(--r-3); box-shadow: 0 24px 64px rgba(0,0,0,0.28), 0 0 0 1px var(--line);
+  width: min(540px, 94vw); max-height: 90vh; overflow-y: auto;
+  transform: scale(0.93) translateY(12px);
+  transition: transform 0.28s cubic-bezier(0.34,1.56,0.64,1);
+}
+.gen-modal-backdrop.open .gen-modal { transform: scale(1) translateY(0); }
+.gen-modal-header {
+  padding: 28px 28px 20px; border-bottom: 1px solid var(--line);
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
+}
+.gen-modal-title { font-size: 20px; font-weight: 700; letter-spacing: -0.3px; }
+.gen-modal-sub { font-size: 13px; color: var(--ink-3); margin-top: 4px; line-height: 1.5; }
+.gen-modal-close {
+  width: 32px; height: 32px; border-radius: 99px; border: 1px solid var(--line-2);
+  background: var(--bg-2); color: var(--ink-3); cursor: pointer;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px;
+  transition: background 0.15s, color 0.15s;
+}
+.gen-modal-close:hover { background: var(--bg-3); color: var(--ink); }
+.gen-modal-close svg { width: 14px; height: 14px; }
+.gen-modal-body { padding: 20px 28px 28px; display: flex; flex-direction: column; gap: 10px; }
+.gen-modal-swatch {
+  display: flex; align-items: center; gap: 12px; padding: 14px 16px;
+  background: var(--bg-2); border-radius: var(--r-2); border: 1px solid var(--line); margin-bottom: 6px;
+}
+.gen-modal-swatch-dot { width: 36px; height: 36px; border-radius: var(--r-2); flex-shrink: 0; }
+.gen-modal-swatch-info { flex: 1; }
+.gen-modal-swatch-hex { font-size: 13px; font-weight: 700; font-family: var(--f-mono); }
+.gen-modal-swatch-stats { font-size: 11px; color: var(--ink-3); margin-top: 2px; }
+.gen-modal-section-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-4); margin: 6px 0 4px; }
+.gen-export-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.gen-export-btn {
+  display: flex; align-items: center; gap: 9px; padding: 12px 14px;
+  border-radius: var(--r-2); border: 1px solid var(--line-2);
+  background: var(--bg-2); color: var(--ink); cursor: pointer;
+  font-size: 13px; font-weight: 600; font-family: inherit;
+  transition: background 0.15s, border-color 0.15s, transform 0.12s;
+  text-align: left;
+}
+.gen-export-btn:hover { background: var(--bg-3); border-color: var(--brand); transform: translateY(-1px); }
+.gen-export-btn svg { width: 16px; height: 16px; flex-shrink: 0; color: var(--ink-3); }
+.gen-export-btn sub { display: block; font-size: 10px; font-weight: 500; color: var(--ink-4); margin-top: 1px; }
+.gen-export-btn--primary {
+  grid-column: span 2; background: var(--brand); color: var(--brand-ink, #fff);
+  border-color: transparent; justify-content: center; gap: 10px;
+  box-shadow: 0 2px 10px color-mix(in oklch, var(--brand) 40%, transparent);
+}
+.gen-export-btn--primary:hover { filter: brightness(1.06); border-color: transparent; }
+.gen-export-btn--primary svg { color: currentColor; }
+.gen-export-btn--claude {
+  grid-column: span 2; background: linear-gradient(135deg, #CC785C, #D4A574);
+  color: #fff; border-color: transparent; justify-content: center; gap: 10px;
+  box-shadow: 0 2px 10px rgba(204,120,92,0.3);
+}
+.gen-export-btn--claude:hover { filter: brightness(1.08); border-color: transparent; }
+.gen-export-divider { border: none; border-top: 1px solid var(--line); margin: 4px 0; }
+
+/* ── Confetti canvas ── */
+#confettiCanvas {
+  position: fixed; inset: 0; z-index: 8999; pointer-events: none;
+  width: 100%; height: 100%;
+}
+
 /* ═══════════════════════════════════════════
    SECTIONS
    ═══════════════════════════════════════════ */
@@ -2298,6 +2390,64 @@ button { font: inherit; color: inherit; cursor: pointer; }
 <!-- MAIN -->
 <div class="main-content" id="mainContent" style="opacity:1">
   <div id="app"></div>
+</div>
+
+<!-- CONFETTI CANVAS -->
+<canvas id="confettiCanvas" style="display:none"></canvas>
+
+<!-- GENERATE / EXPORT MODAL -->
+<div class="gen-modal-backdrop" id="genModalBackdrop">
+  <div class="gen-modal" role="dialog" aria-modal="true" aria-labelledby="genModalTitle">
+    <div class="gen-modal-header">
+      <div>
+        <div class="gen-modal-title" id="genModalTitle">Your design system is ready 🎉</div>
+        <div class="gen-modal-sub" id="genModalSub">Pick your format and ship it.</div>
+      </div>
+      <button class="gen-modal-close" id="genModalClose" aria-label="Close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="gen-modal-body">
+      <div class="gen-modal-swatch" id="genModalSwatch">
+        <div class="gen-modal-swatch-dot" id="genModalDot"></div>
+        <div class="gen-modal-swatch-info">
+          <div class="gen-modal-swatch-hex" id="genModalHex"></div>
+          <div class="gen-modal-swatch-stats" id="genModalStats"></div>
+        </div>
+      </div>
+      <div class="gen-modal-section-label">Export</div>
+      <div class="gen-export-grid">
+        <button class="gen-export-btn gen-export-btn--primary" id="genDlBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download all (ZIP)
+        </button>
+        <button class="gen-export-btn gen-export-btn--claude" id="genClaudeBtn">
+          <svg width="15" height="15" viewBox="0 0 512 512" fill="currentColor"><path d="M318.663 149.787h-43.368l78.952 212.423 43.368.004-78.952-212.427zm-125.326 0l-78.952 212.427h44.255l15.932-44.608 82.846-.004 16.107 44.612h44.255l-79.443-212.427zm-8.826 135.418 27.812-77.842 28.464 77.842H184.511z"/></svg>
+          <span id="genClaudeBtnLabel">Copy to Claude</span>
+        </button>
+      </div>
+      <hr class="gen-export-divider">
+      <div class="gen-modal-section-label">Individual formats</div>
+      <div class="gen-export-grid">
+        <button class="gen-export-btn" data-gen-fmt="css">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+          <span>CSS variables<sub>.css</sub></span>
+        </button>
+        <button class="gen-export-btn" data-gen-fmt="tailwind">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14.5 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>
+          <span>Tailwind config<sub>.js</sub></span>
+        </button>
+        <button class="gen-export-btn" data-gen-fmt="scss">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <span>SCSS variables<sub>.scss</sub></span>
+        </button>
+        <button class="gen-export-btn" data-gen-fmt="json">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14.5 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>
+          <span>Design tokens<sub>.json</sub></span>
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script src="/color-utils.js"></script>
@@ -5162,23 +5312,23 @@ button { font: inherit; color: inherit; cursor: pointer; }
     /* ═══ HERO ═══ */
     h += '<main class="ds-body">';
     h += '<div class="ds-hero">';
-    h += '<h1>Your design system is ready</h1>';
-    h += '<p>Generated from <strong>' + esc(source) + '</strong> · ' + esc(typo.families.sans) + ' · Built with perceptually uniform OKLCH color math.</p>';
+    h += '<h1>Preview your design system</h1>';
+    h += '<p>Generated from <strong>' + esc(source) + '</strong> · ' + esc(typo.families.sans) + ' · Explore and fine-tune every token live. When it looks right, hit Generate to get your production files.</p>';
     h += '<div class="ds-hero-stats">';
     h += '<div><div class="ds-hero-stat-val">' + shadeCount + '</div><div class="ds-hero-stat-label">Color shades</div></div>';
     h += '<div><div class="ds-hero-stat-val">' + typeCount + '</div><div class="ds-hero-stat-label">Type tokens</div></div>';
     h += '<div><div class="ds-hero-stat-val">' + spacing.base + 'px</div><div class="ds-hero-stat-label">Base grid</div></div>';
     h += '<div><div class="ds-hero-stat-val">' + Object.keys(shadows).length + '</div><div class="ds-hero-stat-label">Elevations</div></div>';
     h += '</div>';
-    h += '<div class="hero__chips">';
+    h += '<div class="hero__chips" style="margin-top:14px">';
     Object.keys(contrast).forEach(function(k) {
       var c = contrast[k];
       var cls = c.grade === "AAA" || c.grade === "AA" ? "hero__chip--ok" : "hero__chip--warn";
       h += '<div class="hero__chip ' + cls + '">' + esc(k.replace(/-/g," ")) + ' · ' + c.ratio.toFixed(1) + ':1 ' + c.grade + '</div>';
     });
     h += '</div>';
-    h += '<div class="hero__actions">';
-    h += '<div style="display:flex;align-items:center;gap:10px"><button class="hero__claude-btn" id="openInClaudeBtn"><svg width="15" height="15" viewBox="0 0 512 512" fill="currentColor"><path d="M318.663 149.787h-43.368l78.952 212.423 43.368.004-78.952-212.427zm-125.326 0l-78.952 212.427h44.255l15.932-44.608 82.846-.004 16.107 44.612h44.255l-79.443-212.427zm-8.826 135.418 27.812-77.842 28.464 77.842H184.511z"/></svg> Copy to Claude</button><span id="heroClaudeHint" style="font-size:12px;font-weight:600;color:var(--pos);display:none;align-items:center;gap:5px"></span></div>';
+    h += '<div class="hero__actions" style="margin-top:22px">';
+    h += '<button class="gen-now-btn" id="genNowBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg> Generate now</button>';
     h += '</div>';
     h += '</div>';
 
@@ -5775,6 +5925,134 @@ button { font: inherit; color: inherit; cursor: pointer; }
     if (inlineBtn) inlineBtn.addEventListener("click", triggerRegen);
 
     /* Alert style toggle */
+    /* Generate Now button → confetti → modal */
+    var genNowBtn = document.getElementById("genNowBtn");
+    var genModalBackdrop = document.getElementById("genModalBackdrop");
+    var genModalClose = document.getElementById("genModalClose");
+    var genDlBtn = document.getElementById("genDlBtn");
+    var genClaudeBtn = document.getElementById("genClaudeBtn");
+
+    function launchConfetti(brandHex) {
+      var canvas = document.getElementById("confettiCanvas");
+      if (!canvas) return;
+      canvas.style.display = "block";
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      var ctx = canvas.getContext("2d");
+      var rgb = PPColorUtils.hexToRgb(brandHex);
+      var brandRgb = "rgb(" + Math.round(rgb[0]*255) + "," + Math.round(rgb[1]*255) + "," + Math.round(rgb[2]*255) + ")";
+      var colors = [brandRgb, "#fff", "#f0e6ff", "#c9b8ff", "#ffd6a5", "#caffbf", "#ffadad"];
+      var particles = [];
+      for (var i = 0; i < 160; i++) {
+        particles.push({
+          x: Math.random() * canvas.width,
+          y: -10 - Math.random() * 120,
+          r: 4 + Math.random() * 5,
+          d: 1.5 + Math.random() * 2.5,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          tilt: Math.random() * 10 - 5,
+          tiltSpeed: 0.06 + Math.random() * 0.1,
+          angle: Math.random() * Math.PI * 2,
+          shape: Math.random() > 0.5 ? "rect" : "circle"
+        });
+      }
+      var frame = 0;
+      var maxFrames = 140;
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(function(p) {
+          ctx.save();
+          ctx.translate(p.x, p.y);
+          ctx.rotate(p.angle);
+          ctx.fillStyle = p.color;
+          ctx.globalAlpha = Math.max(0, 1 - frame / maxFrames);
+          if (p.shape === "rect") {
+            ctx.fillRect(-p.r, -p.r / 2, p.r * 2, p.r);
+          } else {
+            ctx.beginPath();
+            ctx.arc(0, 0, p.r, 0, Math.PI * 2);
+            ctx.fill();
+          }
+          ctx.restore();
+          p.y += p.d + frame * 0.012;
+          p.x += Math.sin(p.angle) * 1.2;
+          p.angle += p.tiltSpeed;
+          p.tilt = Math.sin(p.angle) * 8;
+        });
+        frame++;
+        if (frame < maxFrames) {
+          requestAnimationFrame(draw);
+        } else {
+          canvas.style.display = "none";
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+      }
+      draw();
+    }
+
+    function openGenModal() {
+      if (!_exportData) return;
+      var dot = document.getElementById("genModalDot");
+      var hexEl = document.getElementById("genModalHex");
+      var statsEl = document.getElementById("genModalStats");
+      if (dot) dot.style.background = _exportData.brand["500"].hex;
+      if (hexEl) hexEl.textContent = _exportData.source;
+      if (statsEl) {
+        var sc = Object.keys(_exportData.brand).length * brandColors.length;
+        var tc = Object.keys(_exportData.typo.scale).length;
+        statsEl.textContent = sc + " color shades · " + tc + " type tokens · " + _exportData.spacing.base + "px grid";
+      }
+      if (genModalBackdrop) genModalBackdrop.classList.add("open");
+      document.body.style.overflow = "hidden";
+    }
+
+    if (genNowBtn) {
+      genNowBtn.addEventListener("click", function() {
+        var hex = (_exportData && _exportData.brand["500"]) ? _exportData.brand["500"].hex : "#7B5BFF";
+        launchConfetti(hex);
+        setTimeout(openGenModal, 480);
+      });
+    }
+    if (genModalClose) {
+      genModalClose.addEventListener("click", function() {
+        genModalBackdrop.classList.remove("open");
+        document.body.style.overflow = "";
+      });
+    }
+    if (genModalBackdrop) {
+      genModalBackdrop.addEventListener("click", function(e) {
+        if (e.target === genModalBackdrop) {
+          genModalBackdrop.classList.remove("open");
+          document.body.style.overflow = "";
+        }
+      });
+    }
+    if (genDlBtn) {
+      genDlBtn.addEventListener("click", function() { triggerZipDownload(genDlBtn); });
+    }
+    if (genClaudeBtn) {
+      var genClaudeLbl = document.getElementById("genClaudeBtnLabel");
+      genClaudeBtn.addEventListener("click", function() {
+        if (!_exportData) return;
+        var fullPrompt = buildPromptMD(_exportData);
+        navigator.clipboard.writeText(fullPrompt).then(function() {
+          if (genClaudeLbl) genClaudeLbl.textContent = "Copied!";
+          genClaudeBtn.style.filter = "brightness(1.15)";
+          setTimeout(function() {
+            if (genClaudeLbl) genClaudeLbl.textContent = "Copy to Claude";
+            genClaudeBtn.style.filter = "";
+          }, 2000);
+        }).catch(function() {});
+      });
+    }
+    document.querySelectorAll("[data-gen-fmt]").forEach(function(btn) {
+      btn.addEventListener("click", function() {
+        var fmt = btn.dataset.genFmt;
+        var extMap = { css: "css", tailwind: "js", scss: "scss", json: "json" };
+        triggerExportDownload(fmt, extMap[fmt] || fmt, btn);
+      });
+    });
+
     var alertToggle = document.getElementById("alertVarToggle");
     if (alertToggle) {
       alertToggle.querySelectorAll(".alert-var-btn").forEach(function(btn) {
