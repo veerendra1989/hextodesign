@@ -1912,6 +1912,28 @@ button { font: inherit; color: inherit; cursor: pointer; }
   }
 
   .gen-modal { width: 98vw; }
+
+  /* Hide in-page CTA card; show sticky bar instead */
+  .gen-cta-section { display: none; }
+  .mobile-gen-bar {
+    display: flex;
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 300;
+    padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+    background: var(--bg-1);
+    border-top: 1px solid var(--line);
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.12);
+  }
+  .mobile-gen-bar__btn {
+    flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 14px 20px; border-radius: var(--r-2);
+    background: var(--brand); color: #fff;
+    font-size: 15px; font-weight: 600; font-family: inherit;
+    border: none; cursor: pointer; letter-spacing: -0.1px;
+    transition: filter 0.15s, transform 0.15s;
+  }
+  .mobile-gen-bar__btn:active { filter: brightness(0.92); transform: scale(0.98); }
+  /* push content above sticky bar */
+  .main-content { padding-bottom: 80px; }
   .mobile-style-chip, .mobile-toggle-btn { color: var(--ink-2); }
   :root[data-theme="light"] .mobile-style-chip,
   :root[data-theme="light"] .mobile-toggle-btn { color: var(--ink); }
@@ -2456,6 +2478,14 @@ button { font: inherit; color: inherit; cursor: pointer; }
 <!-- MAIN -->
 <div class="main-content" id="mainContent" style="opacity:1">
   <div id="app"></div>
+</div>
+
+<!-- MOBILE STICKY GENERATE BAR -->
+<div class="mobile-gen-bar" id="mobileGenBar">
+  <button class="mobile-gen-bar__btn" id="mobileGenBarBtn">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+    Generate now
+  </button>
 </div>
 
 <!-- CONFETTI CANVAS -->
@@ -6980,19 +7010,17 @@ button { font: inherit; color: inherit; cursor: pointer; }
   }
 
   /* ═══ Mobile: header Generate button (play icon) ═══ */
-  var mobileGenBtn = document.getElementById("mobileGenBtn");
-  if (mobileGenBtn) {
-    mobileGenBtn.addEventListener("click", function() {
-      /* Close config if open */
-      if (mobileConfig && mobileConfig.classList.contains("open")) {
-        mobileConfig.classList.remove("open");
-        if (mobileConfigToggle) mobileConfigToggle.classList.remove("active");
-      }
-      /* Reuse the desktop Generate Now button flow */
-      var genNowBtn = document.getElementById("genNowBtn");
-      if (genNowBtn) { genNowBtn.click(); }
-    });
+  /* ═══ Mobile: sticky Generate bar ═══ */
+  function mobileDoGenerate() {
+    if (mobileConfig && mobileConfig.classList.contains("open")) {
+      mobileConfig.classList.remove("open");
+      if (mobileConfigToggle) mobileConfigToggle.classList.remove("active");
+    }
+    var genNowBtn = document.getElementById("genNowBtn");
+    if (genNowBtn) { genNowBtn.click(); }
   }
+  var mobileGenBarBtn = document.getElementById("mobileGenBarBtn");
+  if (mobileGenBarBtn) { mobileGenBarBtn.addEventListener("click", mobileDoGenerate); }
 
   /* ═══ Mobile: style chips ═══ */
   function syncMobileStyleChips() {
