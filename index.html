@@ -3075,6 +3075,14 @@ var {
           )
         ),
         /*#__PURE__*/React.createElement("div", { className: "hero__ctas" },
+          /*#__PURE__*/React.createElement("button", {
+            className: "btn btn--primary hero-cta-mobile",
+            onClick: () => {
+              try { localStorage.setItem("pp-brand", "#" + hex); } catch(_) {}
+              if (window.htd) htd.track("cta_click", { location: "hero_mobile" });
+              window.location.href = "preview?brand=" + hex;
+            }
+          }, "Generate now →")
         ),
         /*#__PURE__*/React.createElement("div", { className: "hero__meta" },
           /*#__PURE__*/React.createElement("span", { className: "check" },
