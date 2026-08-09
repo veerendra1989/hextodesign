@@ -1911,7 +1911,12 @@ button { font: inherit; color: inherit; cursor: pointer; }
     box-shadow: 0 -8px 16px var(--bg-1);
   }
 
-  .gen-modal { width: 90vw; }
+  .gen-modal { width: 98vw; }
+  .mobile-style-chip, .mobile-toggle-btn { color: var(--ink-2); }
+  :root[data-theme="light"] .mobile-style-chip,
+  :root[data-theme="light"] .mobile-toggle-btn { color: var(--ink); }
+  :root[data-theme="light"] .mobile-style-chip.active,
+  :root[data-theme="light"] .mobile-toggle-btn.active { color: var(--brand); }
 
   /* ── Horizontal section tabs ── */
   .mobile-tabs {
@@ -2386,9 +2391,6 @@ button { font: inherit; color: inherit; cursor: pointer; }
     <button class="mobile-header__icon-btn" id="mobileConfigToggle" title="Settings">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
     </button>
-    <button class="mobile-header__icon-btn" id="mobileGenBtn" title="Generate" style="background:var(--brand);border-color:var(--brand);color:var(--brand-ink,#fff)">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-    </button>
   </div>
 </header>
 
@@ -2415,7 +2417,6 @@ button { font: inherit; color: inherit; cursor: pointer; }
       <button class="mobile-style-chip" data-mobile-style="soft">Soft</button>
       <button class="mobile-style-chip" data-mobile-style="edge">Edge</button>
       <button class="mobile-style-chip" data-mobile-style="pill">Pill</button>
-      <button class="mobile-style-chip" data-mobile-style="flat">Flat</button>
     </div>
   </div>
   <div>
@@ -2431,10 +2432,6 @@ button { font: inherit; color: inherit; cursor: pointer; }
       </button>
     </div>
   </div>
-  <button class="sidebar__generate-btn" id="mobileRegenBtn">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M18.89 12.846C18.537 14.189 16.867 15.138 13.526 17.036C10.296 18.871 8.681 19.788 7.38 19.42C6.842 19.267 6.352 18.978 5.956 18.579C5 17.614 5 15.743 5 12C5 8.257 5 6.386 5.956 5.421C6.352 5.022 6.842 4.733 7.38 4.58C8.681 4.212 10.296 5.129 13.526 6.964C16.867 8.862 18.537 9.811 18.89 11.154C19.037 11.708 19.037 12.292 18.89 12.846Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    Generate
-  </button>
 </div>
 
 <!-- MOBILE TABS -->
@@ -6869,6 +6866,14 @@ button { font: inherit; color: inherit; cursor: pointer; }
       mobileConfigToggle.classList.toggle("active", isOpen);
     });
   }
+
+  /* Close config on click outside */
+  document.addEventListener("click", function(e) {
+    if (!mobileConfig || !mobileConfig.classList.contains("open")) return;
+    if (mobileConfig.contains(e.target) || mobileConfigToggle.contains(e.target)) return;
+    mobileConfig.classList.remove("open");
+    mobileConfigToggle.classList.remove("active");
+  });
 
   /* ═══ Mobile: sync color list with desktop ═══ */
   var mobileColorsList = document.getElementById("mobileColorsList");
