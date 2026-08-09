@@ -6305,20 +6305,23 @@ var {
   function FAQ() {
     const [open, setOpen] = useState(0);
     const items = [{
-      q: "What do the different tiers include?",
-      a: "Free gives you a full interactive preview. Starter adds CSS variables and JSON tokens. Pro includes Tailwind config, SCSS, all brand palettes, and semantic tokens. Studio adds Figma Tokens, docs template, and priority support. All tiers are currently free for early users."
+      q: "What exactly does hextodesign generate?",
+      a: "From a single brand hex code, it builds a complete design system: an 11-step OKLCH color palette, semantic color tokens (success, warning, error, info), a type scale, spacing grid, 7 elevation levels, and 27 component sections — all export-ready in CSS, Tailwind, SCSS, and JSON."
     }, {
-      q: "Do I need to know design to use this?",
-      a: "Not at all. Just paste your brand hex code and we handle everything — color theory, contrast ratios, spacing rhythm, typography hierarchy. The output is production-ready."
+      q: "Do I need design experience to use it?",
+      a: "No. Paste your hex, choose a font and button style, and hit Generate. Color theory, contrast ratios, spacing rhythm, and typography hierarchy are handled automatically. The output is production-ready."
     }, {
-      q: "Is everything really free?",
-      a: "Yes — for now. We're letting early users access all tiers for free while we refine the product. No payment required, no signup, just generate and download. Pricing will be introduced later."
+      q: "What export formats are included?",
+      a: "CSS custom properties, Tailwind config (theme.extend), SCSS variables and mixins, JSON tokens in W3C DTCG format, and a ready-made AI prompt pre-loaded with all your tokens for use in Claude, Cursor, or Codex."
     }, {
-      q: "What formats are the export files in?",
-      a: "CSS custom properties, Tailwind config, SCSS variables & mixins, JSON tokens in W3C DTCG format, Figma Tokens in Style Dictionary format, and full documentation in Markdown."
+      q: "Can I use the output with any stack?",
+      a: "Yes. The CSS variables drop into any project with a <link> or <style> tag. The Tailwind config works with v3 and v4. The JSON tokens are compatible with Style Dictionary, Tokens Studio, and most design tooling."
     }, {
-      q: "Will I lose access when pricing is introduced?",
-      a: "No. Any files you download are yours forever. When we introduce pricing, you'll still be able to preview for free — only exports will require a purchase."
+      q: "How is this different from just picking colors manually?",
+      a: "hextodesign generates a perceptually uniform palette in OKLCH — not just lighter/darker hex values. Every shade maintains consistent lightness and chroma steps, which means your 100 looks as light relative to your 900 as it should, across any hue."
+    }, {
+      q: "Is it free?",
+      a: "Yes, fully free right now. No signup, no payment, no limits. Generate and download as many systems as you need."
     }];
     return /*#__PURE__*/React.createElement("section", {
       className: "section"
