@@ -1851,8 +1851,12 @@ button { font: inherit; color: inherit; cursor: pointer; }
 
   /* Hide desktop sidebar */
   .sidebar { display: none !important; }
-  body { overflow: auto; }
-  .main-content { margin-left: 0; height: auto; overflow: visible; }
+  /* Prevent horizontal scroll */
+  html, body { overflow-x: hidden; max-width: 100%; }
+  body { overflow-y: auto; }
+  .main-content { margin-left: 0; height: auto; overflow: visible; max-width: 100%; }
+  /* Prevent iOS zoom on input focus (font-size must be ≥16px) */
+  input, select, textarea { font-size: 16px !important; }
 
   /* ── Mobile header ── */
   .mobile-header {
