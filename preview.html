@@ -1884,8 +1884,8 @@ button { font: inherit; color: inherit; cursor: pointer; }
     padding: 16px; background: var(--bg-1);
     border-bottom: 1px solid var(--line);
     animation: slideDown 0.25s ease;
-    position: fixed; top: 64px; left: 0; right: 0; z-index: 199;
-    max-height: calc(100vh - 64px); overflow-y: auto;
+    position: fixed; top: 64px; left: 0; width: 100vw; z-index: 199; box-sizing: border-box;
+    max-height: calc(100vh - 64px); overflow-y: auto; overflow-x: hidden;
     box-shadow: 0 8px 32px rgba(0,0,0,0.25);
   }
   .mobile-config.open { display: flex; }
@@ -1895,12 +1895,15 @@ button { font: inherit; color: inherit; cursor: pointer; }
   .mobile-config__row { display: flex; align-items: center; gap: 10px; }
   .mobile-config__label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.6px; color: var(--ink-4); margin-bottom: 6px; }
 
-  .mobile-config .sidebar__colors { gap: 8px; }
-  .mobile-config .sidebar__color-item { gap: 8px; }
-  .mobile-config .sidebar__color-swatch { width: 36px; height: 36px; border-radius: 6px; }
-  .mobile-config .sidebar__color-hex { height: 36px; font-size: 13px; padding: 0 8px; }
-  .mobile-config .sidebar__color-name { height: 36px; font-size: 11px; width: 64px; }
-  .mobile-config .sidebar__add-color { height: 36px; font-size: 12px; border-radius: 6px; }
+  .mobile-config .sidebar__colors { gap: 8px; width: 100%; }
+  .mobile-config .sidebar__color-item { gap: 8px; width: 100%; min-width: 0; box-sizing: border-box; }
+  .mobile-config .sidebar__color-swatch { width: 36px; height: 36px; border-radius: 6px; flex-shrink: 0; }
+  .mobile-config .sidebar__color-hex { height: 36px; font-size: 13px; padding: 0 8px; min-width: 0; flex: 1; }
+  .mobile-config .sidebar__color-name { height: 36px; font-size: 11px; width: 60px; flex-shrink: 0; }
+  .mobile-config .sidebar__add-color { height: 36px; font-size: 12px; border-radius: 6px; width: 100%; box-sizing: border-box; }
+  .mobile-style-grid { width: 100%; box-sizing: border-box; }
+  .mobile-toggles-row { width: 100%; box-sizing: border-box; }
+  .mobile-toggle-btn { min-width: 0; overflow: hidden; box-sizing: border-box; }
   .mobile-config .font-picker__input { height: 42px; font-size: 14px; }
   .mobile-config .sidebar__generate-btn {
     width: 100%; margin: 4px 0 0;
@@ -2025,6 +2028,33 @@ button { font: inherit; color: inherit; cursor: pointer; }
 
   /* Export section */
   .export-grid { grid-template-columns: 1fr; }
+
+  /* Hide floating desktop controls on mobile */
+  #theme-toggle-portal { display: none !important; }
+
+  /* Mobile style picker */
+  .mobile-style-grid { display: flex; gap: 6px; flex-wrap: wrap; }
+  .mobile-style-chip {
+    flex: 1; min-width: 0;
+    padding: 7px 10px; border-radius: 8px; border: 1px solid var(--line);
+    background: var(--bg-2); color: var(--ink-3); font-size: 11px; font-weight: 600;
+    cursor: pointer; transition: all 0.15s; white-space: nowrap;
+    font-family: inherit; text-align: center;
+  }
+  .mobile-style-chip.active { background: var(--brand-faint); color: var(--brand); border-color: var(--brand); }
+  .mobile-style-chip:hover:not(.active) { background: var(--bg-3); color: var(--ink); }
+
+  /* Mobile toggles row */
+  .mobile-toggles-row { display: flex; gap: 8px; }
+  .mobile-toggle-btn {
+    flex: 1; display: flex; align-items: center; justify-content: center; gap: 7px;
+    padding: 8px 12px; border-radius: 8px; border: 1px solid var(--line);
+    background: var(--bg-2); color: var(--ink-3); font-size: 12px; font-weight: 600;
+    cursor: pointer; transition: all 0.15s; font-family: inherit;
+  }
+  .mobile-toggle-btn svg { width: 15px; height: 15px; flex-shrink: 0; }
+  .mobile-toggle-btn.active { background: var(--brand-faint); color: var(--brand); border-color: var(--brand); }
+  .mobile-toggle-btn:hover:not(.active) { background: var(--bg-3); color: var(--ink); }
 
   /* Form inputs — stack on mobile */
   .ds-preview > div[style*="grid-template-columns:1fr 1fr 1fr"] { grid-template-columns: 1fr !important; }
@@ -2350,10 +2380,10 @@ button { font: inherit; color: inherit; cursor: pointer; }
   </a>
   <div class="mobile-header__actions">
     <button class="mobile-header__icon-btn" id="mobileConfigToggle" title="Settings">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
     </button>
-    <button class="mobile-header__icon-btn" id="mobileUserBtn" title="Account">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    <button class="mobile-header__icon-btn" id="mobileGenBtn" title="Generate" style="background:var(--brand);border-color:var(--brand);color:var(--brand-ink,#fff)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
     </button>
   </div>
 </header>
@@ -2364,7 +2394,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
     <div class="mobile-config__label">Brand colors</div>
     <div class="sidebar__colors" id="mobileColorsList"></div>
     <button class="sidebar__add-color" id="mobileAddColorBtn" style="margin-top:8px">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12.001 5.00003V19.002" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M19.002 12.002L4.99998 12.002" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
       Add color
     </button>
   </div>
@@ -2375,13 +2405,31 @@ button { font: inherit; color: inherit; cursor: pointer; }
       <div class="font-picker__dropdown" id="mobileFontDropdown"></div>
     </div>
   </div>
+  <div>
+    <div class="mobile-config__label">Button style</div>
+    <div class="mobile-style-grid" id="mobileStyleGrid">
+      <button class="mobile-style-chip" data-mobile-style="soft">Soft</button>
+      <button class="mobile-style-chip" data-mobile-style="edge">Edge</button>
+      <button class="mobile-style-chip" data-mobile-style="pill">Pill</button>
+      <button class="mobile-style-chip" data-mobile-style="flat">Flat</button>
+    </div>
+  </div>
+  <div>
+    <div class="mobile-config__label">Appearance</div>
+    <div class="mobile-toggles-row">
+      <button class="mobile-toggle-btn" id="mobileGlassBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/></svg>
+        <span id="mobileGlassLabel">Glass</span>
+      </button>
+      <button class="mobile-toggle-btn" id="mobileThemeBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M12 3v1M12 20v1M4.22 4.22l.7.7M19.07 19.07l.71.71M3 12h1M20 12h1M4.92 19.07l.71-.71M19.07 4.93l-.71.71"/><circle cx="12" cy="12" r="4"/></svg>
+        <span id="mobileThemeLabel">Light</span>
+      </button>
+    </div>
+  </div>
   <button class="sidebar__generate-btn" id="mobileRegenBtn">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18.8906 12.846C18.5371 14.189 16.8667 15.138 13.5257 17.0361C10.296 18.8709 8.6812 19.7884 7.37983 19.4196C6.8418 19.2671 6.35159 18.9776 5.95624 18.5787C5 17.6139 5 15.7426 5 12C5 8.2574 5 6.3861 5.95624 5.42132C6.35159 5.02245 6.8418 4.73288 7.37983 4.58042C8.6812 4.21165 10.296 5.12907 13.5257 6.96393C16.8667 8.86197 18.5371 9.811 18.8906 11.154C19.0365 11.7084 19.0365 12.2916 18.8906 12.846Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M18.89 12.846C18.537 14.189 16.867 15.138 13.526 17.036C10.296 18.871 8.681 19.788 7.38 19.42C6.842 19.267 6.352 18.978 5.956 18.579C5 17.614 5 15.743 5 12C5 8.257 5 6.386 5.956 5.421C6.352 5.022 6.842 4.733 7.38 4.58C8.681 4.212 10.296 5.129 13.526 6.964C16.867 8.862 18.537 9.811 18.89 11.154C19.037 11.708 19.037 12.292 18.89 12.846Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
     Generate
-  </button>
-  <button class="sidebar__export-btn" id="mobileExportBtn" style="margin-top:8px">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16.9504 12.1817C17.1981 12.814 16.5076 13.5726 15.1267 15.0899C13.6702 16.6902 12.9201 17.4904 12 17.5C11.0799 17.4904 10.3298 16.6902 8.87331 15.0899C7.49239 13.5726 6.80193 12.814 7.04964 12.1817C7.05868 12.1586 7.06851 12.1359 7.0791 12.1135C7.34928 11.542 8.24477 11.5029 10 11.5002V4.99998C10 4.53501 10 4.30253 10.0511 4.11179C10.1898 3.59414 10.5941 3.1898 11.1118 3.05111C11.3025 3 11.535 3 12 3C12.4649 3 12.6974 3 12.8882 3.05111C13.4058 3.1898 13.8102 3.59414 13.9489 4.11179C14 4.30253 14 4.53501 14 4.99998V11.5002C15.7552 11.5029 16.6507 11.542 16.9209 12.1135C16.9315 12.1359 16.9413 12.1586 16.9504 12.1817Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M5.00006 21H19.0001" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
-    Download All — Free
   </button>
 </div>
 
@@ -6889,6 +6937,9 @@ button { font: inherit; color: inherit; cursor: pointer; }
     }
   };
 
+  /* Populate mobile colors list immediately with current state */
+  renderColorItems();
+
   /* Mobile add-color button */
   if (mobileAddColorBtn) {
     mobileAddColorBtn.addEventListener("click", function() {
@@ -6917,6 +6968,94 @@ button { font: inherit; color: inherit; cursor: pointer; }
   /* Mobile generate button */
   if (mobileRegenBtn) {
     mobileRegenBtn.addEventListener("click", function() { triggerRegen(); });
+  }
+
+  /* ═══ Mobile: header Generate button (play icon) ═══ */
+  var mobileGenBtn = document.getElementById("mobileGenBtn");
+  if (mobileGenBtn) {
+    mobileGenBtn.addEventListener("click", function() {
+      /* Close config if open */
+      if (mobileConfig && mobileConfig.classList.contains("open")) {
+        mobileConfig.classList.remove("open");
+        if (mobileConfigToggle) mobileConfigToggle.classList.remove("active");
+      }
+      /* Reuse the desktop Generate Now button flow */
+      var genNowBtn = document.getElementById("genNowBtn");
+      if (genNowBtn) { genNowBtn.click(); }
+    });
+  }
+
+  /* ═══ Mobile: style chips ═══ */
+  function syncMobileStyleChips() {
+    var chips = document.querySelectorAll(".mobile-style-chip");
+    chips.forEach(function(c) {
+      c.classList.toggle("active", c.getAttribute("data-mobile-style") === currentDSStyle);
+    });
+  }
+  document.querySelectorAll(".mobile-style-chip").forEach(function(chip) {
+    chip.addEventListener("click", function() {
+      applyStyleChange(this.getAttribute("data-mobile-style"));
+      syncMobileStyleChips();
+    });
+  });
+  syncMobileStyleChips();
+
+  /* ═══ Mobile: glass toggle ═══ */
+  var mobileGlassBtn = document.getElementById("mobileGlassBtn");
+  var mobileGlassLabel = document.getElementById("mobileGlassLabel");
+  function syncMobileGlass() {
+    var isGlass = currentUIStyle === "glass";
+    if (mobileGlassBtn) mobileGlassBtn.classList.toggle("active", isGlass);
+    if (mobileGlassLabel) mobileGlassLabel.textContent = isGlass ? "Glass on" : "Glass";
+  }
+  if (mobileGlassBtn) {
+    mobileGlassBtn.addEventListener("click", function() {
+      currentUIStyle = currentUIStyle === "flat" ? "glass" : "flat";
+      try { localStorage.setItem("pp-ui-style", currentUIStyle); } catch(e) {}
+      root.setAttribute("data-ui-style", currentUIStyle);
+      syncMobileGlass();
+      renderFloatingToggle();
+    });
+  }
+  syncMobileGlass();
+
+  /* ═══ Mobile: theme toggle ═══ */
+  var mobileThemeBtn = document.getElementById("mobileThemeBtn");
+  var mobileThemeLabel = document.getElementById("mobileThemeLabel");
+  function syncMobileTheme() {
+    var isDark = currentTheme === "dark";
+    if (mobileThemeBtn) {
+      mobileThemeBtn.classList.toggle("active", isDark);
+      /* swap icon: moon for dark, sun for light */
+      var iconEl = mobileThemeBtn.querySelector("svg");
+      if (iconEl) {
+        if (isDark) {
+          iconEl.innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>';
+        } else {
+          iconEl.innerHTML = '<path d="M12 3v1M12 20v1M4.22 4.22l.7.7M19.07 19.07l.71.71M3 12h1M20 12h1M4.92 19.07l.71-.71M19.07 4.93l-.71.71" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.5" fill="none"/>';
+        }
+      }
+    }
+    if (mobileThemeLabel) mobileThemeLabel.textContent = isDark ? "Dark" : "Light";
+  }
+  if (mobileThemeBtn) {
+    mobileThemeBtn.addEventListener("click", function() {
+      setTheme(currentTheme === "dark" ? "light" : "dark");
+      syncMobileTheme();
+      renderFloatingToggle();
+    });
+  }
+  syncMobileTheme();
+
+  /* Sync mobile controls whenever config panel opens */
+  if (mobileConfigToggle) {
+    mobileConfigToggle.addEventListener("click", function() {
+      if (mobileConfig && mobileConfig.classList.contains("open")) {
+        syncMobileStyleChips();
+        syncMobileGlass();
+        syncMobileTheme();
+      }
+    }, true /* capture — runs before the toggle listener closes it */ );
   }
 
   /* ═══ Mobile: tab highlighting on scroll ═══ */
