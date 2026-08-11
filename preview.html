@@ -6349,8 +6349,26 @@ button { font: inherit; color: inherit; cursor: pointer; }
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email: email, hex: brandHex.replace("#", ""), font: fontName })
-        }).catch(function() {}).finally(function() {
-          if (genEmailRow) genEmailRow.classList.add("sent");
+        }).then(function(res) {
+          return res.json().then(function(data) {
+            if (res.ok && data.ok) {
+              if (genEmailRow) genEmailRow.classList.add("sent");
+            } else {
+              genEmailSend.disabled = false;
+              genEmailSend.textContent = "Email me →";
+              if (genEmailInput) {
+                genEmailInput.style.borderColor = "#E05C72";
+                setTimeout(function() { genEmailInput.style.borderColor = ""; }, 2000);
+              }
+              alert(data.error === "Too many requests. Please try again later."
+                ? "Too many attempts. Please wait a few minutes and try again."
+                : "Something went wrong. Please try again.");
+            }
+          });
+        }).catch(function() {
+          genEmailSend.disabled = false;
+          genEmailSend.textContent = "Email me →";
+          alert("Network error. Please check your connection and try again.");
         });
       });
       if (genEmailInput) {
