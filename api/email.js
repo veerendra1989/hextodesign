@@ -8,6 +8,20 @@ var engine     = require("./_engine");
 var formatters = require("./_formatters");
 var ratelimit  = require("./_ratelimit");
 
+var FONT_MAP = {
+  "Geist":           { sans:"Geist",            mono:"Geist Mono",      cssVar:'"Geist", ui-sans-serif, sans-serif',            monoVar:'"Geist Mono", ui-monospace, monospace' },
+  "Inter":           { sans:"Inter",            mono:"JetBrains Mono",  cssVar:'"Inter", ui-sans-serif, sans-serif',            monoVar:'"JetBrains Mono", ui-monospace, monospace' },
+  "Plus Jakarta Sans":{ sans:"Plus Jakarta Sans",mono:"Space Mono",     cssVar:'"Plus Jakarta Sans", ui-sans-serif, sans-serif', monoVar:'"Space Mono", ui-monospace, monospace' },
+  "DM Sans":         { sans:"DM Sans",          mono:"IBM Plex Mono",   cssVar:'"DM Sans", ui-sans-serif, sans-serif',          monoVar:'"IBM Plex Mono", ui-monospace, monospace' },
+  "Outfit":          { sans:"Outfit",           mono:"Fira Code",       cssVar:'"Outfit", ui-sans-serif, sans-serif',           monoVar:'"Fira Code", ui-monospace, monospace' },
+  "Playfair Display":{ sans:"Playfair Display", mono:"DM Mono",        cssVar:'"Playfair Display", Georgia, serif',            monoVar:'"DM Mono", ui-monospace, monospace' },
+};
+
+function resolveFontConfig(fontName) {
+  if (!fontName || typeof fontName !== "string") return null;
+  return FONT_MAP[fontName] || FONT_MAP["Inter"];
+}
+
 var CORS_HEADERS = {
   "Access-Control-Allow-Origin":  "*",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
@@ -123,7 +137,7 @@ module.exports = async function handler(req, res) {
 
   try {
     // Generate token set
-    var tokens = engine.generate(hexFull, font);
+    var tokens = engine.generate(hexFull, resolveFontConfig(font));
 
     // Build all format files as base64 attachments
     var attachments = [
