@@ -7,6 +7,7 @@
 var engine     = require("./_engine");
 var formatters = require("./_formatters");
 var ratelimit  = require("./_ratelimit");
+var JSZip      = require("jszip");
 
 var FONT_MAP = {
   "Geist":           { sans:"Geist",            mono:"Geist Mono",      cssVar:'"Geist", ui-sans-serif, sans-serif',            monoVar:'"Geist Mono", ui-monospace, monospace' },
@@ -59,20 +60,19 @@ function buildEmailHtml(hex, tokens) {
 
         <!-- Files list -->
         <tr><td style="padding:0 36px 28px;">
-          <table width="100%" cellpadding="0" cellspacing="0">
+          <div style="background:#1E1C2A;border-radius:8px;padding:16px 20px;">
+            <div style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#4A4868;margin-bottom:12px;">Inside the ZIP</div>
             ${[
-              { name: "design-tokens.css",  desc: "CSS custom properties — drop into any project" },
-              { name: "tailwind.config.js", desc: "Tailwind v3/v4 color + radius config" },
-              { name: "design-tokens.scss", desc: "SCSS variables for preprocessor workflows" },
-              { name: "tokens.json",        desc: "Raw JSON — Style Dictionary / Figma Tokens" },
+              { name: "design-tokens.css",  desc: "CSS custom properties" },
+              { name: "tailwind.config.js", desc: "Tailwind v3/v4 config" },
+              { name: "design-tokens.scss", desc: "SCSS variables" },
+              { name: "tokens.json",        desc: "Style Dictionary / Figma Tokens" },
             ].map(f => `
-            <tr>
-              <td style="padding:8px 0;border-bottom:1px solid #1E1C2A;">
-                <span style="font-size:13px;font-family:monospace;color:#A09BBF;font-weight:500;">${f.name}</span><br/>
-                <span style="font-size:12px;color:#4A4868;">${f.desc}</span>
-              </td>
-            </tr>`).join("")}
-          </table>
+            <div style="display:flex;align-items:center;gap:10px;padding:5px 0;">
+              <span style="font-size:12px;font-family:monospace;color:#7B5BFF;">${f.name}</span>
+              <span style="font-size:11px;color:#4A4868;">— ${f.desc}</span>
+            </div>`).join("")}
+          </div>
         </td></tr>
 
         <!-- CTA -->
@@ -139,12 +139,16 @@ module.exports = async function handler(req, res) {
     // Generate token set
     var tokens = engine.generate(hexFull, resolveFontConfig(font));
 
-    // Build all format files as base64 attachments
+    // Build ZIP with all format files
+    var zip = new JSZip();
+    zip.file("design-tokens.css",  formatters.toCSSVariables(tokens));
+    zip.file("tailwind.config.js", formatters.toTailwindConfig(tokens));
+    zip.file("design-tokens.scss", formatters.toSCSS(tokens));
+    zip.file("tokens.json",        formatters.toJSON(tokens));
+    var zipBase64 = await zip.generateAsync({ type: "base64", compression: "DEFLATE" });
+
     var attachments = [
-      { filename: "design-tokens.css",      content: Buffer.from(formatters.toCSSVariables(tokens)).toString("base64") },
-      { filename: "tailwind.config.txt",    content: Buffer.from(formatters.toTailwindConfig(tokens)).toString("base64") },
-      { filename: "design-tokens.scss.txt", content: Buffer.from(formatters.toSCSS(tokens)).toString("base64") },
-      { filename: "tokens.json",            content: Buffer.from(formatters.toJSON(tokens)).toString("base64") },
+      { filename: "hextodesign-" + hex + ".zip", content: zipBase64 }
     ];
 
     var htmlBody = buildEmailHtml(hexFull, tokens);
