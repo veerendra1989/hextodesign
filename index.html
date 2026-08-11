@@ -1250,11 +1250,23 @@ body.grain::before {
   font-family: var(--f-mono); font-size: 13px; line-height: 1.75;
   white-space: pre; color: var(--ink-2);
 }
-.cp-k { color: #9B8AFF; }   /* keyword / property */
-.cp-s { color: #5DB8A8; }   /* string / value */
-.cp-c { color: var(--ink-4); font-style: italic; } /* comment */
-.cp-b { color: var(--brand); } /* brand color swatch */
-.cp-n { color: #E09B5A; }   /* number */
+.cp-k { color: #7B5BFF; }
+.cp-s { color: #1EA896; }
+.cp-c { color: var(--ink-3); font-style: italic; }
+.cp-b { color: var(--brand); }
+.cp-n { color: #C07A30; }
+:root[data-theme="light"] .cp-k { color: #5B3FD9; }
+:root[data-theme="light"] .cp-s { color: #10796A; }
+:root[data-theme="light"] .cp-n { color: #A05E18; }
+:root[data-theme="light"] .cp-c { color: var(--ink-2); }
+:root[data-theme="light"] .code-preview__code { color: var(--ink); }
+@media (prefers-color-scheme: light) {
+  .cp-k { color: #5B3FD9; }
+  .cp-s { color: #10796A; }
+  .cp-n { color: #A05E18; }
+  .cp-c { color: var(--ink-2); }
+  .code-preview__code { color: var(--ink); }
+}
 @media (max-width: 768px) {
   .code-preview { padding: 40px 0 32px; }
   .code-preview__body { padding: 18px 16px; }
@@ -6697,12 +6709,12 @@ var {
           .replace(/\b(export|default|const|true|false)\b/g, m => `<span class="cp-k">${m}</span>`)
           .replace(/(brand|colors|theme|extend|borderRadius|fontFamily):/g, m => `<span class="cp-n">${m}</span>`);
       }
-      // json
+      // json — use single quotes inside span tags to avoid clashing with JSON double quotes
       return src
-        .replace(/"(value)"/g, `"<span class="cp-k">value</span>"`)
-        .replace(/:\s*"(oklch\([^"]+\))"/g, (_, v) => `: "<span class="cp-s">${v}</span>"`)
-        .replace(/:\s*"([^"]+)"/g, (m, v) => m.includes("oklch") ? m : `: "<span class="cp-s">${v}</span>"`)
-        .replace(/"(\d{2,3}|brand|radius|font-sans)":/g, m => `<span class="cp-n">${m}</span>`);
+        .replace(/"(value)"/g, `"<span class='cp-k'>value</span>"`)
+        .replace(/:\s*"(oklch\([^"]+\))"/g, (_, v) => `: "<span class='cp-s'>${v}</span>"`)
+        .replace(/:\s*"([^"oklch][^"]*)"(?!>)/g, (_, v) => `: "<span class='cp-s'>${v}</span>"`)
+        .replace(/"(\d{2,3}|brand|radius|font-sans)":/g, m => `<span class='cp-n'>${m}</span>`);
     }
 
     function copy() {
