@@ -90,7 +90,7 @@ module.exports = async function handler(req, res) {
   }
 
   // Rate limit: 3 emails per IP per 10 minutes
-  var ip = (req.headers["x-forwarded-for"] || req.socket.remoteAddress || "unknown").split(",")[0].trim();
+  var ip = ((req.headers["x-forwarded-for"] || "") || (req.connection && req.connection.remoteAddress) || "unknown").split(",")[0].trim();
   var limit = ratelimit.check(ip, "email", 3, 600000);
   if (!limit.allowed) {
     res.writeHead(429, CORS_HEADERS);
