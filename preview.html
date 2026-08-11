@@ -1145,39 +1145,36 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .gen-export-divider { border: none; border-top: 1px solid var(--line); margin: 4px 0; }
 .gen-fmt-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 
-/* Email capture */
+/* Email capture — primary CTA */
 .gen-email-row {
-  display: flex; flex-direction: column; gap: 8px;
-  padding: 16px;
-  background: var(--bg-2); border: 1px solid var(--line); border-radius: var(--r-2);
+  display: flex; flex-direction: column; gap: 10px;
 }
-.gen-email-label {
-  font-size: 12px; font-weight: 600; color: var(--ink-2);
-}
-.gen-email-label span { color: var(--ink-3); font-weight: 400; }
 .gen-email-field {
   display: flex; gap: 8px;
 }
 .gen-email-input {
-  flex: 1; background: var(--bg); border: 1px solid var(--line);
-  border-radius: 6px; padding: 9px 12px;
-  font-size: 14px; color: var(--ink); outline: none;
+  flex: 1; background: var(--bg); border: 1.5px solid var(--line);
+  border-radius: 8px; padding: 12px 14px;
+  font-size: 15px; color: var(--ink); outline: none;
   transition: border-color 150ms;
 }
 .gen-email-input::placeholder { color: var(--ink-4); }
 .gen-email-input:focus { border-color: var(--brand); }
 .gen-email-send {
   background: var(--brand); color: var(--brand-ink);
-  border-radius: 6px; padding: 9px 16px;
-  font-size: 13px; font-weight: 600; white-space: nowrap;
-  transition: opacity 150ms, transform 150ms;
+  border-radius: 8px; padding: 12px 22px;
+  font-size: 14px; font-weight: 700; white-space: nowrap;
+  transition: opacity 150ms, transform 150ms, box-shadow 150ms;
   flex-shrink: 0;
+  box-shadow: 0 4px 18px color-mix(in oklch, var(--brand) 40%, transparent);
 }
 .gen-email-send:hover { opacity: 0.9; transform: translateY(-1px); }
-.gen-email-send:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+.gen-email-send:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
 .gen-email-success {
-  display: none; align-items: center; gap: 8px;
-  font-size: 13px; color: var(--ink-2); padding: 2px 0;
+  display: none; align-items: center; gap: 10px;
+  font-size: 14px; color: var(--ink-2);
+  background: var(--bg-2); border: 1px solid var(--line);
+  border-radius: 8px; padding: 14px 16px;
 }
 .gen-email-success svg { color: var(--brand); flex-shrink: 0; }
 .gen-email-row.sent .gen-email-field { display: none; }
@@ -2538,7 +2535,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
     <div class="gen-modal-header">
       <div>
         <div class="gen-modal-title" id="genModalTitle">Your design system is ready 🎉</div>
-        <div class="gen-modal-sub" id="genModalSub">Pick your format and ship it.</div>
+        <div class="gen-modal-sub" id="genModalSub">Enter your email and we'll send the full package — CSS, Tailwind, SCSS & JSON.</div>
       </div>
       <button class="gen-modal-close" id="genModalClose" aria-label="Close">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
@@ -2546,29 +2543,16 @@ button { font: inherit; color: inherit; cursor: pointer; }
     </div>
     <div class="gen-modal-body">
       <div class="gen-modal-meta" id="genModalMeta"></div>
-      <div class="gen-export-grid">
-        <button class="gen-export-btn gen-export-btn--primary" id="genDlBtn">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          Download all (ZIP)
-        </button>
-        <button class="gen-export-btn gen-export-btn--claude" id="genClaudeBtn">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 21H10C6.22876 21 4.34315 21 3.17157 19.8284C2 18.6569 2 16.7712 2 13V10C2 6.22876 2 4.34315 3.17157 3.17157C4.34315 2 6.22876 2 10 2H12C15.7712 2 17.6569 2 18.8284 3.17157C20 4.34315 20 6.22876 20 10V10.5"/><path d="M17.4069 14.4036C17.6192 13.8655 18.3808 13.8655 18.5931 14.4036L18.6298 14.4969C19.1482 15.8113 20.1887 16.8518 21.5031 17.3702L21.5964 17.4069C22.1345 17.6192 22.1345 18.3808 21.5964 18.5931L21.5031 18.6298C20.1887 19.1482 19.1482 20.1887 18.6298 21.5031L18.5931 21.5964C18.3808 22.1345 17.6192 22.1345 17.4069 21.5964L17.3702 21.5031C16.8518 20.1887 15.8113 19.1482 14.4969 18.6298L14.4036 18.5931C13.8655 18.3808 13.8655 17.6192 14.4036 17.4069L14.4969 17.3702C15.8113 16.8518 16.8518 15.8113 17.3702 14.4969L17.4069 14.4036Z"/><path d="M7 7H15M7 11.5H15M7 16H11"/></svg>
-          <span id="genClaudeBtnLabel">Copy prompt for AI</span>
-        </button>
-      </div>
       <div class="gen-email-row" id="genEmailRow">
-        <div class="gen-email-label">Email me my design system <span>— get a link to download later</span></div>
         <div class="gen-email-field">
-          <input class="gen-email-input" id="genEmailInput" type="email" placeholder="you@example.com" autocomplete="email"/>
-          <button class="gen-email-send" id="genEmailSend">Send</button>
+          <input class="gen-email-input" id="genEmailInput" type="email" placeholder="your@email.com" autocomplete="email"/>
+          <button class="gen-email-send" id="genEmailSend">Email me →</button>
         </div>
         <div class="gen-email-success" id="genEmailSuccess">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
-          Got it! We'll email your design system shortly.
+          Sent! Check your inbox for your design system files.
         </div>
       </div>
-      <hr class="gen-export-divider">
-      <div class="gen-fmt-cards" id="genFmtCards"></div>
     </div>
   </div>
 </div>
@@ -6052,8 +6036,8 @@ button { font: inherit; color: inherit; cursor: pointer; }
     var genNowBtn = document.getElementById("genNowBtn");
     var genModalBackdrop = document.getElementById("genModalBackdrop");
     var genModalClose = document.getElementById("genModalClose");
-    var genDlBtn = document.getElementById("genDlBtn");
-    var genClaudeBtn = document.getElementById("genClaudeBtn");
+    var genDlBtn = null;
+    var genClaudeBtn = null;
 
     function playMagicSound() {
       try {
@@ -6337,10 +6321,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
       }
     }
 
-    if (genDlBtn) {
-      genDlBtn.addEventListener("click", function() { triggerZipDownload(genDlBtn); });
-    }
-    if (genClaudeBtn) {
+    if (false && genClaudeBtn) {
       var genClaudeLbl = document.getElementById("genClaudeBtnLabel");
       genClaudeBtn.addEventListener("click", function() {
         if (!_exportData) return;
