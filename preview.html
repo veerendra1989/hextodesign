@@ -6306,12 +6306,16 @@ button { font: inherit; color: inherit; cursor: pointer; }
         }
         genEmailSend.disabled = true;
         genEmailSend.textContent = "Sending…";
-        /* Store locally; swap endpoint for a real service (Formspree, ConvertKit, etc.) */
         try { localStorage.setItem("htd-email", email); } catch(_) {}
-        fetch("https://formspree.io/f/xeogpkqr", {
+        var brandHex = (_exportData && _exportData.brand && _exportData.brand["500"])
+          ? _exportData.brand["500"].hex
+          : (localStorage.getItem("pp-brand") || "#7B5BFF");
+        var fontName = (_exportData && _exportData.typo && _exportData.typo.families)
+          ? _exportData.typo.families.sans : null;
+        fetch("/api/email", {
           method: "POST",
-          headers: { "Content-Type": "application/json", "Accept": "application/json" },
-          body: JSON.stringify({ email: email, brand: (_exportData && _exportData.brand["500"]) ? _exportData.brand["500"].hex : "" })
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: email, hex: brandHex.replace("#", ""), font: fontName })
         }).catch(function() {}).finally(function() {
           if (genEmailRow) genEmailRow.classList.add("sent");
         });

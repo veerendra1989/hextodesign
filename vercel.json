@@ -38,6 +38,10 @@
     "api/analytics.js": {
       "maxDuration": 10,
       "memory": 128
+    },
+    "api/email.js": {
+      "maxDuration": 15,
+      "memory": 256
     }
   },
   "rewrites": [
