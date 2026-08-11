@@ -139,16 +139,11 @@ module.exports = async function handler(req, res) {
     // Generate token set
     var tokens = engine.generate(hexFull, resolveFontConfig(font));
 
-    // Build ZIP with all format files
-    var zip = new JSZip();
-    zip.file("design-tokens.css",  formatters.toCSSVariables(tokens));
-    zip.file("tailwind.config.js", formatters.toTailwindConfig(tokens));
-    zip.file("design-tokens.scss", formatters.toSCSS(tokens));
-    zip.file("tokens.json",        formatters.toJSON(tokens));
-    var zipBase64 = await zip.generateAsync({ type: "base64", compression: "DEFLATE" });
-
     var attachments = [
-      { filename: "hextodesign-" + hex + ".zip", content: zipBase64 }
+      { filename: "design-tokens.css",  content: Buffer.from(formatters.toCSSVariables(tokens)).toString("base64")  },
+      { filename: "tailwind.config.txt",content: Buffer.from(formatters.toTailwindConfig(tokens)).toString("base64") },
+      { filename: "tokens.json",        content: Buffer.from(formatters.toJSON(tokens)).toString("base64")           },
+      { filename: "design-tokens.scss", content: Buffer.from(formatters.toSCSS(tokens)).toString("base64")          },
     ];
 
     var htmlBody = buildEmailHtml(hexFull, tokens);
