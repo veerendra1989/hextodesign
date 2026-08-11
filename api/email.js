@@ -141,10 +141,10 @@ module.exports = async function handler(req, res) {
 
     // Build all format files as base64 attachments
     var attachments = [
-      { filename: "design-tokens.css",  content: Buffer.from(formatters.toCSSVariables(tokens)).toString("base64") },
-      { filename: "tailwind.config.js", content: Buffer.from(formatters.toTailwindConfig(tokens)).toString("base64") },
-      { filename: "design-tokens.scss", content: Buffer.from(formatters.toSCSS(tokens)).toString("base64") },
-      { filename: "tokens.json",        content: Buffer.from(formatters.toJSON(tokens)).toString("base64") },
+      { filename: "design-tokens.css",      content: Buffer.from(formatters.toCSSVariables(tokens)).toString("base64") },
+      { filename: "tailwind.config.txt",    content: Buffer.from(formatters.toTailwindConfig(tokens)).toString("base64") },
+      { filename: "design-tokens.scss.txt", content: Buffer.from(formatters.toSCSS(tokens)).toString("base64") },
+      { filename: "tokens.json",            content: Buffer.from(formatters.toJSON(tokens)).toString("base64") },
     ];
 
     var htmlBody = buildEmailHtml(hexFull, tokens);
