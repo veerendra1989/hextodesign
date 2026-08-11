@@ -156,7 +156,7 @@ module.exports = async function handler(req, res) {
     var payload = {
       from: "hextodesign <hello@hextodesign.com>",
       to: [email],
-      subject: "Your design system from " + hexFull.toUpperCase() + " is ready",
+      subject: "Your design system is ready to use",
       html: htmlBody,
       attachments: attachments.map(function(a) {
         return { filename: a.filename, content: a.content };
